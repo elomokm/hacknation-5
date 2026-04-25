@@ -2,8 +2,9 @@ fastapi
 uvicorn[standard]
 anthropic
 python-dotenv
-httpx
+pyyaml
+pydantic
 networkx
-pyvis
 numpy
-scikit-learn
+pandas
+pytest

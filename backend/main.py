@@ -1,14 +1,14 @@
+"""UNMAPPED — FastAPI orchestrator."""
+
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from dotenv import load_dotenv
-from typing import Optional
 
-load_dotenv()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-from extractor import extract_skills, Skill
-
-app = FastAPI(title="Traji API")
+app = FastAPI(title="UNMAPPED API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,27 +18,14 @@ app.add_middleware(
 )
 
 
-class ExtractRequest(BaseModel):
-    text: str
-    image_base64: Optional[str] = None
-
-
-class ExtractResponse(BaseModel):
-    skills: list[Skill]
-
-
 @app.get("/health")
-def health():
-    return {"status": "ok"}
+def health() -> dict:
+    """Health check with active country."""
+    import os
+    return {"status": "ok", "project": "UNMAPPED", "country": os.getenv("ACTIVE_COUNTRY", "BEN")}
 
 
-@app.post("/extract", response_model=ExtractResponse)
-async def extract(req: ExtractRequest):
-    skills = extract_skills(req.text, req.image_base64)
-    return ExtractResponse(skills=skills)
-
-
-# kept for scaffold compatibility
-@app.post("/predict")
-async def predict(req: ExtractRequest):
-    return await extract(req)
+@app.post("/analyze")
+async def analyze(_body: dict) -> dict:
+    """Full pipeline: extract → risk → match. Implemented in Phases 1–3."""
+    return {"status": "not_implemented", "phase": "0"}

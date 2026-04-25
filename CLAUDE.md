@@ -1,91 +1,87 @@
-# Traji — Hack-Nation 5th Global AI Hackathon
+# UNMAPPED — Hack-Nation 5th Global AI Hackathon
 
 ## Challenge
-Challenge 5 : Unmapped — World Bank
+Challenge 5: Unmapped — World Bank Youth Summit
 "Millions of young people have real skills — the world just has no way to see them."
 
-## MVP Goal
-Build an AI system that takes informal skill descriptions (text or image)
-and returns the optimal economic pathway from informality to formal opportunity —
-using a mathematically grounded skill graph with A* pathfinding.
+## Project Vision
+UNMAPPED is an open, localizable infrastructure layer that closes the distance between
+informal skills and economic opportunity for youth in low/middle-income countries.
 
-## The Differentiating Insight
-This is NOT a matching problem. It's a graph traversal problem.
-Informal skills are particles in a metastable high-energy state.
-We find the minimum activation path toward economic equilibrium.
-The graph structure is LEARNED from African job market data,
-not hardcoded — edges emerge from co-occurrence + spectral decomposition.
+**Brief: "Think protocol, not product. Country-specific parameters are CONFIG, not code."**
 
-## Architecture
-- Input: text description or image of work (GPT-4o vision)
-- Skill Extraction: structured skill list with confidence scores
-- Graph: NetworkX weighted graph (500 nodes, learned edges)
-- Pathfinding: A* with embedding-based heuristic
-- Impact Score: ROI économique estimé du chemin
-- Frontend: Streamlit with live Pyvis graph visualization
+## Personas
+- **Akossiwa**, 22, suburban Cotonou (Bénin) — primary persona. Repairs phones, trades at market.
+- **Amara**, 24, Kumasi (Ghana) — secondary persona, pitch reference. Carpentry apprentice.
+
+## 3 Modules
+
+### Module 01 — Skill Extraction & Standardization
+Input: free-text description of work (any language, any register)
+Process: claude-sonnet-4-5 extracts skills → maps to ESCO taxonomy subset
+Output: StandardizedProfile (JSON-LD compatible, portable, offline-exportable)
+
+### Module 02 — Risk Assessment
+- Automation risk: Frey-Osborne scores, LMIC-adjusted per country config
+- Adjacent skills: NetworkX graph traversal → upskilling pathways
+- Projection: Wittgenstein Centre education data by region/year
+
+### Module 03 — Opportunity Matching
+- Match StandardizedProfile against local opportunity registry
+- Surface ≥2 econometric signals (ILOSTAT wage data, employment share)
+- Return ranked results with income delta and pathway steps
 
 ## Stack
 - Backend: FastAPI + Python 3.12
-- LLM: OpenAI GPT-4o (vision + text)
-- Embeddings: OpenAI text-embedding-3-small
-- Graph: NetworkX + spectral layout
-- Visualization: Pyvis (interactive graph)
-- Frontend: Streamlit
+- LLM: Anthropic claude-sonnet-4-5 (extraction + explanation)
+- Graph: NetworkX (adjacent skill traversal)
+- Config: YAML per country (runtime-switched, zero code changes)
+- Data: ESCO subset, ISCO-08, Frey-Osborne 2017, ILOSTAT, Wittgenstein Centre
+- Frontend: Streamlit (mobile-first, low-bandwidth)
 
-## Team
-- Elom Okoumassoun : ML/CV Engineer — full stack solo
+## Country-Agnostic Requirement
+EVERY country-specific value lives in `configs/{country_code}.yaml`:
+- Labor market data file reference
+- Currency + USD conversion rate
+- Education taxonomy + ISCED mapping
+- Automation LMIC calibration factor
+- Opportunity types enabled
+- UI language + supported scripts
 
-## Constraints
-- 24h hackathon — solo
-- Demo Video : 60 sec max
-- Tech Video : 60 sec max
-- Deadline: Sunday April 26, 9:00 AM ET
-- Submit on: projects.hack-nation.ai
+Adding a new country = write one YAML file. No code changes.
 
-## Priority Order
-1. Skill extraction working (extractor.py)
-2. Graph built and navigable (graph_builder.py)
-3. A* pathfinding returning a real path (pathfinder.py)
-4. Impact score calculated (impact_scorer.py)
-5. Streamlit demo showing live graph + pathway
-6. Project summary written
-7. Both videos recorded
+## Required Real Data Sources (non-negotiable for jury)
+1. **ILOSTAT**: wage by sector, youth unemployment rate, informal employment share
+2. **Frey-Osborne 2017**: automation probability by occupation (ISCO-matched)
 
-## Non-goals (mention in pitch, don't build)
-- P2P trust network
-- WhatsApp voice interface
-- Real-time graph learning from users
-- Mobile app
+## Design for Constraint
+- Text-first UI: no large images, no CDN-heavy libraries
+- Every API response < 5 KB JSON
+- Profile exportable as offline JSON
+- Works on 3G; tested at mobile viewport
+
+## Strong Submission Checklist
+- [ ] ≥2 econometric signals visible to user (wage delta, automation risk %)
+- [ ] 2 real country configs switching without code changes (BEN + SEN)
+- [ ] Data sources named and URL-linked in UI footnote
+- [ ] Honest "limits" section in policymaker view
+- [ ] Mobile viewport tested
 
 ## Pitch Hook
-"I grew up in Benin. I know people like this.
-I am, in some ways, this person.
-Traji finds the path they were never shown."
+"Je m'appelle Akossiwa. J'ai 22 ans. Je répare des téléphones à Cotonou.
+Je suis compétente. Je suis invisible aux données.
+UNMAPPED me voit."
 
-## Claude Code Rules
-
-### Git
-- NEVER mention Claude, AI, or any assistant in commit messages
-- Commit messages must follow conventional commits:
-  feat: / fix: / chore: / refactor: / docs:
+## Git Rules
+- No AI/assistant mentions in commit messages
+- Conventional commits: feat: / fix: / chore: / refactor: / docs:
 - Commit after each working feature — never commit broken code
 - One logical change per commit
 
-### Code Style
+## Code Rules
 - Type hints everywhere
-- Pydantic models for all data structures
+- Pydantic v2 models for all data structures
 - No print() — use logging
-- Every function has a docstring (one line minimum)
+- Every function has a one-line docstring minimum
 - Handle all exceptions explicitly — never let the app crash
-
-### Workflow
-- Build one file at a time
-- Verify it works before moving to the next
-- Never anticipate next tasks
-- If something is unclear, ask before implementing
-
-### Forbidden
-- No hardcoded API keys
-- No TODO comments left in code
-- No unused imports
-- No mock data presented as real in the demo
+- No hardcoded API keys, no TODO comments left in merged code

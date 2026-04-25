@@ -1,7 +1,7 @@
-.PHONY: install backend frontend test
+.PHONY: install backend frontend test lint
 
 PYTHON = .venv/bin/python
-UV = uv
+UV     = uv
 
 install:
 	$(UV) venv .venv --python 3.12
@@ -14,4 +14,7 @@ frontend:
 	cd frontend && ../.venv/bin/streamlit run app.py --server.port 8501
 
 test:
-	cd backend && ../.venv/bin/python test_extractor.py
+	cd backend && ../.venv/bin/pytest tests/ -v
+
+lint:
+	.venv/bin/ruff check backend/ frontend/

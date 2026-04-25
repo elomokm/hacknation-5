@@ -1,0 +1,49 @@
+country: "Bénin"
+country_code: "BEN"
+
+ui:
+  primary_language: "fr"
+  supported_languages: ["fr", "fon", "en"]
+  script: "latin"
+
+labor_data:
+  source_file: "data/ilostat/benin_labor_2024.json"
+  currency: "XOF"
+  usd_conversion_rate: 600
+
+education_taxonomy:
+  levels:
+    - "aucun"
+    - "primaire"
+    - "BEPC"
+    - "Bac"
+    - "BTS"
+    - "Licence"
+    - "Master+"
+  mapping_to_isced:
+    aucun: 0
+    primaire: 1
+    BEPC: 2
+    Bac: 3
+    BTS: 5
+    Licence: 6
+    "Master+": 7
+
+automation_calibration:
+  source: "Frey-Osborne"
+  lmic_adjustment_factor: 0.7
+  rationale: >
+    Frey-Osborne (2013) automation probabilities were derived from US occupation
+    task structures. Bénin's economy has a higher share of manual, non-routine
+    tasks and lower capital substitution rates. A 0.70 factor corrects for this,
+    consistent with World Bank LMIC automation adjustment methodology.
+
+opportunities:
+  types_enabled:
+    - "formal_employment"
+    - "self_employment"
+    - "gig"
+    - "training_pathway"
+
+projections:
+  source_file: "data/wittgenstein/projections_west_africa.json"

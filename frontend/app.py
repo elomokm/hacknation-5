@@ -1,28 +1,38 @@
-import streamlit as st
+"""UNMAPPED — Streamlit entry point. Implemented in Phase 3."""
+
+import logging
+import os
+
 import requests
+import streamlit as st
 
-BACKEND_URL = "http://localhost:8000"
+from views.youth_view import render_youth_view
+from views.policymaker_view import render_policymaker_view
 
-st.title("Hack-Nation Demo")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-user_input = st.text_area("Input", placeholder="Type something...")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
-if st.button("Run"):
-    if not user_input.strip():
-        st.warning("Please enter some input.")
-    else:
-        with st.spinner("Calling backend..."):
-            try:
-                resp = requests.post(
-                    f"{BACKEND_URL}/predict",
-                    json={"input": user_input},
-                    timeout=30,
-                )
-                resp.raise_for_status()
-                result = resp.json()
-                st.success("Done")
-                st.write(result["output"])
-            except requests.exceptions.ConnectionError:
-                st.error("Cannot reach backend. Is it running? (`make backend`)")
-            except Exception as e:
-                st.error(f"Error: {e}")
+st.set_page_config(
+    page_title="UNMAPPED",
+    page_icon="🗺️",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
+
+# -- Sidebar: view toggle + health check --
+with st.sidebar:
+    st.title("UNMAPPED")
+    view = st.radio("View", ["Youth", "Policymaker"], index=0)
+    try:
+        r = requests.get(f"{BACKEND_URL}/health", timeout=3)
+        info = r.json()
+        st.success(f"Backend OK · {info.get('country', '?')}")
+    except Exception:
+        st.error("Backend offline — run `make backend`")
+
+if view == "Youth":
+    render_youth_view(backend_url=BACKEND_URL)
+else:
+    render_policymaker_view(backend_url=BACKEND_URL)
