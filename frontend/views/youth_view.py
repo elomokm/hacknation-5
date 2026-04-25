@@ -1,19 +1,34 @@
-"""Youth-facing view — the hero experience: skill input → economic mirror."""
+"""Youth-facing view — the hero experience: skill input → economic mirror.
+
+Now consumes the UNMAPPED API via HTTP (no direct module imports for the pipeline).
+"""
 
 import base64
 import io
 import json
+import os
 import sys
 from pathlib import Path
-from uuid import uuid4
 
 import plotly.graph_objects as go
+import requests
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "backend"))
 
 from core.config_loader import get_active_config
+from core.models import (
+    AdjacentSkill,
+    OpportunityMatch,
+    RiskAssessment,
+    SectorGrowthSignal,
+    StandardizedProfile,
+    WageSignal,
+    YouthDashboard,
+)
 from views.style import risk_badge
+
+API_BASE = os.getenv("UNMAPPED_API_URL", "http://localhost:8000/api")
 
 _DEMO_TEXT = (
     "Je m'appelle Akossiwa. J'ai un BEPC. Je répare des téléphones "
@@ -23,98 +38,81 @@ _DEMO_TEXT = (
 )
 
 
-# ── Cached heavy objects (country-agnostic) ───────────────────────────────
-@st.cache_resource
-def _get_mapper():
-    from module_01_skills.taxonomy_mapper import TaxonomyMapper
-    return TaxonomyMapper()
+# ── API client helpers ─────────────────────────────────────────────────────
+def _api_post(path: str, body: dict, timeout: int = 60):
+    """POST to UNMAPPED API; raise readable error on failure."""
+    r = requests.post(f"{API_BASE}{path}", json=body, timeout=timeout)
+    if r.status_code != 200:
+        raise RuntimeError(f"API {path} returned {r.status_code}: {r.text[:200]}")
+    return r.json()
 
 
-@st.cache_resource
-def _get_scorer():
-    from module_02_risk.automation_scorer import AutomationScorer
-    return AutomationScorer()
+def _api_get(path: str, timeout: int = 30):
+    r = requests.get(f"{API_BASE}{path}", timeout=timeout)
+    if r.status_code != 200:
+        raise RuntimeError(f"API {path} returned {r.status_code}: {r.text[:200]}")
+    return r.json()
 
 
-@st.cache_resource
-def _get_finder():
-    from module_02_risk.adjacent_skills import AdjacentSkillsFinder
-    return AdjacentSkillsFinder()
-
-
-# ── Country-scoped objects (recreated on country switch) ───────────────────
-@st.cache_resource
-def _get_matcher(country_code: str):
-    from core.config_loader import load_config
-    from module_03_opportunity.matcher import OpportunityMatcher
-    return OpportunityMatcher(load_config(country_code))
-
-
-@st.cache_resource
-def _get_econ(country_code: str):
-    from core.config_loader import load_config
-    from module_03_opportunity.econometrics import EconometricSignals
-    return EconometricSignals(load_config(country_code))
+def _check_api_alive() -> bool:
+    """Return True if the API responds to /health within 2 seconds."""
+    try:
+        r = requests.get(f"{API_BASE}/health", timeout=2)
+        return r.status_code == 200
+    except Exception:
+        return False
 
 
 # ── Pipeline ───────────────────────────────────────────────────────────────
 def _run_pipeline(description: str, edu: str, langs: list[str], name: str) -> None:
-    """Run the full 3-module pipeline and store results in session_state."""
-    from module_01_skills.extractor import extract_skills
-    from module_01_skills.profile_generator import generate_profile
-    from module_03_opportunity.dashboards import generate_youth_dashboard
-
+    """Call the UNMAPPED API and store results in session_state."""
     config = get_active_config()
-    mapper = _get_mapper()
-    scorer = _get_scorer()
-    finder = _get_finder()
-    matcher = _get_matcher(config.country_code)
-    econ = _get_econ(config.country_code)
+    cc = config.country_code
 
-    progress = st.progress(0, text="Extracting skills from your description…")
-    extracted = extract_skills(description)
-    progress.progress(25, text="Mapping to ESCO taxonomy…")
+    progress = st.progress(0, text="Generating your profile (calling UNMAPPED API)…")
+    profile = _api_post("/profile/generate", {
+        "user_name": name.strip() or "User",
+        "text": description,
+        "education_level": edu,
+        "languages": langs,
+        "country_code": cc,
+    })
+    profile_id = profile["profile_id"]
+    progress.progress(45, text="Assessing automation risk…")
 
-    mapped = mapper.map_skills_batch(extracted)
-    progress.progress(45, text="Building your standardized profile…")
+    risk_resp = _api_post("/risk/assess", {
+        "profile_id": profile_id,
+        "country_code": cc,
+        "include_adjacent": True,
+    })
+    progress.progress(70, text="Matching opportunities…")
 
-    profile = generate_profile(
-        user_id=str(uuid4()),
-        user_name=name.strip() or "User",
-        education_level=edu,
-        languages=langs,
-        extracted_skills=extracted,
-        mapped_skills=mapped,
-        config=config,
-    )
-    progress.progress(65, text="Assessing automation risk…")
+    match_resp = _api_post("/opportunities/match", {
+        "profile_id": profile_id,
+        "country_code": cc,
+        "top_k": 5,
+    })
+    progress.progress(90, text="Assembling dashboard…")
 
-    risk = scorer.score_profile(profile, config)
-    progress.progress(75, text="Finding matching opportunities…")
+    dashboard = _api_get(f"/opportunities/{cc}/dashboard/youth?profile_id={profile_id}")
 
-    matches = matcher.match(profile, top_k=5)
-    progress.progress(85, text="Computing econometric signals…")
-
-    wage_signal = econ.get_wage_signals(profile)
-    growth_signal = econ.get_growth_signals()
-    progress.progress(95, text="Assembling your dashboard…")
-
-    dashboard = generate_youth_dashboard(
-        profile, risk, matches, wage_signal, growth_signal, config
-    )
     progress.progress(100, text="Done!")
     progress.empty()
 
+    # Parse dict responses back into Pydantic models so the tab renderers
+    # work uniformly (whether data came from API or local pipeline).
     st.session_state.update({
-        "profile": profile,
-        "risk": risk,
-        "matches": matches,
-        "wage_signal": wage_signal,
-        "growth_signal": growth_signal,
-        "dashboard": dashboard,
-        "finder": finder,
-        "scorer": scorer,
-        "config_cc": config.country_code,
+        "profile": StandardizedProfile.model_validate(profile),
+        "risk": RiskAssessment.model_validate(risk_resp["assessment"]),
+        "adjacent": {
+            esco_id: [AdjacentSkill.model_validate(a) for a in alts]
+            for esco_id, alts in risk_resp["adjacent_skills"].items()
+        },
+        "matches": [OpportunityMatch.model_validate(m) for m in match_resp["matches"]],
+        "wage_signal": WageSignal.model_validate(match_resp["wage_signal"]),
+        "growth_signal": SectorGrowthSignal.model_validate(match_resp["growth_signal"]),
+        "dashboard": YouthDashboard.model_validate(dashboard),
+        "config_cc": cc,
     })
 
 
@@ -191,8 +189,7 @@ def _tab_profile(profile, config) -> None:
 
 
 def _tab_risk(risk, profile, config) -> None:
-    finder = st.session_state.get("finder")
-    scorer = st.session_state.get("scorer")
+    adjacent = st.session_state.get("adjacent", {})
 
     st.markdown("### Automation Risk Assessment")
     c1, c2, c3 = st.columns(3)
@@ -219,9 +216,9 @@ def _tab_risk(risk, profile, config) -> None:
                     f"LMIC-adjusted (×{score.lmic_adjustment_applied}): {score.adjusted_probability:.3f}"
                 )
 
-            # Adjacent alternatives for high-risk
-            if score.risk_band in {"high", "critical"} and finder and scorer:
-                alts = finder.find_durable_alternatives(skill, score, scorer, config, top_k=3)
+            # Adjacent alternatives for high-risk (precomputed via /risk/assess)
+            if score.risk_band in {"high", "critical"}:
+                alts = adjacent.get(skill.esco_id, [])
                 if alts:
                     st.markdown("**Lower-risk alternatives:**")
                     for alt in alts:
@@ -401,8 +398,16 @@ def render_youth_view() -> None:
 
     # Detect country switch → clear cache
     if st.session_state.get("config_cc") != config.country_code:
-        for key in ["profile", "risk", "matches", "wage_signal", "growth_signal", "dashboard"]:
+        for key in ["profile", "risk", "adjacent", "matches", "wage_signal", "growth_signal", "dashboard"]:
             st.session_state.pop(key, None)
+
+    # API health check
+    if not _check_api_alive():
+        st.error(
+            f"⚠️ UNMAPPED API not reachable at `{API_BASE}`. "
+            f"Start the API with `make api` in another terminal."
+        )
+        return
 
     # ── Header ────────────────────────────────────────────────────
     st.markdown("## Tell us about yourself")

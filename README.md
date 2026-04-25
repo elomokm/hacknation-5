@@ -12,27 +12,80 @@ pathways backed by real labor market data.
 ## Quick Start
 
 ```bash
-# Install dependencies
-make install
-
-# Copy and fill your API key
-cp backend/.env.example backend/.env
-
-# Start backend (port 8000)
-make backend
-
-# Start frontend (port 8501)
-make frontend
+make install                                   # one-time setup
+cp backend/.env.example backend/.env           # add your ANTHROPIC_API_KEY
+make dev                                       # API on :8000 + Streamlit on :8501
 ```
 
-## Switch Country Config
+Or run them separately:
 
 ```bash
-ACTIVE_COUNTRY=BEN make backend   # Bénin (default)
-ACTIVE_COUNTRY=SEN make backend   # Sénégal
+make api          # FastAPI on :8000  (docs at http://localhost:8000/docs)
+make frontend     # Streamlit on :8501
+make test         # API integration tests
 ```
 
-No code changes. Only the YAML config switches.
+## Switch Country
+
+```bash
+ACTIVE_COUNTRY=BEN make api    # Bénin (default)
+ACTIVE_COUNTRY=SEN make api    # Sénégal
+```
+
+Or live in the Streamlit sidebar (🇧🇯 Bénin ↔ 🇸🇳 Sénégal). No code changes.
+
+---
+
+## API Usage
+
+UNMAPPED is **infrastructure**, not a product. Every module is exposed via REST.
+Open by design: any government, NGO, training provider, or employer can plug in.
+
+**OpenAPI docs:** http://localhost:8000/docs (Swagger UI)
+
+```bash
+# Health
+curl http://localhost:8000/api/health
+
+# List supported countries with metadata (the localizability proof)
+curl http://localhost:8000/api/config/countries
+
+# Generate a full StandardizedProfile (JSON-LD)
+curl -X POST http://localhost:8000/api/profile/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_name": "Akossiwa",
+    "text": "Je répare des téléphones depuis 4 ans à Cotonou.",
+    "education_level": "BEPC",
+    "languages": ["fr", "fon"],
+    "country_code": "BEN"
+  }'
+
+# Match a stored profile to local opportunities
+curl -X POST http://localhost:8000/api/opportunities/match \
+  -H "Content-Type: application/json" \
+  -d '{"profile_id": "<id-from-above>", "country_code": "BEN", "top_k": 5}'
+
+# Population-level econometric signals (no profile needed)
+curl http://localhost:8000/api/opportunities/BEN/signals
+```
+
+| Endpoint | Returns |
+|---|---|
+| `GET /api/health` | Liveness + active country |
+| `GET /api/info` | Modules, data sources, supported countries |
+| `GET /api/config/countries` | All countries + their metadata |
+| `GET /api/config/{code}` | Full CountryConfig for one country |
+| `GET /api/config/schema` | JSON schema + how-to-add-a-country guide |
+| `POST /api/profile/extract` | Extracted + mapped skills (no profile) |
+| `POST /api/profile/generate` | Full StandardizedProfile (JSON-LD) |
+| `GET /api/profile/{id}/jsonld` | Profile served as `application/ld+json` |
+| `POST /api/risk/assess` | RiskAssessment + adjacent durable skills |
+| `GET /api/risk/projections/{code}` | Wittgenstein education trajectory |
+| `POST /api/opportunities/match` | Top-k matches + 2 econometric signals |
+| `GET /api/opportunities/{code}/signals` | Wage + sector growth signals |
+| `GET /api/opportunities/{code}/dashboard/youth` | Composite youth dashboard |
+| `GET /api/opportunities/{code}/dashboard/policymaker` | Country aggregate dashboard |
 
 ---
 
