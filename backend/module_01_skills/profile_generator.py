@@ -22,26 +22,6 @@ logger = logging.getLogger(__name__)
 
 _MODEL = "claude-sonnet-4-5"
 
-_ISCED_LABELS: dict[int, str] = {
-    0: "No formal education",
-    1: "Primary education",
-    2: "Lower secondary education",
-    3: "Upper secondary education",
-    4: "Post-secondary non-tertiary",
-    5: "Short-cycle tertiary (BTS/DUT)",
-    6: "Bachelor's or equivalent",
-    7: "Master's or equivalent",
-    8: "Doctoral or equivalent",
-}
-
-_LANG_DISPLAY: dict[str, str] = {
-    "fr": "French",
-    "en": "English",
-    "wo": "Wolof",
-    "fon": "Fon",
-    "ha": "Hausa",
-}
-
 
 def _client() -> anthropic.Anthropic:
     """Return a fresh Anthropic client."""
@@ -49,12 +29,16 @@ def _client() -> anthropic.Anthropic:
 
 
 def _resolve_education(level: str, config: CountryConfig) -> dict:
-    """Build education dict with ISCED mapping from country config."""
+    """Build education dict using country-specific ISCED labels from config."""
     isced_code = config.education_taxonomy.mapping_to_isced.get(level)
+    if isced_code is None:
+        label = "Unknown"
+    else:
+        label = config.education_taxonomy.label_for(isced_code)
     return {
         "level": level,
         "isced": isced_code,
-        "isced_label": _ISCED_LABELS.get(isced_code, "Unknown") if isced_code is not None else "Unknown",
+        "isced_label": label,
         "country_taxonomy": config.country_code,
     }
 
@@ -79,7 +63,7 @@ def _generate_summary(
     config: CountryConfig,
 ) -> str:
     """Call the LLM once to produce a 1-paragraph human-readable summary."""
-    lang_name = _LANG_DISPLAY.get(language, "French")
+    lang_name = config.ui.display_name_for(language)
 
     if mapped:
         skill_labels = ", ".join(s.esco_label for s in mapped[:8])

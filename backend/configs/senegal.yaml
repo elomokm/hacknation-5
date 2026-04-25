@@ -5,11 +5,55 @@ ui:
   primary_language: "fr"
   supported_languages: ["fr", "wo", "en"]
   script: "latin"
+  language_display_names:
+    fr: "Français"
+    wo: "Wolof"
+    en: "Anglais"
 
 labor_data:
   source_file: "data/ilostat/senegal_labor_2024.json"
   currency: "XOF"
   usd_conversion_rate: 600
+  # ISCO 2-digit code → ILOSTAT sector label (Sénégal nomenclature includes Tourism)
+  isco_to_sector_mapping:
+    "11": "Public administration and defence"
+    "12": "Financial and insurance activities"
+    "13": "Trade and commerce (formal retail)"
+    "14": "Tourism and hospitality"
+    "21": "Information and communication (ICT)"
+    "22": "Human health and social work"
+    "23": "Education"
+    "24": "Financial and insurance activities"
+    "25": "Information and communication (ICT)"
+    "31": "Manufacturing"
+    "32": "Human health and social work"
+    "33": "Financial and insurance activities"
+    "41": "Trade and commerce (informal)"
+    "42": "Trade and commerce (informal)"
+    "43": "Trade and commerce (formal retail)"
+    "51": "Tourism and hospitality"
+    "52": "Trade and commerce (informal)"
+    "54": "Other service activities"
+    "61": "Agriculture, forestry and fishing"
+    "62": "Agriculture, forestry and fishing"
+    "71": "Construction"
+    "72": "Manufacturing"
+    "73": "Manufacturing"
+    "74": "Manufacturing"
+    "75": "Manufacturing"
+    "83": "Transportation and storage"
+    "91": "Other service activities"
+    "92": "Agriculture, forestry and fishing"
+    "93": "Construction"
+    "94": "Accommodation and food services"
+    "95": "Trade and commerce (informal)"
+  # Sénégal economy slightly more formalised than Bénin (PSE context)
+  informal_sector_discount_factor: 0.65
+  high_value_wage_threshold_usd: 250
+  growth_strategic_sectors:
+    - "Information and communication (ICT)"
+    - "Financial and insurance activities"
+    - "Tourism and hospitality"
 
 education_taxonomy:
   levels:
@@ -28,6 +72,16 @@ education_taxonomy:
     BTS: 5
     Licence: 6
     "Master+": 7
+  isced_labels:
+    0: "Aucune éducation formelle"
+    1: "Éducation primaire"
+    2: "Premier cycle secondaire (BFEM)"
+    3: "Second cycle secondaire (Bac)"
+    4: "Post-secondaire non-tertiaire"
+    5: "Tertiaire court (BTS/DUT)"
+    6: "Licence"
+    7: "Master ou équivalent"
+    8: "Doctorat ou équivalent"
 
 automation_calibration:
   source: "Frey-Osborne"

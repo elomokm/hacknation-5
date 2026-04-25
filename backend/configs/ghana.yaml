@@ -1,0 +1,109 @@
+country: "Ghana"
+country_code: "GHA"
+
+ui:
+  primary_language: "en"
+  supported_languages: ["en", "tw", "ee", "fr"]
+  script: "latin"
+  language_display_names:
+    en: "English"
+    tw: "Twi"
+    ee: "Ewe"
+    fr: "French"
+
+labor_data:
+  source_file: "data/ilostat/ghana_labor_2024.json"
+  currency: "GHS"
+  usd_conversion_rate: 12  # 1 USD ≈ 12 GHS in 2024 (Bank of Ghana reference)
+  # ISCO 2-digit code → ILOSTAT sector label (Ghana nomenclature — note Mining
+  # is broken out separately because Ghana is a major gold/bauxite producer).
+  isco_to_sector_mapping:
+    "11": "Public administration"
+    "12": "Financial services"
+    "13": "Trade (formal retail)"
+    "14": "Accommodation and food"
+    "21": "Information and communication (ICT)"
+    "22": "Health"
+    "23": "Education"
+    "24": "Financial services"
+    "25": "Information and communication (ICT)"
+    "31": "Manufacturing"
+    "32": "Health"
+    "33": "Financial services"
+    "41": "Trade (informal)"
+    "42": "Trade (informal)"
+    "43": "Trade (formal retail)"
+    "51": "Accommodation and food"
+    "52": "Trade (informal)"
+    "54": "Other services"
+    "61": "Agriculture"
+    "62": "Agriculture"
+    "71": "Construction"
+    "72": "Manufacturing"
+    "73": "Manufacturing"
+    "74": "Manufacturing"
+    "75": "Manufacturing"
+    "81": "Mining and quarrying"
+    "82": "Manufacturing"
+    "83": "Transportation"
+    "91": "Other services"
+    "92": "Agriculture"
+    "93": "Construction"
+    "94": "Accommodation and food"
+    "95": "Trade (informal)"
+  # Ghana has slightly bigger informal-to-formal gap than Sénégal (0.65) but
+  # better than Bénin (0.60) — GSS AHIES 2023-24 informal earnings data.
+  informal_sector_discount_factor: 0.55
+  high_value_wage_threshold_usd: 250
+  growth_strategic_sectors:
+    - "Information and communication (ICT)"
+    - "Financial services"
+    - "Mining and quarrying"  # Ghana-specific: gold, bauxite, manganese
+
+education_taxonomy:
+  levels:
+    - "None"
+    - "Primary"
+    - "BECE"      # Basic Education Certificate Examination (end of JHS)
+    - "WASSCE"    # West African Senior School Certificate Examination
+    - "HND"       # Higher National Diploma
+    - "Bachelor"
+    - "Master+"
+  mapping_to_isced:
+    "None": 0
+    "Primary": 1
+    "BECE": 2
+    "WASSCE": 3
+    "HND": 5
+    "Bachelor": 6
+    "Master+": 7
+  isced_labels:
+    0: "No formal education"
+    1: "Primary education"
+    2: "Junior High (BECE)"
+    3: "Senior High (WASSCE)"
+    4: "Post-secondary non-tertiary"
+    5: "Higher National Diploma (HND)"
+    6: "Bachelor's degree"
+    7: "Master's or equivalent"
+    8: "Doctoral or equivalent"
+
+automation_calibration:
+  source: "Frey-Osborne"
+  lmic_adjustment_factor: 0.68
+  rationale: >
+    Ghana has a slightly more digitised service economy than Bénin
+    (Accra fintech hub, MTN Mobile Money penetration ~60%), justifying
+    a marginally higher LMIC adjustment factor of 0.68. Still substantially
+    below 1.0 given the dominance of informal and manual task composition.
+
+opportunities:
+  source_file: "data/opportunities/ghana_opportunities.json"
+  types_enabled:
+    - "formal_employment"
+    - "self_employment"
+    - "gig"
+    - "training_pathway"
+
+projections:
+  source_file: "data/wittgenstein/projections_west_africa.json"

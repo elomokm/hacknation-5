@@ -9,20 +9,73 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 # Country config models (Phase 2)
 # ---------------------------------------------------------------------------
 
+# Default ISCED-2011 labels (English) — used when a country YAML omits them.
+# Per-country override via EducationTaxonomy.isced_labels (e.g. French for BEN/SEN).
+_DEFAULT_ISCED_LABELS: dict[int, str] = {
+    0: "No formal education",
+    1: "Primary education",
+    2: "Lower secondary education",
+    3: "Upper secondary education",
+    4: "Post-secondary non-tertiary",
+    5: "Short-cycle tertiary (BTS/DUT)",
+    6: "Bachelor's or equivalent",
+    7: "Master's or equivalent",
+    8: "Doctoral or equivalent",
+}
+
+# Default language display names — used when a country YAML omits them.
+_DEFAULT_LANG_DISPLAY: dict[str, str] = {
+    "fr": "French",
+    "en": "English",
+    "wo": "Wolof",
+    "fon": "Fon",
+    "tw": "Twi",
+    "ha": "Hausa",
+    "ar": "Arabic",
+}
+
+
 class UIConfig(BaseModel):
     """Frontend localisation settings."""
 
     primary_language: str
     supported_languages: list[str]
     script: str
+    # Per-country display names for languages (e.g. {"tw": "Twi"}).
+    # Falls back to _DEFAULT_LANG_DISPLAY when omitted.
+    language_display_names: dict[str, str] = Field(default_factory=dict)
+
+    def display_name_for(self, code: str) -> str:
+        """Return the human-readable display name for a language code."""
+        if code in self.language_display_names:
+            return self.language_display_names[code]
+        return _DEFAULT_LANG_DISPLAY.get(code, code.upper())
 
 
 class LaborDataConfig(BaseModel):
-    """Reference to ILOSTAT data file and currency settings."""
+    """Reference to ILOSTAT data file, currency, and country-specific
+    economic constants. Every value here is an INPUT to UNMAPPED — there
+    is no Python-side hardcoded equivalent.
+    """
 
     source_file: str
     currency: str
     usd_conversion_rate: int
+
+    # ISCO 2-digit code → sector label (must match labels in source_file JSON).
+    # If empty, EconometricSignals uses _DEFAULT_ISCO_TO_SECTOR (West Africa).
+    isco_to_sector_mapping: dict[str, str] = Field(default_factory=dict)
+
+    # Informal worker income ≈ formal sector median × this factor.
+    # Varies 0.40–0.75 across LMICs (informality gap).
+    informal_sector_discount_factor: float = Field(default=0.60, gt=0.0, le=1.0)
+
+    # Sectors with median wage above this threshold are flagged "high-value".
+    high_value_wage_threshold_usd: int = Field(default=200, gt=0)
+
+    # Strategic growth sectors flagged in the policymaker dashboard.
+    # Defaults to West Africa default (ICT + Finance) when omitted.
+    growth_strategic_sectors: list[str] = Field(default_factory=list)
 
 
 class EducationTaxonomy(BaseModel):
@@ -30,6 +83,10 @@ class EducationTaxonomy(BaseModel):
 
     levels: list[str]
     mapping_to_isced: dict[str, int]
+    # Per-country ISCED labels (e.g. localised in FR for BEN/SEN).
+    # Keys are ISCED codes (0-8), values are human-readable labels.
+    # Falls back to _DEFAULT_ISCED_LABELS when omitted.
+    isced_labels: dict[int, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def levels_covered_by_mapping(self) -> "EducationTaxonomy":
@@ -38,6 +95,12 @@ class EducationTaxonomy(BaseModel):
         if missing:
             raise ValueError(f"Education levels missing ISCED mapping: {missing}")
         return self
+
+    def label_for(self, isced_code: int) -> str:
+        """Return the ISCED label, falling back to the default English set."""
+        if isced_code in self.isced_labels:
+            return self.isced_labels[isced_code]
+        return _DEFAULT_ISCED_LABELS.get(isced_code, "Unknown")
 
 
 class AutomationCalibration(BaseModel):

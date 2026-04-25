@@ -53,11 +53,52 @@ def test_list_countries():
     assert r.status_code == 200
     countries = r.json()
     codes = {c["code"] for c in countries}
-    assert {"BEN", "SEN"}.issubset(codes)
+    # Three countries proves auto-discovery (Ghana added without code change)
+    assert {"BEN", "SEN", "GHA"}.issubset(codes)
     # Different countries → different LMIC factors → proves localizability
     by_code = {c["code"]: c for c in countries}
     assert by_code["BEN"]["lmic_adjustment_factor"] != by_code["SEN"]["lmic_adjustment_factor"]
-    logger.info("✓ /api/config/countries → %d countries with distinct LMIC factors", len(countries))
+    assert by_code["GHA"]["lmic_adjustment_factor"] != by_code["BEN"]["lmic_adjustment_factor"]
+    logger.info("✓ /api/config/countries → %d countries (BEN, SEN, GHA) with distinct LMIC factors", len(countries))
+
+
+def test_reload_endpoint():
+    """POST /api/config/reload re-scans configs/ directory."""
+    r = client.post("/api/config/reload")
+    assert r.status_code == 200
+    body = r.json()
+    assert "countries" in body
+    assert "GHA" in body["countries"]  # Ghana auto-discovered after reload
+    assert body["count"] == len(body["countries"])
+    logger.info("✓ /api/config/reload → %d countries re-discovered: %s", body["count"], body["countries"])
+
+
+def test_get_ghana_config():
+    """Ghana config — proof that adding 3 files = working country, no Python edits."""
+    r = client.get("/api/config/GHA")
+    assert r.status_code == 200, r.text
+    gha = r.json()
+    assert gha["country_code"] == "GHA"
+    assert gha["country"] == "Ghana"
+    assert gha["ui"]["primary_language"] == "en"
+    assert gha["labor_data"]["currency"] == "GHS"
+    # New config-driven fields surface via API
+    assert len(gha["labor_data"]["isco_to_sector_mapping"]) >= 30
+    assert "Mining and quarrying" in gha["labor_data"]["growth_strategic_sectors"]
+    logger.info("✓ /api/config/GHA → %s (en, GHS, %d ISCO mappings)",
+                gha["country"], len(gha["labor_data"]["isco_to_sector_mapping"]))
+
+
+def test_ghana_signals_endpoint():
+    """Ghana econometric signals — different currency, different strategic sectors."""
+    r = client.get("/api/opportunities/GHA/signals")
+    assert r.status_code == 200, r.text
+    body = r.json()
+    growth_flagged = body["growth"]["growth_flagged_sectors"]
+    # Ghana flags Mining as strategic — Bénin doesn't
+    assert any("Mining" in s for s in growth_flagged), \
+        f"Ghana should flag Mining as strategic, got: {growth_flagged}"
+    logger.info("✓ /api/opportunities/GHA/signals → strategic: %s", growth_flagged)
 
 
 def test_get_config_BEN_and_SEN():
@@ -218,10 +259,13 @@ if __name__ == "__main__":
     test_info_endpoint()
     test_list_countries()
     test_get_config_BEN_and_SEN()
+    test_get_ghana_config()
+    test_reload_endpoint()
     test_invalid_country_returns_structured_error()
     test_get_schema()
     test_projections_endpoint()
     test_signals_endpoint()
+    test_ghana_signals_endpoint()
     test_policymaker_dashboard()
     test_full_pipeline_via_api()
 

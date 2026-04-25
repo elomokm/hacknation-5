@@ -125,17 +125,91 @@ def test_list_available() -> None:
     countries = list_available_countries()
     assert "BEN" in countries
     assert "SEN" in countries
+    assert "GHA" in countries  # Ghana proves auto-discovery
     logger.info("  Available: %s ✓", countries)
+    logger.info("  → PASSED ✓")
+
+
+def test_load_ghana() -> None:
+    """Ghana proves the infrastructure claim — added without code changes."""
+    logger.info("=== GHA — Ghana (auto-discovered, no code change) ===")
+    gha = load_config("GHA")
+
+    assert isinstance(gha, CountryConfig)
+    assert gha.country_code == "GHA"
+    assert gha.country == "Ghana"
+    assert gha.ui.primary_language == "en"
+    assert "tw" in gha.ui.supported_languages  # Twi
+    assert gha.labor_data.currency == "GHS"
+    assert gha.labor_data.usd_conversion_rate == 12
+
+    # All new config-driven fields populated
+    assert len(gha.labor_data.isco_to_sector_mapping) >= 30, "ISCO mapping should be complete"
+    assert 0.0 < gha.labor_data.informal_sector_discount_factor < 1.0
+    assert gha.labor_data.high_value_wage_threshold_usd > 0
+    assert len(gha.labor_data.growth_strategic_sectors) >= 1
+
+    # Ghana-specific education ladder (BECE/WASSCE/HND, not BEPC/Bac/BTS)
+    assert "WASSCE" in gha.education_taxonomy.levels
+    assert "BEPC" not in gha.education_taxonomy.levels  # Bénin-specific
+    assert gha.education_taxonomy.label_for(3) == "Senior High (WASSCE)"
+
+    # UI display names
+    assert gha.ui.display_name_for("tw") == "Twi"
+    assert gha.ui.display_name_for("en") == "English"
+
+    _print_config(gha)
+    logger.info("  → PASSED ✓")
+
+
+def test_reload_configs_idempotent() -> None:
+    """reload_configs() should return the same set when no files changed."""
+    logger.info("=== reload_configs() idempotency ===")
+    from core.config_loader import reload_configs
+    before = list_available_countries()
+    after = reload_configs()
+    assert sorted(before) == sorted(after), f"Reload changed registry: {before} → {after}"
+    logger.info("  reload yields same set: %s ✓", after)
+    logger.info("  → PASSED ✓")
+
+
+def test_country_specific_constants_differ() -> None:
+    """BEN/SEN/GHA must each have their own ISCO mapping + economic constants."""
+    logger.info("=== Country-specific economic constants ===")
+    ben = load_config("BEN")
+    sen = load_config("SEN")
+    gha = load_config("GHA")
+
+    # Informal discount factors must differ (proves they're config-driven)
+    discounts = {
+        "BEN": ben.labor_data.informal_sector_discount_factor,
+        "SEN": sen.labor_data.informal_sector_discount_factor,
+        "GHA": gha.labor_data.informal_sector_discount_factor,
+    }
+    assert len(set(discounts.values())) == 3, f"Discount factors should differ: {discounts}"
+
+    # Strategic sectors should reflect different national priorities
+    ben_strategic = set(ben.labor_data.growth_strategic_sectors)
+    gha_strategic = set(gha.labor_data.growth_strategic_sectors)
+    assert ben_strategic != gha_strategic, "BEN and GHA strategic sectors should differ"
+    assert "Mining and quarrying" in gha_strategic, "Ghana should flag mining as strategic"
+
+    logger.info("  Discount factors: %s", discounts)
+    logger.info("  BEN strategic: %s", sorted(ben_strategic))
+    logger.info("  GHA strategic: %s", sorted(gha_strategic))
     logger.info("  → PASSED ✓")
 
 
 if __name__ == "__main__":
     test_load_benin()
     test_load_senegal()
+    test_load_ghana()
     test_switching_via_env()
     test_lmic_factors_differ()
     test_referenced_files_exist()
     test_list_available()
+    test_reload_configs_idempotent()
+    test_country_specific_constants_differ()
 
     logger.info("")
     logger.info("=" * 55)

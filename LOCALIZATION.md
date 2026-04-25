@@ -1,130 +1,173 @@
 # UNMAPPED — Localization Guide
 
-Adding a new country requires **one YAML file**. No code changes.
+**Adding a new country requires zero Python changes.** Drop 3 files in
+`backend/` and call one HTTP endpoint. The country appears across the
+API, both dashboards, and the country-toggle in the frontend sidebar.
+
+This is what makes UNMAPPED *infrastructure* and not just an app.
 
 ---
 
-## Every Configurable Parameter
+## How auto-discovery works
 
-| Parameter | Location in YAML | Description |
+At startup and on demand, `backend/core/config_loader.py` scans
+`backend/configs/*.yaml`, reads each file's `country_code` field, and
+registers the country. **There is no hardcoded country list.**
+
+```
+backend/configs/
+├── benin.yaml      → BEN
+├── senegal.yaml    → SEN
+├── ghana.yaml      → GHA
+└── (drop kenya.yaml here → KEN appears after /api/config/reload)
+```
+
+---
+
+## Active country configs
+
+| Country | Code | Currency | Languages | LMIC factor | Education ladder |
+|---|---|---|---|---|---|
+| Bénin | BEN | XOF | fr / fon / en | 0.70 | aucun → primaire → BEPC → Bac → BTS → Licence → Master+ |
+| Sénégal | SEN | XOF | fr / wo / en | 0.72 | aucun → primaire → BFEM → Bac → BTS → Licence → Master+ |
+| Ghana | GHA | GHS | en / tw / ee / fr | 0.68 | None → Primary → BECE → WASSCE → HND → Bachelor → Master+ |
+
+---
+
+## Step-by-step: add a new country (zero code)
+
+### Step 1 — Drop the labor data file
+```
+backend/data/ilostat/{code_lower}_labor_2024.json
+```
+
+Required fields (matches `LaborMarketData` Pydantic model — see
+`backend/core/models.py`):
+```json
+{
+  "country": "...", "country_code": "...", "year": 2024,
+  "source": "ILOSTAT", "source_url": "...", "notes": "...",
+  "wage_by_sector": [
+    {"sector": "...", "median_monthly_xof": 0, "median_monthly_usd": 0}
+  ],
+  "employment_by_sector": [
+    {"sector": "...", "share_pct": 0.0}
+  ],
+  "youth_unemployment_rate": 0.0,
+  "informal_employment_share": 0.0,
+  "youth_neet_rate": 0.0
+}
+```
+
+> Note: the field name is `median_monthly_xof` for Pydantic schema
+> compatibility. Values can be in any local currency (GHS for Ghana,
+> NGN for Nigeria…). Mention the unit explicitly in `notes`.
+
+### Step 2 — Drop the opportunities file
+```
+backend/data/opportunities/{code_lower}_opportunities.json
+```
+
+Array of opportunities matching the `Opportunity` Pydantic model
+(see `backend/core/models.py`). 5–30 entries, each tagged
+`realistic_for_youth: true|false`.
+
+### Step 3 — Drop the country YAML
+```
+backend/configs/{code_lower}.yaml
+```
+
+Use `backend/configs/ghana.yaml` as the most recent template.
+Required top-level keys: `country`, `country_code`, `ui`, `labor_data`,
+`education_taxonomy`, `automation_calibration`, `opportunities`,
+`projections`.
+
+The full schema is also queryable at:
+```
+GET /api/config/schema
+```
+
+### Step 4 — Hot-reload (no restart)
+```bash
+curl -X POST http://localhost:8000/api/config/reload
+```
+
+The new country appears immediately in:
+- `GET /api/config/countries`
+- The Streamlit sidebar toggle
+- All `/api/opportunities/{code}/*` and `/api/risk/*` endpoints
+
+---
+
+## Every parameter is configurable per country
+
+| Parameter | YAML location | What it controls |
 |---|---|---|
-| `country` | root | Display name |
-| `country_code` | root | 3-letter ISO code (BEN, SEN, GHA…) |
-| `ui.primary_language` | ui | Default UI language (ISO 639-1) |
-| `ui.supported_languages` | ui | All supported languages |
-| `ui.script` | ui | Writing system (latin, arabic, tifinagh…) |
-| `labor_data.source_file` | labor_data | Path to ILOSTAT JSON file |
-| `labor_data.currency` | labor_data | Local currency code (XOF, GHS, NGN…) |
-| `labor_data.usd_conversion_rate` | labor_data | Current rate (1 USD = N local) |
-| `education_taxonomy.levels` | education_taxonomy | Local education ladder (ordered) |
-| `education_taxonomy.mapping_to_isced` | education_taxonomy | ISCED-2011 equivalence map |
-| `automation_calibration.lmic_adjustment_factor` | automation_calibration | Frey-Osborne US→LMIC correction |
-| `automation_calibration.rationale` | automation_calibration | Why this factor was chosen |
-| `opportunities.types_enabled` | opportunities | Enabled opportunity types |
+| `country`, `country_code` | root | Display name + ISO code |
+| `ui.primary_language` | ui | Default UI language code (ISO 639-1) |
+| `ui.supported_languages` | ui | All supported language codes |
+| `ui.script` | ui | Writing system (latin, arabic, ethiopic…) |
+| `ui.language_display_names` | ui | Code → display name (e.g. `tw: "Twi"`) |
+| `labor_data.source_file` | labor_data | Path to ILOSTAT JSON |
+| `labor_data.currency` | labor_data | Local currency code |
+| `labor_data.usd_conversion_rate` | labor_data | 1 USD = N local |
+| `labor_data.isco_to_sector_mapping` | labor_data | ISCO 2-digit → sector label (must match wage_by_sector labels) |
+| `labor_data.informal_sector_discount_factor` | labor_data | Informal earn ≈ formal × this (typical 0.40–0.75) |
+| `labor_data.high_value_wage_threshold_usd` | labor_data | Sector flagged "high-value" above this |
+| `labor_data.growth_strategic_sectors` | labor_data | List of strategic sector labels (policymaker dashboard flag) |
+| `education_taxonomy.levels` | education | Local education ladder (ordered) |
+| `education_taxonomy.mapping_to_isced` | education | Local label → ISCED 2011 code |
+| `education_taxonomy.isced_labels` | education | ISCED code → human-readable label (localised) |
+| `automation_calibration.lmic_adjustment_factor` | automation | Frey-Osborne US → LMIC correction |
+| `automation_calibration.rationale` | automation | Why this factor was chosen (cited in dashboards) |
+| `opportunities.source_file` | opportunities | Path to opportunities JSON |
+| `opportunities.types_enabled` | opportunities | Subset of [formal_employment, self_employment, gig, training_pathway] |
 | `projections.source_file` | projections | Path to Wittgenstein regional data |
 
 ---
 
-## Step-by-Step: How to Add a New Country
+## What is NOT configurable per country
 
-### Step 1 — Create the labor data file
+These are intentional global protocol decisions — modifying them would
+change the algorithm itself, not the country parameters:
+
+- The Pydantic data models (`backend/core/models.py`) — protocol contract
+- The LLM extraction prompt (`module_01_skills/extractor.py`) — universal
+- The Frey-Osborne scoring formula — applied uniformly with country LMIC factor
+- The A* skill graph traversal heuristic — universal
+- The matching algorithm structure — universal
+
+**Default fallbacks** for ISCED labels, language display names, and ISCO→sector
+mapping live in the Pydantic models so a sparse country YAML still works
+(with a logged warning) — but **a complete, accurate country config provides all
+of these explicitly**.
+
+---
+
+## Multi-script environments
+
+For Arabic (Morocco, Mauritania): `ui.script: "arabic"` — the Streamlit
+frontend applies `direction: rtl` CSS automatically.
+
+For Amharic (Ethiopia): `ui.script: "ethiopic"` — ensure the chosen font
+loads on constrained connections.
+
+---
+
+## Verifying a new country end-to-end
+
 ```bash
-touch backend/data/ilostat/{country_code_lower}_labor_2024.json
-```
-Populate using ILOSTAT public data: https://ilostat.ilo.org/data/
-Required fields: `wage_by_sector`, `employment_by_sector`,
-`youth_unemployment_rate`, `informal_employment_share`.
+# After dropping the 3 files and calling /api/config/reload:
 
-### Step 2 — Create the country YAML config
-```bash
-cp backend/configs/benin.yaml backend/configs/{country_code_lower}.yaml
-```
-Update every field. Pay special attention to:
-- `education_taxonomy.levels` — use local names, not translated ones
-- `automation_calibration.lmic_adjustment_factor` — 0.65–0.80 for most LMICs
-- `labor_data.usd_conversion_rate` — use IMF rate for the reference year
+curl -s http://localhost:8000/api/config/countries | jq -r '.[].code'
+# → BEN, SEN, GHA, KEN  (your new country appears)
 
-### Step 3 — Register in config_loader.py
-```python
-# In backend/core/config_loader.py, add to _CODE_TO_FILE:
-_CODE_TO_FILE = {
-    "BEN": "benin",
-    "SEN": "senegal",
-    "GHA": "ghana",   # ← add this line
-}
-```
-This is the **only code change** required.
+curl -s http://localhost:8000/api/config/KEN | jq '.country, .labor_data.currency'
+# → "Kenya", "KES"
 
-### Step 4 — Test
-```bash
-ACTIVE_COUNTRY=GHA make backend
-curl http://localhost:8000/health
-# → {"status": "ok", "country": "GHA"}
+curl -s "http://localhost:8000/api/opportunities/KEN/signals" | jq '.wage'
+# → wage signals computed from your kenya_labor_2024.json
 ```
 
----
-
-## Active Country Configs
-
-### Bénin (BEN) — Active
-- Languages: French, Fon, English
-- Currency: XOF (CFA Franc West Africa)
-- Education: aucun → primaire → BEPC → Bac → BTS → Licence → Master+
-- LMIC factor: 0.70
-- Data: ILOSTAT Bénin 2022–2024
-
-### Sénégal (SEN) — Active
-- Languages: French, Wolof, English
-- Currency: XOF (shared with Bénin)
-- Education: aucun → primaire → BFEM → Bac → BTS → Licence → Master+
-- LMIC factor: 0.72
-- Data: ILOSTAT Sénégal 2022–2024
-
----
-
-## Planned: Ghana (GHA)
-
-**Effort estimate: ~4 hours**
-
-| Task | Time |
-|---|---|
-| Collect ILOSTAT Ghana data | 1h |
-| Write `ghana.yaml` config | 30min |
-| Add GHA to config_loader.py | 5min |
-| Update education taxonomy (BECE → WASSCE → HND…) | 30min |
-| Test end-to-end with Amara persona | 30min |
-| Update DATA_SOURCES.md | 15min |
-
-Key differences from Bénin:
-- Currency: GHS (Ghana Cedi), not XOF
-- Language: English primary, Twi secondary
-- Education system: different ladder (BECE, WASSCE, HND, BSc)
-- Automation factor: ~0.68 (slightly higher service-sector digitization)
-
-**Pitch reference**: Amara, 24, Kumasi — carpentry apprentice → furniture export coordinator.
-
----
-
-## Design for Multi-Script Environments
-
-If adding a country with Arabic script (e.g., Morocco, Mauritania):
-1. Set `ui.script: "arabic"` in the YAML
-2. Streamlit frontend applies `direction: rtl` CSS via `st.markdown`
-3. No other code changes needed
-
-If adding Amharic (Ethiopia):
-1. Set `ui.script: "ethiopic"`
-2. Ensure font loading works in constrained environments (embed subset)
-
----
-
-## What Is NOT Configurable Per Country
-
-These are global and require code changes to modify:
-- The Pydantic data models (`backend/core/models.py`)
-- The LLM extraction logic (`module_01_skills/extractor.py`)
-- The automation scoring algorithm (`module_02_risk/automation_scorer.py`)
-- The matching algorithm (`module_03_opportunity/matcher.py`)
-
-These are intentional constraints — the protocol is universal,
-only the parameters are local.
+In the Streamlit frontend, the sidebar country toggle picks up the new
+country on the next page reload — no Python changes, no rebuild.
