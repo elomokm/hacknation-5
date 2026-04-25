@@ -1,7 +1,75 @@
 """Shared Pydantic v2 models — single source of truth for all UNMAPPED types."""
 
-from typing import Optional
-from pydantic import BaseModel, Field
+from typing import Literal, Optional
+from pydantic import BaseModel, Field, model_validator
+
+
+# ---------------------------------------------------------------------------
+# Country config models (Phase 2)
+# ---------------------------------------------------------------------------
+
+class UIConfig(BaseModel):
+    """Frontend localisation settings."""
+
+    primary_language: str
+    supported_languages: list[str]
+    script: str
+
+
+class LaborDataConfig(BaseModel):
+    """Reference to ILOSTAT data file and currency settings."""
+
+    source_file: str
+    currency: str
+    usd_conversion_rate: int
+
+
+class EducationTaxonomy(BaseModel):
+    """Local education ladder with ISCED-2011 equivalence map."""
+
+    levels: list[str]
+    mapping_to_isced: dict[str, int]
+
+    @model_validator(mode="after")
+    def levels_covered_by_mapping(self) -> "EducationTaxonomy":
+        """All levels must have an ISCED mapping."""
+        missing = [lvl for lvl in self.levels if lvl not in self.mapping_to_isced]
+        if missing:
+            raise ValueError(f"Education levels missing ISCED mapping: {missing}")
+        return self
+
+
+class AutomationCalibration(BaseModel):
+    """Frey-Osborne LMIC adjustment settings."""
+
+    source: str
+    lmic_adjustment_factor: float = Field(gt=0.0, le=1.0)
+    rationale: str
+
+
+class OpportunitiesConfig(BaseModel):
+    """Which opportunity types are enabled for this country."""
+
+    types_enabled: list[str]
+
+
+class ProjectionsConfig(BaseModel):
+    """Reference to Wittgenstein projection data file."""
+
+    source_file: str
+
+
+class CountryConfig(BaseModel):
+    """Full country configuration — loaded from YAML at runtime."""
+
+    country: str
+    country_code: str
+    ui: UIConfig
+    labor_data: LaborDataConfig
+    education_taxonomy: EducationTaxonomy
+    automation_calibration: AutomationCalibration
+    opportunities: OpportunitiesConfig
+    projections: ProjectionsConfig
 
 
 class Skill(BaseModel):
