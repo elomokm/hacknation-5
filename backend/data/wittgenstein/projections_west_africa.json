@@ -1,0 +1,51 @@
+{
+  "region": "West Africa",
+  "indicator": "Educational attainment distribution, youth population 15-29",
+  "source": "Wittgenstein Centre for Demography and Global Human Capital",
+  "source_url": "https://www.wittgensteincentre.org/dataexplorer",
+  "scenario": "SSP2 (Medium scenario)",
+  "notes": "Projections based on Wittgenstein Centre Human Capital Data Explorer v3, SSP2 scenario. West Africa aggregate covers 16 ECOWAS member states. Share figures represent percentage of youth cohort (15-29) with that education level as highest attained. Values interpolated for 2025-2035 from 5-year projection intervals.",
+  "projections": [
+    {"year": 2025, "education_level": "No education",          "share_youth_pct": 28.4},
+    {"year": 2025, "education_level": "Primary incomplete",    "share_youth_pct": 14.2},
+    {"year": 2025, "education_level": "Primary complete",      "share_youth_pct": 12.8},
+    {"year": 2025, "education_level": "Lower secondary",       "share_youth_pct": 22.1},
+    {"year": 2025, "education_level": "Upper secondary",       "share_youth_pct": 16.3},
+    {"year": 2025, "education_level": "Post-secondary",        "share_youth_pct": 6.2},
+
+    {"year": 2027, "education_level": "No education",          "share_youth_pct": 25.6},
+    {"year": 2027, "education_level": "Primary incomplete",    "share_youth_pct": 13.7},
+    {"year": 2027, "education_level": "Primary complete",      "share_youth_pct": 12.9},
+    {"year": 2027, "education_level": "Lower secondary",       "share_youth_pct": 23.3},
+    {"year": 2027, "education_level": "Upper secondary",       "share_youth_pct": 17.8},
+    {"year": 2027, "education_level": "Post-secondary",        "share_youth_pct": 6.7},
+
+    {"year": 2029, "education_level": "No education",          "share_youth_pct": 23.1},
+    {"year": 2029, "education_level": "Primary incomplete",    "share_youth_pct": 13.1},
+    {"year": 2029, "education_level": "Primary complete",      "share_youth_pct": 13.0},
+    {"year": 2029, "education_level": "Lower secondary",       "share_youth_pct": 24.4},
+    {"year": 2029, "education_level": "Upper secondary",       "share_youth_pct": 19.1},
+    {"year": 2029, "education_level": "Post-secondary",        "share_youth_pct": 7.3},
+
+    {"year": 2031, "education_level": "No education",          "share_youth_pct": 20.8},
+    {"year": 2031, "education_level": "Primary incomplete",    "share_youth_pct": 12.6},
+    {"year": 2031, "education_level": "Primary complete",      "share_youth_pct": 13.1},
+    {"year": 2031, "education_level": "Lower secondary",       "share_youth_pct": 25.5},
+    {"year": 2031, "education_level": "Upper secondary",       "share_youth_pct": 20.4},
+    {"year": 2031, "education_level": "Post-secondary",        "share_youth_pct": 7.6},
+
+    {"year": 2033, "education_level": "No education",          "share_youth_pct": 18.7},
+    {"year": 2033, "education_level": "Primary incomplete",    "share_youth_pct": 12.0},
+    {"year": 2033, "education_level": "Primary complete",      "share_youth_pct": 13.2},
+    {"year": 2033, "education_level": "Lower secondary",       "share_youth_pct": 26.3},
+    {"year": 2033, "education_level": "Upper secondary",       "share_youth_pct": 21.8},
+    {"year": 2033, "education_level": "Post-secondary",        "share_youth_pct": 8.0},
+
+    {"year": 2035, "education_level": "No education",          "share_youth_pct": 16.9},
+    {"year": 2035, "education_level": "Primary incomplete",    "share_youth_pct": 11.4},
+    {"year": 2035, "education_level": "Primary complete",      "share_youth_pct": 13.1},
+    {"year": 2035, "education_level": "Lower secondary",       "share_youth_pct": 27.0},
+    {"year": 2035, "education_level": "Upper secondary",       "share_youth_pct": 23.4},
+    {"year": 2035, "education_level": "Post-secondary",        "share_youth_pct": 8.2}
+  ]
+}

@@ -1,0 +1,236 @@
+[
+  {
+    "code": "11",
+    "title": "Chief Executives, Senior Officials and Legislators",
+    "level": 2,
+    "description": "Determine and formulate the policies and strategic direction of organisations, governments, and other bodies, and direct and coordinate their resources."
+  },
+  {
+    "code": "12",
+    "title": "Administrative and Commercial Managers",
+    "level": 2,
+    "description": "Plan, direct, and coordinate the policies and activities of organisations focused on business, financial, and administrative functions."
+  },
+  {
+    "code": "13",
+    "title": "Production and Specialised Services Managers",
+    "level": 2,
+    "description": "Plan, direct, and coordinate production, operations, and specialised service delivery within manufacturing, agriculture, and related industries."
+  },
+  {
+    "code": "14",
+    "title": "Hospitality, Retail and Other Services Managers",
+    "level": 2,
+    "description": "Plan, direct, and coordinate activities in hospitality, retail trade, and other consumer-facing service businesses."
+  },
+  {
+    "code": "21",
+    "title": "Science and Engineering Professionals",
+    "level": 2,
+    "description": "Conduct research, develop and apply scientific knowledge, or design and evaluate engineering systems and infrastructure."
+  },
+  {
+    "code": "22",
+    "title": "Health Professionals",
+    "level": 2,
+    "description": "Diagnose, treat, and prevent illness and injury, and promote public health through the application of specialist medical and clinical knowledge."
+  },
+  {
+    "code": "23",
+    "title": "Teaching Professionals",
+    "level": 2,
+    "description": "Impart knowledge and competencies at various educational levels and develop curricula, instructional materials, and teaching methods."
+  },
+  {
+    "code": "24",
+    "title": "Business and Administration Professionals",
+    "level": 2,
+    "description": "Provide specialist expertise in business strategy, finance, marketing, human resources, and organisational management."
+  },
+  {
+    "code": "25",
+    "title": "Information and Communications Technology Professionals",
+    "level": 2,
+    "description": "Design, develop, test, maintain, and manage software systems, IT infrastructure, databases, and digital communication technologies."
+  },
+  {
+    "code": "26",
+    "title": "Legal, Social and Cultural Professionals",
+    "level": 2,
+    "description": "Apply expertise in law, social sciences, and cultural disciplines to provide services in legal practice, social welfare, and cultural activities."
+  },
+  {
+    "code": "31",
+    "title": "Science and Engineering Associate Professionals",
+    "level": 2,
+    "description": "Perform technical support and practical tasks related to science and engineering under the guidance of professionals."
+  },
+  {
+    "code": "32",
+    "title": "Health Associate Professionals",
+    "level": 2,
+    "description": "Provide healthcare support and intermediate-level clinical services, working under the supervision of health professionals."
+  },
+  {
+    "code": "33",
+    "title": "Business and Administration Associate Professionals",
+    "level": 2,
+    "description": "Perform technical and support tasks in finance, administration, sales, and business operations under professional supervision."
+  },
+  {
+    "code": "34",
+    "title": "Legal, Social, Cultural and Related Associate Professionals",
+    "level": 2,
+    "description": "Assist legal, social work, and cultural professionals by performing technical support tasks in their respective fields."
+  },
+  {
+    "code": "35",
+    "title": "Information and Communications Technology Technicians",
+    "level": 2,
+    "description": "Install, maintain, and support IT equipment, networks, and software systems, providing technical assistance to users."
+  },
+  {
+    "code": "41",
+    "title": "General and Keyboard Clerks",
+    "level": 2,
+    "description": "Record, organise, store, and retrieve information, and perform routine clerical and administrative tasks in office environments."
+  },
+  {
+    "code": "42",
+    "title": "Customer Services Clerks",
+    "level": 2,
+    "description": "Provide direct customer service and information, handle inquiries, and process requests at service counters and contact centres."
+  },
+  {
+    "code": "43",
+    "title": "Numerical and Material Recording Clerks",
+    "level": 2,
+    "description": "Record, verify, and process numerical data and material transactions including financial records, inventory, and production data."
+  },
+  {
+    "code": "44",
+    "title": "Other Clerical Support Workers",
+    "level": 2,
+    "description": "Perform clerical and administrative support tasks not classified elsewhere, including mailing, filing, and data entry activities."
+  },
+  {
+    "code": "51",
+    "title": "Personal Service Workers",
+    "level": 2,
+    "description": "Provide personal services to clients including travel guidance, housekeeping, childcare, and other individual support services."
+  },
+  {
+    "code": "52",
+    "title": "Sales Workers",
+    "level": 2,
+    "description": "Sell goods and services in shops, markets, and directly to customers, demonstrating products and processing transactions."
+  },
+  {
+    "code": "53",
+    "title": "Personal Care Workers",
+    "level": 2,
+    "description": "Provide personal care and assistance to children, the elderly, and persons with disabilities in homes and care facilities."
+  },
+  {
+    "code": "54",
+    "title": "Protective Services Workers",
+    "level": 2,
+    "description": "Protect persons and property, maintain public order, and respond to emergencies in security, police, and fire services."
+  },
+  {
+    "code": "61",
+    "title": "Market-Oriented Skilled Agricultural Workers",
+    "level": 2,
+    "description": "Grow crops, raise livestock, and harvest natural products for sale in markets using skilled farming and husbandry techniques."
+  },
+  {
+    "code": "62",
+    "title": "Market-Oriented Skilled Forestry, Fishery and Hunting Workers",
+    "level": 2,
+    "description": "Cultivate, harvest, and manage forest resources, aquatic life, and wildlife for commercial market purposes."
+  },
+  {
+    "code": "71",
+    "title": "Building and Related Trades Workers, Excluding Electricians",
+    "level": 2,
+    "description": "Construct, maintain, and repair buildings and structures using materials such as wood, stone, brick, and concrete."
+  },
+  {
+    "code": "72",
+    "title": "Metal, Machinery and Related Trades Workers",
+    "level": 2,
+    "description": "Shape, fabricate, and repair metal components and machinery using tools, welding equipment, and precision techniques."
+  },
+  {
+    "code": "73",
+    "title": "Handicraft and Printing Workers",
+    "level": 2,
+    "description": "Produce handcrafted goods and printed materials using traditional craft techniques and printing machinery."
+  },
+  {
+    "code": "74",
+    "title": "Electrical and Electronic Trades Workers",
+    "level": 2,
+    "description": "Install, maintain, and repair electrical wiring, electronic equipment, and related systems in buildings and machinery."
+  },
+  {
+    "code": "75",
+    "title": "Food Processing, Woodworking, Garment and Other Craft and Related Trades Workers",
+    "level": 2,
+    "description": "Process food products, work with wood, sew garments, and produce other goods using craft and trade skills."
+  },
+  {
+    "code": "81",
+    "title": "Stationary Plant and Machine Operators",
+    "level": 2,
+    "description": "Operate and monitor stationary industrial plant and machinery to process materials and produce goods in factories and plants."
+  },
+  {
+    "code": "82",
+    "title": "Assemblers",
+    "level": 2,
+    "description": "Fit together and assemble parts and sub-components to create finished products in manufacturing and production settings."
+  },
+  {
+    "code": "83",
+    "title": "Drivers and Mobile Plant Operators",
+    "level": 2,
+    "description": "Drive vehicles and operate mobile machinery to transport passengers, goods, and materials across road, rail, and other routes."
+  },
+  {
+    "code": "91",
+    "title": "Cleaners and Helpers",
+    "level": 2,
+    "description": "Clean buildings, vehicles, and other premises, and perform unskilled support tasks in households, hotels, and public spaces."
+  },
+  {
+    "code": "92",
+    "title": "Agricultural, Forestry and Fishery Labourers",
+    "level": 2,
+    "description": "Perform routine manual tasks in crop farming, animal husbandry, forestry, and fishing operations under direct supervision."
+  },
+  {
+    "code": "93",
+    "title": "Labourers in Mining, Construction, Manufacturing and Transport",
+    "level": 2,
+    "description": "Carry out manual labouring tasks in mining, construction, manufacturing, and transport, performing physically demanding work."
+  },
+  {
+    "code": "94",
+    "title": "Food Preparation Assistants",
+    "level": 2,
+    "description": "Assist in the preparation and serving of food in restaurants, cafeterias, hotels, and other food service establishments."
+  },
+  {
+    "code": "95",
+    "title": "Street and Related Sales and Service Workers",
+    "level": 2,
+    "description": "Sell goods and provide services on streets, markets, and public spaces, including street vending and similar activities."
+  },
+  {
+    "code": "96",
+    "title": "Refuse Workers and Other Elementary Workers",
+    "level": 2,
+    "description": "Collect refuse, perform messenger duties, and carry out other basic manual tasks not elsewhere classified."
+  }
+]

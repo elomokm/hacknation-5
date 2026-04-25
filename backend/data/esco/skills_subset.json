@@ -1,0 +1,1052 @@
+[
+  {
+    "esco_id": "esco:skill:0001",
+    "label": "diagnose mobile phone hardware faults",
+    "category": "Mobile Repair",
+    "description": "Identify and diagnose hardware malfunctions in mobile phones using diagnostic tools and systematic troubleshooting procedures.",
+    "isco_groups": ["74"]
+  },
+  {
+    "esco_id": "esco:skill:0002",
+    "label": "replace mobile phone screens and displays",
+    "category": "Mobile Repair",
+    "description": "Disassemble mobile devices and replace damaged or defective screens and display assemblies using appropriate tools and techniques.",
+    "isco_groups": ["74"]
+  },
+  {
+    "esco_id": "esco:skill:0003",
+    "label": "repair mobile phone charging ports and batteries",
+    "category": "Mobile Repair",
+    "description": "Safely replace and solder charging components and batteries in mobile phones while adhering to electrical safety standards.",
+    "isco_groups": ["74"]
+  },
+  {
+    "esco_id": "esco:skill:0004",
+    "label": "perform mobile phone software flashing and recovery",
+    "category": "Mobile Repair",
+    "description": "Restore, update, or flash mobile operating systems using manufacturer tools and recovery procedures to resolve software faults.",
+    "isco_groups": ["74"]
+  },
+  {
+    "esco_id": "esco:skill:0005",
+    "label": "write HTML markup for web pages",
+    "category": "Web Development",
+    "description": "Author well-structured, semantic HTML documents that form the content layer of accessible and standards-compliant web pages.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0006",
+    "label": "apply CSS styling and responsive design",
+    "category": "Web Development",
+    "description": "Create and apply CSS stylesheets including media queries and flexible layouts to ensure web interfaces render correctly across devices.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0007",
+    "label": "develop interactive web features using JavaScript",
+    "category": "Web Development",
+    "description": "Implement client-side interactivity, DOM manipulation, and asynchronous behaviour in web applications using JavaScript.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0008",
+    "label": "design and consume RESTful APIs",
+    "category": "Web Development",
+    "description": "Design RESTful API endpoints and integrate third-party APIs into web applications using HTTP protocols and JSON data formats.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0009",
+    "label": "manage relational databases for web applications",
+    "category": "Web Development",
+    "description": "Design, query, and maintain relational databases using SQL to support dynamic web application data storage and retrieval.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0010",
+    "label": "perform web application testing and debugging",
+    "category": "Web Development",
+    "description": "Execute unit, integration, and end-to-end tests to identify and resolve defects in web application code.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0011",
+    "label": "deploy web applications to cloud platforms",
+    "category": "Web Development",
+    "description": "Configure and deploy web applications to cloud hosting platforms using CI/CD pipelines and containerisation tools.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0012",
+    "label": "implement web application security practices",
+    "category": "Web Development",
+    "description": "Apply security principles such as input validation, authentication, and encryption to protect web applications from common vulnerabilities.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0013",
+    "label": "use version control systems for software development",
+    "category": "Web Development",
+    "description": "Manage source code changes using Git workflows including branching, merging, and pull requests in collaborative development environments.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0014",
+    "label": "develop server-side web application logic",
+    "category": "Web Development",
+    "description": "Build back-end application logic using server-side programming languages and frameworks to process requests and manage business rules.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0015",
+    "label": "optimise web application performance",
+    "category": "Web Development",
+    "description": "Analyse and improve web application loading speed and runtime performance through caching, code splitting, and asset optimisation techniques.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0016",
+    "label": "implement web accessibility standards",
+    "category": "Web Development",
+    "description": "Apply WCAG guidelines and ARIA attributes to ensure web content is accessible to users with disabilities.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0017",
+    "label": "operate computer operating systems",
+    "category": "Digital Literacy",
+    "description": "Navigate and manage files, settings, and installed applications within desktop and mobile operating systems effectively.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0018",
+    "label": "use spreadsheet software for data management",
+    "category": "Digital Literacy",
+    "description": "Create, format, and analyse data using spreadsheet applications including formulas, charts, and pivot tables.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0019",
+    "label": "manage professional electronic communications",
+    "category": "Digital Literacy",
+    "description": "Compose, send, organise, and manage professional email correspondence and calendar scheduling using email client software.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0020",
+    "label": "use cloud storage and collaboration tools",
+    "category": "Digital Literacy",
+    "description": "Store, share, and collaboratively edit documents and files using cloud-based platforms such as Google Drive or Microsoft OneDrive.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0021",
+    "label": "process mobile money and digital payments",
+    "category": "Digital Literacy",
+    "description": "Execute and verify financial transactions using mobile money platforms, digital wallets, and online payment systems.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0022",
+    "label": "conduct video conferencing and remote collaboration",
+    "category": "Digital Literacy",
+    "description": "Set up and participate in video meetings using platforms such as Zoom or Microsoft Teams, including screen sharing and collaboration features.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0023",
+    "label": "create and edit digital documents and presentations",
+    "category": "Digital Literacy",
+    "description": "Produce professional documents, reports, and slide presentations using office productivity software.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0024",
+    "label": "use internet search engines and evaluate online information",
+    "category": "Digital Literacy",
+    "description": "Conduct effective online research using search engines and critically assess the credibility and relevance of digital information sources.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0025",
+    "label": "protect personal data and privacy online",
+    "category": "Digital Literacy",
+    "description": "Apply safe online practices including password management, phishing recognition, and privacy settings to safeguard personal information.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0026",
+    "label": "use social media platforms for professional purposes",
+    "category": "Digital Literacy",
+    "description": "Create and manage professional profiles and content on social media platforms to support networking and organisational communication.",
+    "isco_groups": ["25", "41"]
+  },
+  {
+    "esco_id": "esco:skill:0027",
+    "label": "use carpentry hand tools safely",
+    "category": "Carpentry",
+    "description": "Select and operate hand tools including saws, chisels, planes, and mallets to shape and join wood accurately and safely.",
+    "isco_groups": ["71"]
+  },
+  {
+    "esco_id": "esco:skill:0028",
+    "label": "operate carpentry power tools",
+    "category": "Carpentry",
+    "description": "Set up and safely operate power tools such as circular saws, jigsaws, routers, and drills for woodworking tasks.",
+    "isco_groups": ["71"]
+  },
+  {
+    "esco_id": "esco:skill:0029",
+    "label": "perform wood joinery techniques",
+    "category": "Carpentry",
+    "description": "Execute joinery methods including mortise-and-tenon, dovetail, and dowel joints to assemble durable wooden structures.",
+    "isco_groups": ["71"]
+  },
+  {
+    "esco_id": "esco:skill:0030",
+    "label": "apply wood finishing techniques",
+    "category": "Carpentry",
+    "description": "Sand, stain, varnish, and polish wooden surfaces to achieve specified aesthetic and protective finishes.",
+    "isco_groups": ["71"]
+  },
+  {
+    "esco_id": "esco:skill:0031",
+    "label": "read and interpret carpentry technical drawings",
+    "category": "Carpentry",
+    "description": "Read and translate construction drawings, blueprints, and specifications to plan and execute carpentry work accurately.",
+    "isco_groups": ["71"]
+  },
+  {
+    "esco_id": "esco:skill:0032",
+    "label": "perform arc welding operations",
+    "category": "Welding",
+    "description": "Execute shielded metal arc welding (SMAW) and MIG/TIG welding processes to join metal components to specified tolerances.",
+    "isco_groups": ["72"]
+  },
+  {
+    "esco_id": "esco:skill:0033",
+    "label": "perform metal cutting and preparation",
+    "category": "Welding",
+    "description": "Cut, grind, and prepare metal workpieces using oxy-fuel, plasma cutting, and angle grinder equipment prior to welding.",
+    "isco_groups": ["72"]
+  },
+  {
+    "esco_id": "esco:skill:0034",
+    "label": "inspect weld quality",
+    "category": "Welding",
+    "description": "Examine completed welds visually and with measurement tools to verify conformance with quality standards and specifications.",
+    "isco_groups": ["72"]
+  },
+  {
+    "esco_id": "esco:skill:0035",
+    "label": "apply surface treatment to welded metal",
+    "category": "Welding",
+    "description": "Treat welded metal surfaces through grinding, pickling, or painting to prevent corrosion and meet finishing requirements.",
+    "isco_groups": ["72"]
+  },
+  {
+    "esco_id": "esco:skill:0036",
+    "label": "apply welding safety and health procedures",
+    "category": "Welding",
+    "description": "Follow welding safety protocols including PPE use, fume ventilation, fire prevention, and electrical safety to protect workers on-site.",
+    "isco_groups": ["72"]
+  },
+  {
+    "esco_id": "esco:skill:0037",
+    "label": "operate industrial and domestic sewing machines",
+    "category": "Tailoring",
+    "description": "Set up, thread, and operate sewing machines to stitch fabric according to garment specifications and seam requirements.",
+    "isco_groups": ["75"]
+  },
+  {
+    "esco_id": "esco:skill:0038",
+    "label": "cut fabric according to patterns",
+    "category": "Tailoring",
+    "description": "Lay out and cut fabric pieces accurately following paper or digital patterns to minimise waste and ensure correct garment dimensions.",
+    "isco_groups": ["75"]
+  },
+  {
+    "esco_id": "esco:skill:0039",
+    "label": "construct garments from fabric components",
+    "category": "Tailoring",
+    "description": "Assemble cut fabric pieces into complete garments by sewing seams, attaching linings, and inserting closures as per design specifications.",
+    "isco_groups": ["75"]
+  },
+  {
+    "esco_id": "esco:skill:0040",
+    "label": "repair and alter garments",
+    "category": "Tailoring",
+    "description": "Mend damaged garments and carry out alterations such as hemming, resizing, and re-stitching to restore or modify fit.",
+    "isco_groups": ["75"]
+  },
+  {
+    "esco_id": "esco:skill:0041",
+    "label": "take body measurements for garment fitting",
+    "category": "Tailoring",
+    "description": "Accurately measure clients' body dimensions and record specifications to ensure correct garment fit and construction.",
+    "isco_groups": ["75"]
+  },
+  {
+    "esco_id": "esco:skill:0042",
+    "label": "operate passenger vehicles safely",
+    "category": "Driving",
+    "description": "Drive light passenger vehicles in compliance with road traffic regulations, maintaining safety standards for passengers and other road users.",
+    "isco_groups": ["83"]
+  },
+  {
+    "esco_id": "esco:skill:0043",
+    "label": "conduct pre-trip vehicle safety inspections",
+    "category": "Driving",
+    "description": "Perform systematic checks of vehicle mechanical systems, tyres, lights, and fluid levels before journeys to ensure roadworthiness.",
+    "isco_groups": ["83"]
+  },
+  {
+    "esco_id": "esco:skill:0044",
+    "label": "navigate using maps and GPS systems",
+    "category": "Driving",
+    "description": "Plan and follow efficient routes using paper maps, digital navigation applications, and GPS devices to reach destinations safely.",
+    "isco_groups": ["83"]
+  },
+  {
+    "esco_id": "esco:skill:0045",
+    "label": "receive and welcome guests professionally",
+    "category": "Hospitality",
+    "description": "Greet, register, and assist guests upon arrival, providing courteous and efficient reception services in hospitality settings.",
+    "isco_groups": ["51", "94"]
+  },
+  {
+    "esco_id": "esco:skill:0046",
+    "label": "serve food and beverages to customers",
+    "category": "Hospitality",
+    "description": "Deliver food and beverage orders to guests accurately and professionally while maintaining service quality and etiquette standards.",
+    "isco_groups": ["51", "94"]
+  },
+  {
+    "esco_id": "esco:skill:0047",
+    "label": "prepare food items following recipes and standards",
+    "category": "Hospitality",
+    "description": "Prepare and portion food items according to standardised recipes and presentation guidelines in catering or restaurant kitchens.",
+    "isco_groups": ["51", "94"]
+  },
+  {
+    "esco_id": "esco:skill:0048",
+    "label": "apply food hygiene and safety standards",
+    "category": "Hospitality",
+    "description": "Follow food safety regulations including HACCP principles, personal hygiene, and proper food storage to prevent contamination.",
+    "isco_groups": ["51", "94"]
+  },
+  {
+    "esco_id": "esco:skill:0049",
+    "label": "operate cash registers and point-of-sale systems",
+    "category": "General Service",
+    "description": "Process customer transactions accurately using cash registers and electronic POS systems, handling cash, cards, and mobile payments.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0050",
+    "label": "perform basic logistics and stock handling",
+    "category": "General Service",
+    "description": "Receive, sort, store, and dispatch goods according to inventory procedures, ensuring accurate stock records and safe handling.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0051",
+    "label": "provide personal care assistance to clients",
+    "category": "General Service",
+    "description": "Assist individuals with personal care activities such as grooming, dressing, and mobility support in a respectful and dignified manner.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0052",
+    "label": "coordinate event setup and operations",
+    "category": "General Service",
+    "description": "Arrange venues, equipment, and logistics for events, supporting smooth operational delivery from setup through to completion.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0053",
+    "label": "perform commercial and domestic cleaning",
+    "category": "General Service",
+    "description": "Clean and sanitise commercial or residential spaces using appropriate cleaning agents and equipment to maintain hygiene standards.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0054",
+    "label": "handle customer complaints and service recovery",
+    "category": "General Service",
+    "description": "Listen to and resolve customer complaints professionally, applying service recovery techniques to restore satisfaction and loyalty.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0055",
+    "label": "perform basic security and surveillance duties",
+    "category": "General Service",
+    "description": "Monitor premises, control access, and report security incidents to maintain a safe environment for staff and visitors.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0056",
+    "label": "communicate effectively with customers and colleagues",
+    "category": "General Service",
+    "description": "Convey information clearly and professionally in verbal and written form to customers and team members in service environments.",
+    "isco_groups": ["51", "52", "42", "54"]
+  },
+  {
+    "esco_id": "esco:skill:0057",
+    "label": "prepare soil for crop cultivation",
+    "category": "Agriculture",
+    "description": "Till, fertilise, and condition soil using manual and mechanised methods to create optimal growing conditions for crops.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0058",
+    "label": "plant and transplant crops",
+    "category": "Agriculture",
+    "description": "Sow seeds and transplant seedlings at appropriate spacing and depth following agronomic recommendations for crop production.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0059",
+    "label": "manage irrigation systems for crop production",
+    "category": "Agriculture",
+    "description": "Operate, maintain, and schedule irrigation systems to deliver appropriate water volumes to crops according to growth stage and soil conditions.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0060",
+    "label": "apply integrated pest and disease management",
+    "category": "Agriculture",
+    "description": "Monitor crops for pests and diseases and apply integrated management strategies including biological, cultural, and chemical controls.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0061",
+    "label": "harvest crops at optimal maturity",
+    "category": "Agriculture",
+    "description": "Identify correct harvest timing and use appropriate manual or mechanical harvesting methods to maximise yield quality and quantity.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0062",
+    "label": "manage livestock feeding and health",
+    "category": "Agriculture",
+    "description": "Provide appropriate feed, water, and basic health monitoring for livestock to ensure animal welfare and productivity.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0063",
+    "label": "operate and maintain agricultural machinery",
+    "category": "Agriculture",
+    "description": "Safely operate tractors, ploughs, and other farm machinery while performing routine maintenance to ensure operational reliability.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0064",
+    "label": "apply organic farming practices",
+    "category": "Agriculture",
+    "description": "Implement organic soil management, composting, and crop rotation techniques that comply with organic certification standards.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0065",
+    "label": "practice aquaculture and fish farming techniques",
+    "category": "Agriculture",
+    "description": "Manage fish ponds, cages, or tanks including feeding, water quality monitoring, and harvest operations for aquaculture production.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0066",
+    "label": "perform post-harvest crop processing",
+    "category": "Agriculture",
+    "description": "Sort, grade, dry, and store harvested crops using appropriate post-harvest handling techniques to maintain quality and reduce losses.",
+    "isco_groups": ["61", "62"]
+  },
+  {
+    "esco_id": "esco:skill:0067",
+    "label": "administer first aid and basic life support",
+    "category": "Healthcare Informal",
+    "description": "Perform first aid procedures including CPR, wound management, and emergency response to stabilise patients before professional medical care.",
+    "isco_groups": ["32"]
+  },
+  {
+    "esco_id": "esco:skill:0068",
+    "label": "measure and record patient vital signs",
+    "category": "Healthcare Informal",
+    "description": "Accurately measure and document temperature, blood pressure, pulse, and respiratory rate to support patient monitoring.",
+    "isco_groups": ["32"]
+  },
+  {
+    "esco_id": "esco:skill:0069",
+    "label": "assist with medication administration",
+    "category": "Healthcare Informal",
+    "description": "Support patients in taking prescribed medications correctly and on schedule, following safe medication handling guidelines.",
+    "isco_groups": ["32"]
+  },
+  {
+    "esco_id": "esco:skill:0070",
+    "label": "deliver basic health education to communities",
+    "category": "Healthcare Informal",
+    "description": "Communicate preventive health information on hygiene, nutrition, and disease prevention to community members using accessible language.",
+    "isco_groups": ["32"]
+  },
+  {
+    "esco_id": "esco:skill:0071",
+    "label": "provide psychosocial support to patients",
+    "category": "Healthcare Informal",
+    "description": "Offer empathetic emotional support and basic counselling to patients and caregivers to promote wellbeing during illness or recovery.",
+    "isco_groups": ["32"]
+  },
+  {
+    "esco_id": "esco:skill:0072",
+    "label": "manage product inventory and stock levels",
+    "category": "Commerce",
+    "description": "Monitor, record, and replenish stock levels using inventory management systems to prevent shortages and excess.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0073",
+    "label": "operate point-of-sale and retail systems",
+    "category": "Commerce",
+    "description": "Process sales transactions, returns, and discounts using electronic POS systems and retail management software.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0074",
+    "label": "prepare and analyse financial statements",
+    "category": "Commerce",
+    "description": "Compile and interpret income statements, balance sheets, and cash flow statements to assess business financial performance.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0075",
+    "label": "negotiate contracts and commercial terms",
+    "category": "Commerce",
+    "description": "Conduct commercial negotiations with suppliers and customers to secure favourable terms, prices, and contractual agreements.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0076",
+    "label": "conduct market research and analysis",
+    "category": "Commerce",
+    "description": "Gather and analyse market data on competitors, customer preferences, and trends to inform commercial strategy.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0077",
+    "label": "manage procurement and supplier relationships",
+    "category": "Commerce",
+    "description": "Source, evaluate, and manage suppliers, processing purchase orders and monitoring delivery performance to meet business needs.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0078",
+    "label": "manage import and export documentation",
+    "category": "Commerce",
+    "description": "Prepare and process customs declarations, certificates of origin, and shipping documents for international trade compliance.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0079",
+    "label": "manage accounts receivable and payable",
+    "category": "Commerce",
+    "description": "Record, reconcile, and follow up on invoices and payments to maintain accurate accounts and healthy cash flow.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0080",
+    "label": "use mobile banking and digital financial services",
+    "category": "Commerce",
+    "description": "Conduct business banking transactions, transfers, and account monitoring using mobile banking applications and digital platforms.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0081",
+    "label": "manage customer relationships using CRM systems",
+    "category": "Commerce",
+    "description": "Record customer interactions, track sales pipelines, and analyse customer data using CRM software to improve retention and revenue.",
+    "isco_groups": ["43", "52", "24"]
+  },
+  {
+    "esco_id": "esco:skill:0082",
+    "label": "develop software applications using programming languages",
+    "category": "IT Professional",
+    "description": "Design, code, test, and maintain software applications using one or more programming languages following software engineering best practices.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0083",
+    "label": "perform data analysis and visualisation",
+    "category": "IT Professional",
+    "description": "Collect, clean, and analyse datasets using statistical tools and produce visual reports to support evidence-based decision-making.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0084",
+    "label": "manage IT infrastructure and hardware systems",
+    "category": "IT Professional",
+    "description": "Install, configure, and maintain servers, storage, and computing hardware to ensure reliable IT infrastructure operations.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0085",
+    "label": "administer network systems and connectivity",
+    "category": "IT Professional",
+    "description": "Configure, monitor, and troubleshoot LAN, WAN, and wireless network systems to maintain organisational connectivity and performance.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0086",
+    "label": "implement cybersecurity measures",
+    "category": "IT Professional",
+    "description": "Design and enforce cybersecurity controls including firewalls, intrusion detection, and access management to protect information systems.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0087",
+    "label": "develop mobile applications for iOS and Android",
+    "category": "IT Professional",
+    "description": "Build, test, and publish mobile applications for iOS and Android platforms using native or cross-platform development frameworks.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0088",
+    "label": "apply machine learning and AI techniques",
+    "category": "IT Professional",
+    "description": "Design and implement machine learning models and AI algorithms to extract insights and automate decision-making from data.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0089",
+    "label": "manage cloud infrastructure and services",
+    "category": "IT Professional",
+    "description": "Provision, configure, and optimise cloud computing resources on platforms such as AWS, Azure, or Google Cloud.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0090",
+    "label": "design and optimise database systems",
+    "category": "IT Professional",
+    "description": "Create efficient database schemas, write optimised queries, and maintain database performance for relational and NoSQL systems.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0091",
+    "label": "administer and monitor operating systems",
+    "category": "IT Professional",
+    "description": "Install, configure, patch, and monitor server operating systems to ensure security, stability, and performance of IT environments.",
+    "isco_groups": ["25"]
+  },
+  {
+    "esco_id": "esco:skill:0092",
+    "label": "manage projects using project management methodologies",
+    "category": "Management",
+    "description": "Plan, execute, and close projects using structured methodologies such as PMBoK or Agile to deliver outcomes within scope, time, and budget.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0093",
+    "label": "develop and implement organisational strategy",
+    "category": "Management",
+    "description": "Formulate long-term strategic plans and translate them into actionable organisational objectives and performance targets.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0094",
+    "label": "manage human resources and talent development",
+    "category": "Management",
+    "description": "Recruit, onboard, develop, and retain employees while managing performance and ensuring compliance with labour regulations.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0095",
+    "label": "lead organisational change management",
+    "category": "Management",
+    "description": "Plan and implement change initiatives using structured change management frameworks to minimise disruption and secure stakeholder buy-in.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0096",
+    "label": "develop business plans and feasibility studies",
+    "category": "Management",
+    "description": "Prepare comprehensive business plans including market analysis, financial projections, and operational strategies for new ventures or initiatives.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0097",
+    "label": "manage organisational budgets and financial controls",
+    "category": "Management",
+    "description": "Prepare, monitor, and control departmental or organisational budgets to ensure financial resources are allocated and spent effectively.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0098",
+    "label": "conduct employee performance evaluations",
+    "category": "Management",
+    "description": "Design and conduct structured performance appraisal processes to assess staff contributions and identify development needs.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0099",
+    "label": "manage stakeholder relationships and communication",
+    "category": "Management",
+    "description": "Identify, map, and engage stakeholders through targeted communication strategies to build relationships and manage expectations.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0100",
+    "label": "implement quality management systems",
+    "category": "Management",
+    "description": "Establish and maintain quality management frameworks such as ISO 9001 to drive continuous improvement across organisational processes.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0101",
+    "label": "conduct risk assessment and mitigation planning",
+    "category": "Management",
+    "description": "Identify, evaluate, and prioritise organisational risks and develop mitigation plans to minimise their likelihood and impact.",
+    "isco_groups": ["12", "13", "14"]
+  },
+  {
+    "esco_id": "esco:skill:0102",
+    "label": "perform financial analysis and forecasting",
+    "category": "Finance",
+    "description": "Analyse financial data and build forecasting models to assess business performance and support strategic financial decisions.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0103",
+    "label": "manage investment portfolios",
+    "category": "Finance",
+    "description": "Select, monitor, and rebalance investment portfolios to achieve client financial goals within defined risk parameters.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0104",
+    "label": "conduct internal and external audits",
+    "category": "Finance",
+    "description": "Plan and execute financial and compliance audits to assess the accuracy of records and adherence to regulatory requirements.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0105",
+    "label": "manage tax compliance and reporting",
+    "category": "Finance",
+    "description": "Prepare and file tax returns, manage VAT obligations, and ensure compliance with applicable tax legislation and deadlines.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0106",
+    "label": "assess and manage insurance products",
+    "category": "Finance",
+    "description": "Evaluate insurance needs, recommend appropriate products, and manage claims processes for individuals or corporate clients.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0107",
+    "label": "develop personal and corporate financial plans",
+    "category": "Finance",
+    "description": "Construct comprehensive financial plans addressing savings, investment, debt management, and retirement goals for clients.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0108",
+    "label": "manage banking operations and credit assessment",
+    "category": "Finance",
+    "description": "Process banking transactions, evaluate credit applications, and manage loan portfolios in compliance with banking regulations.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0109",
+    "label": "analyse capital markets and financial instruments",
+    "category": "Finance",
+    "description": "Evaluate equities, bonds, derivatives, and other financial instruments to support trading, investment, and hedging decisions.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0110",
+    "label": "develop supply chain financing strategies",
+    "category": "Finance",
+    "description": "Design financial solutions that optimise cash flow across supply chains, including trade finance and supplier payment arrangements.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0111",
+    "label": "develop product and service pricing strategies",
+    "category": "Finance",
+    "description": "Analyse cost structures, competitor pricing, and market conditions to establish competitive and profitable pricing strategies.",
+    "isco_groups": ["24", "33"]
+  },
+  {
+    "esco_id": "esco:skill:0112",
+    "label": "plan and execute integrated marketing campaigns",
+    "category": "Marketing",
+    "description": "Design and deliver multi-channel marketing campaigns aligned with brand objectives and target audience profiles.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0113",
+    "label": "manage digital advertising and paid media",
+    "category": "Marketing",
+    "description": "Plan, execute, and optimise paid digital advertising campaigns across search, display, and social media platforms.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0114",
+    "label": "develop and manage brand strategy",
+    "category": "Marketing",
+    "description": "Define brand identity, positioning, and guidelines to ensure consistent and compelling brand presentation across all touchpoints.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0115",
+    "label": "conduct consumer behaviour research",
+    "category": "Marketing",
+    "description": "Design and execute qualitative and quantitative research to understand consumer motivations, attitudes, and purchasing behaviour.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0116",
+    "label": "manage sales teams and revenue targets",
+    "category": "Marketing",
+    "description": "Lead and coach sales teams, set performance targets, and develop strategies to achieve revenue and market share goals.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0117",
+    "label": "develop and execute content marketing strategies",
+    "category": "Marketing",
+    "description": "Plan, produce, and distribute valuable content across digital channels to attract and engage target audiences.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0118",
+    "label": "manage social media marketing channels",
+    "category": "Marketing",
+    "description": "Create, schedule, and analyse organic social media content across platforms to build audience engagement and brand awareness.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0119",
+    "label": "manage public relations and media communications",
+    "category": "Marketing",
+    "description": "Build media relationships, draft press releases, and manage organisational reputation through strategic public communications.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0120",
+    "label": "manage e-commerce platforms and operations",
+    "category": "Marketing",
+    "description": "Administer online store operations including product listings, order management, and customer experience optimisation on e-commerce platforms.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0121",
+    "label": "design and manage customer loyalty programmes",
+    "category": "Marketing",
+    "description": "Develop reward and retention programmes that incentivise repeat purchases and strengthen long-term customer relationships.",
+    "isco_groups": ["24", "12"]
+  },
+  {
+    "esco_id": "esco:skill:0122",
+    "label": "provide primary healthcare services",
+    "category": "Healthcare Formal",
+    "description": "Deliver first-contact healthcare services including diagnosis, treatment, and referral for common health conditions in clinical settings.",
+    "isco_groups": ["22", "32"]
+  },
+  {
+    "esco_id": "esco:skill:0123",
+    "label": "perform clinical procedures and medical interventions",
+    "category": "Healthcare Formal",
+    "description": "Execute clinical procedures such as venepuncture, wound care, and minor surgical interventions according to established medical protocols.",
+    "isco_groups": ["22", "32"]
+  },
+  {
+    "esco_id": "esco:skill:0124",
+    "label": "provide comprehensive nursing care to patients",
+    "category": "Healthcare Formal",
+    "description": "Plan and deliver holistic nursing care including medication administration, patient monitoring, and health education across care settings.",
+    "isco_groups": ["22", "32"]
+  },
+  {
+    "esco_id": "esco:skill:0125",
+    "label": "conduct patient health assessments",
+    "category": "Healthcare Formal",
+    "description": "Perform systematic clinical assessments including history taking and physical examination to inform diagnosis and care planning.",
+    "isco_groups": ["22", "32"]
+  },
+  {
+    "esco_id": "esco:skill:0126",
+    "label": "manage patient medical records and clinical documentation",
+    "category": "Healthcare Formal",
+    "description": "Accurately create, update, and maintain patient medical records in compliance with clinical documentation standards and data protection regulations.",
+    "isco_groups": ["22", "32"]
+  },
+  {
+    "esco_id": "esco:skill:0127",
+    "label": "teach primary school curriculum subjects",
+    "category": "Education",
+    "description": "Plan and deliver engaging lessons across primary curriculum subjects using age-appropriate pedagogical methods.",
+    "isco_groups": ["23"]
+  },
+  {
+    "esco_id": "esco:skill:0128",
+    "label": "develop educational materials and learning resources",
+    "category": "Education",
+    "description": "Design, produce, and adapt instructional materials including lesson plans, worksheets, and multimedia resources to support learning objectives.",
+    "isco_groups": ["23"]
+  },
+  {
+    "esco_id": "esco:skill:0129",
+    "label": "assess student learning and provide feedback",
+    "category": "Education",
+    "description": "Design and administer formative and summative assessments and provide constructive feedback to support student academic progress.",
+    "isco_groups": ["23"]
+  },
+  {
+    "esco_id": "esco:skill:0130",
+    "label": "deliver vocational and technical training",
+    "category": "Education",
+    "description": "Facilitate practical vocational training programmes that develop occupational competencies aligned with industry standards.",
+    "isco_groups": ["23"]
+  },
+  {
+    "esco_id": "esco:skill:0131",
+    "label": "support students with special educational needs",
+    "category": "Education",
+    "description": "Adapt teaching methods, materials, and environments to meet the diverse learning needs of students with disabilities or learning difficulties.",
+    "isco_groups": ["23"]
+  },
+  {
+    "esco_id": "esco:skill:0132",
+    "label": "provide legal advice and counsel to clients",
+    "category": "Legal",
+    "description": "Analyse legal issues and provide expert advice to clients on their rights, obligations, and legal options under applicable law.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0133",
+    "label": "draft legal documents and contracts",
+    "category": "Legal",
+    "description": "Prepare legally sound contracts, agreements, pleadings, and other legal documents in compliance with jurisdictional requirements.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0134",
+    "label": "conduct legal research and case analysis",
+    "category": "Legal",
+    "description": "Research legislation, case law, and legal precedents to build arguments and inform legal strategies for client matters.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0135",
+    "label": "manage regulatory compliance programmes",
+    "category": "Legal",
+    "description": "Develop and monitor compliance frameworks to ensure organisational adherence to relevant laws, regulations, and industry standards.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0136",
+    "label": "represent clients in legal proceedings",
+    "category": "Legal",
+    "description": "Advocate for clients before courts, tribunals, and arbitration panels, presenting evidence and legal arguments to achieve favourable outcomes.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0137",
+    "label": "design electrical systems for buildings and infrastructure",
+    "category": "Engineering",
+    "description": "Develop electrical system designs including power distribution, lighting, and protection systems in compliance with engineering codes.",
+    "isco_groups": ["21"]
+  },
+  {
+    "esco_id": "esco:skill:0138",
+    "label": "design mechanical systems and components",
+    "category": "Engineering",
+    "description": "Apply mechanical engineering principles to design systems, machines, and components that meet performance and safety specifications.",
+    "isco_groups": ["21"]
+  },
+  {
+    "esco_id": "esco:skill:0139",
+    "label": "manage construction projects",
+    "category": "Engineering",
+    "description": "Plan, schedule, and oversee construction projects from inception to handover, ensuring delivery within budget, time, and quality requirements.",
+    "isco_groups": ["21"]
+  },
+  {
+    "esco_id": "esco:skill:0140",
+    "label": "supervise building and civil works construction",
+    "category": "Engineering",
+    "description": "Monitor and coordinate on-site construction activities to ensure compliance with engineering designs, specifications, and safety standards.",
+    "isco_groups": ["21"]
+  },
+  {
+    "esco_id": "esco:skill:0141",
+    "label": "perform structural analysis and design",
+    "category": "Engineering",
+    "description": "Analyse loads, stresses, and structural behaviour using engineering software and calculation methods to design safe and efficient structures.",
+    "isco_groups": ["21"]
+  },
+  {
+    "esco_id": "esco:skill:0142",
+    "label": "manage agricultural enterprises and agribusiness operations",
+    "category": "Agribusiness",
+    "description": "Plan and oversee agricultural business operations including production planning, cost management, and market linkage strategies.",
+    "isco_groups": ["13", "21"]
+  },
+  {
+    "esco_id": "esco:skill:0143",
+    "label": "conduct environmental impact assessments for agriculture",
+    "category": "Agribusiness",
+    "description": "Evaluate the environmental consequences of agricultural activities and develop mitigation measures to promote ecological sustainability.",
+    "isco_groups": ["13", "21"]
+  },
+  {
+    "esco_id": "esco:skill:0144",
+    "label": "implement sustainable agriculture practices",
+    "category": "Agribusiness",
+    "description": "Apply sustainable land management and farming techniques that conserve natural resources while maintaining agricultural productivity.",
+    "isco_groups": ["13", "21"]
+  },
+  {
+    "esco_id": "esco:skill:0145",
+    "label": "manage food safety and quality assurance systems",
+    "category": "Agribusiness",
+    "description": "Implement and monitor food safety management systems such as HACCP and ISO 22000 across agricultural production and processing operations.",
+    "isco_groups": ["13", "21"]
+  },
+  {
+    "esco_id": "esco:skill:0146",
+    "label": "manage organic certification processes",
+    "category": "Agribusiness",
+    "description": "Coordinate the documentation, inspection, and compliance activities required to obtain and maintain organic certification for agricultural operations.",
+    "isco_groups": ["13", "21"]
+  },
+  {
+    "esco_id": "esco:skill:0147",
+    "label": "deliver social work services to vulnerable populations",
+    "category": "Social Work",
+    "description": "Assess needs, develop support plans, and provide casework services to vulnerable individuals and families in line with social work standards.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0148",
+    "label": "facilitate community development initiatives",
+    "category": "Social Work",
+    "description": "Engage community members in participatory processes to identify needs and co-design development programmes that strengthen local resilience.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0149",
+    "label": "coordinate humanitarian assistance operations",
+    "category": "Social Work",
+    "description": "Plan and manage the delivery of humanitarian aid including food, shelter, and protection services in crisis and emergency contexts.",
+    "isco_groups": ["26"]
+  },
+  {
+    "esco_id": "esco:skill:0150",
+    "label": "conduct needs assessments for social programmes",
+    "category": "Social Work",
+    "description": "Design and implement systematic assessments of community needs using qualitative and quantitative methods to inform programme planning.",
+    "isco_groups": ["26"]
+  }
+]
