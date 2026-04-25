@@ -1,0 +1,752 @@
+[
+  {
+    "id": "opp_001",
+    "title": "Industrial Maintenance Technician",
+    "sector": "Technical",
+    "required_skills": ["welding", "electrical wiring", "mechanical repair"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 800,
+    "entry_requirements": "Vocational certificate or 2 years proven apprenticeship experience",
+    "training_resources": [
+      "CFPA Cotonou — maintenance industrielle (6 mois)",
+      "YouTube: The Engineering Mindset — maintenance basics",
+      "ILO apprenticeship programme — francophone Africa"
+    ]
+  },
+  {
+    "id": "opp_002",
+    "title": "Solar Energy Installer",
+    "sector": "Technical",
+    "required_skills": ["solar panel installation", "electrical wiring", "basic computer use"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Short certification course (4-8 weeks), electrical basics required",
+    "training_resources": [
+      "GIZ Solar Training — West Africa",
+      "Lighting Africa certification programme",
+      "YouTube: altE Store — off-grid solar installation"
+    ]
+  },
+  {
+    "id": "opp_003",
+    "title": "Computer Repair Technician",
+    "sector": "Technical",
+    "required_skills": ["computer repair", "hardware technician", "basic computer use"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "CompTIA A+ or equivalent practical experience",
+    "training_resources": [
+      "CompTIA A+ certification (self-study, ~3 months)",
+      "YouTube: PowerCert Animated Videos",
+      "Local ICT training centres"
+    ]
+  },
+  {
+    "id": "opp_004",
+    "title": "Automotive Mechanic",
+    "sector": "Technical",
+    "required_skills": ["car mechanic", "motorcycle mechanic", "welding"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "2-year apprenticeship or vocational training certificate",
+    "training_resources": [
+      "CFAO Motors apprenticeship programme",
+      "Auto mechanic vocational school — Lagos/Abidjan",
+      "YouTube: Ratchets And Wrenches"
+    ]
+  },
+  {
+    "id": "opp_005",
+    "title": "Construction Site Supervisor",
+    "sector": "Technical",
+    "required_skills": ["construction work", "masonry", "carpentry"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "5 years field experience + basic reading/writing",
+    "training_resources": [
+      "ILO COOD construction training",
+      "NIIT construction management short course",
+      "Local polytechnic — building technology"
+    ]
+  },
+  {
+    "id": "opp_006",
+    "title": "Electrical Contractor",
+    "sector": "Technical",
+    "required_skills": ["certified electrician", "electrical wiring", "solar panel installation"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 700,
+    "entry_requirements": "National electrician licence + 3 years experience",
+    "training_resources": [
+      "National electrical licensing board — country-specific",
+      "Coursera: Electrical Engineering fundamentals",
+      "Apprenticeship under licensed contractor"
+    ]
+  },
+  {
+    "id": "opp_007",
+    "title": "Network Infrastructure Installer",
+    "sector": "Technical",
+    "required_skills": ["network installation", "electrical wiring", "hardware technician"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "CompTIA Network+ or Cisco CCNA",
+    "training_resources": [
+      "Cisco Networking Academy (free online)",
+      "CompTIA Network+ self-study",
+      "Fibre optic splicing course — local telecom providers"
+    ]
+  },
+  {
+    "id": "opp_008",
+    "title": "Refrigeration and AC Technician",
+    "sector": "Technical",
+    "required_skills": ["refrigeration repair", "electrical wiring", "mechanical repair"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Vocational training in refrigeration (6-12 months)",
+    "training_resources": [
+      "AFRCT — African Refrigeration and Cooling Training",
+      "YouTube: AC Service Tech LLC",
+      "Local technical college — HVAC programme"
+    ]
+  },
+  {
+    "id": "opp_009",
+    "title": "Junior Web Developer",
+    "sector": "Digital",
+    "required_skills": ["HTML and CSS", "JavaScript programming", "web design"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 800,
+    "entry_requirements": "Portfolio of 3 projects + basic English proficiency",
+    "training_resources": [
+      "freeCodeCamp (free, self-paced)",
+      "The Odin Project (free, full curriculum)",
+      "Andela Learning Community — Lagos/Nairobi/Accra"
+    ]
+  },
+  {
+    "id": "opp_010",
+    "title": "IT Support Specialist",
+    "sector": "Digital",
+    "required_skills": ["IT support", "computer repair", "network administration"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "CompTIA A+ and Network+ certifications",
+    "training_resources": [
+      "Google IT Support Certificate (Coursera, ~6 months)",
+      "CompTIA A+ study guide",
+      "Microsoft Learn — IT fundamentals (free)"
+    ]
+  },
+  {
+    "id": "opp_011",
+    "title": "Social Media Manager",
+    "sector": "Digital",
+    "required_skills": ["social media management", "content creation", "graphic design"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Portfolio of managed accounts + smartphone proficiency",
+    "training_resources": [
+      "Meta Blueprint — free social media training",
+      "HubSpot Social Media Certification (free)",
+      "Canva Design School (free)"
+    ]
+  },
+  {
+    "id": "opp_012",
+    "title": "Graphic Designer",
+    "sector": "Digital",
+    "required_skills": ["graphic design", "illustration", "brand design"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "Portfolio of 5+ design projects",
+    "training_resources": [
+      "Canva Design School (free)",
+      "Coursera: Graphic Design Specialisation — CalArts",
+      "YouTube: Satori Graphics"
+    ]
+  },
+  {
+    "id": "opp_013",
+    "title": "Digital Marketing Coordinator",
+    "sector": "Digital",
+    "required_skills": ["digital marketing", "social media management", "content creation"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 550,
+    "entry_requirements": "Google Analytics and Ads certifications",
+    "training_resources": [
+      "Google Digital Garage — Fundamentals of Digital Marketing (free)",
+      "HubSpot Academy — Digital Marketing (free)",
+      "Semrush Academy (free)"
+    ]
+  },
+  {
+    "id": "opp_014",
+    "title": "E-commerce Business Owner",
+    "sector": "Digital",
+    "required_skills": ["e-commerce management", "social media management", "inventory management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "Smartphone + internet access + small starting capital",
+    "training_resources": [
+      "Jumia Seller Academy (free for sellers)",
+      "Shopify Compass (free)",
+      "YouTube: Wholesale Ted"
+    ]
+  },
+  {
+    "id": "opp_015",
+    "title": "Junior Software Developer",
+    "sector": "Digital",
+    "required_skills": ["Python programming", "JavaScript programming", "database management"],
+    "formality_level": 5,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 1200,
+    "entry_requirements": "Programming portfolio + coding test (typically)",
+    "training_resources": [
+      "ALX Software Engineering Programme — Africa (12 months)",
+      "Andela Fellowship",
+      "freeCodeCamp + GitHub portfolio"
+    ]
+  },
+  {
+    "id": "opp_016",
+    "title": "Data Analyst",
+    "sector": "Digital",
+    "required_skills": ["data analysis", "Excel and spreadsheets", "Python programming"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 900,
+    "entry_requirements": "Google Data Analytics certificate or equivalent",
+    "training_resources": [
+      "Google Data Analytics Certificate (Coursera)",
+      "DataCamp — Data Analyst track",
+      "Kaggle Learn (free)"
+    ]
+  },
+  {
+    "id": "opp_017",
+    "title": "Video Content Producer",
+    "sector": "Digital",
+    "required_skills": ["video editing", "videography", "content creation"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Demo reel of 3+ productions",
+    "training_resources": [
+      "YouTube: Justin Odisho — DaVinci Resolve tutorials",
+      "Coursera: Introduction to Video Production",
+      "YouTube Creator Academy (free)"
+    ]
+  },
+  {
+    "id": "opp_018",
+    "title": "Sales Representative",
+    "sector": "Commercial",
+    "required_skills": ["customer service", "market trading", "pricing strategy"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "Proven track record in sales; secondary school certificate preferred",
+    "training_resources": [
+      "Alison: Sales and Marketing fundamentals (free)",
+      "HubSpot Sales Training (free)",
+      "On-the-job mentorship programme"
+    ]
+  },
+  {
+    "id": "opp_019",
+    "title": "Procurement Officer",
+    "sector": "Commercial",
+    "required_skills": ["procurement", "inventory management", "contract negotiation"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 700,
+    "entry_requirements": "CIPS certification (Level 3) or equivalent",
+    "training_resources": [
+      "CIPS — Chartered Institute of Procurement and Supply",
+      "Coursera: Supply Chain Management Specialisation",
+      "UNDP procurement training — Africa"
+    ]
+  },
+  {
+    "id": "opp_020",
+    "title": "Microfinance Loan Officer",
+    "sector": "Commercial",
+    "required_skills": ["microfinance management", "financial accounting", "customer service"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "Diploma in finance or banking + field experience",
+    "training_resources": [
+      "MFI Academy — microfinance training Africa",
+      "Frankfurt School — microfinance certificate",
+      "CGAP Financial Inclusion training (free)"
+    ]
+  },
+  {
+    "id": "opp_021",
+    "title": "Retail Store Manager",
+    "sector": "Commercial",
+    "required_skills": ["retail management", "inventory management", "cash handling"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "2 years retail experience; basic numeracy required",
+    "training_resources": [
+      "Alison: Retail Management (free)",
+      "LinkedIn Learning: Retail Operations",
+      "On-the-job training at established retailers"
+    ]
+  },
+  {
+    "id": "opp_022",
+    "title": "Import/Export Agent",
+    "sector": "Commercial",
+    "required_skills": ["import and export", "supply chain management", "contract negotiation"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 700,
+    "entry_requirements": "Knowledge of ECOWAS trade regulations; commercial experience",
+    "training_resources": [
+      "ECOWAS Trade Facilitation training",
+      "World Trade Organization e-learning (free)",
+      "ITC — International Trade Centre courses"
+    ]
+  },
+  {
+    "id": "opp_023",
+    "title": "Small Business Owner",
+    "sector": "Commercial",
+    "required_skills": ["business planning", "customer service", "cash handling"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Business plan + access to starting capital ($500-$2000)",
+    "training_resources": [
+      "Tony Elumelu Foundation Entrepreneurship Programme (free, Africa)",
+      "IFC SME Toolkit (free)",
+      "USAID INVEST local business training"
+    ]
+  },
+  {
+    "id": "opp_024",
+    "title": "Cooperative Administrator",
+    "sector": "Commercial",
+    "required_skills": ["cooperative management", "financial accounting", "inventory management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Community trust + basic accounting skills",
+    "training_resources": [
+      "ILO Cooperative Management training (free, francophone Africa)",
+      "OCDE cooperative governance guide",
+      "Local agricultural cooperative federation training"
+    ]
+  },
+  {
+    "id": "opp_025",
+    "title": "Financial Analyst",
+    "sector": "Commercial",
+    "required_skills": ["financial analysis", "data analysis", "Excel and spreadsheets"],
+    "formality_level": 5,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 1200,
+    "entry_requirements": "Bachelor's degree in finance + CFA Level 1 preferred",
+    "training_resources": [
+      "CFA Institute — Level 1 study materials",
+      "Coursera: Financial Markets — Yale University",
+      "CFI — Corporate Finance Institute (free tier)"
+    ]
+  },
+  {
+    "id": "opp_026",
+    "title": "Restaurant Manager",
+    "sector": "Service",
+    "required_skills": ["restaurant management", "catering", "customer service"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "2 years hospitality experience; food hygiene certificate",
+    "training_resources": [
+      "Alison: Food and Beverage Management (free)",
+      "ServSafe Food Handler certification",
+      "Local hotel and tourism school"
+    ]
+  },
+  {
+    "id": "opp_027",
+    "title": "Hotel Front Desk Supervisor",
+    "sector": "Service",
+    "required_skills": ["hotel hospitality", "customer service", "translation services"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "English or French proficiency + hospitality experience",
+    "training_resources": [
+      "ECOLE Hôtelière de Dakar — short courses",
+      "American Hotel and Lodging Educational Institute",
+      "Coursera: Hotel Management — ESSEC"
+    ]
+  },
+  {
+    "id": "opp_028",
+    "title": "Community Health Worker",
+    "sector": "Service",
+    "required_skills": ["community health worker", "community organizing", "translation services"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 350,
+    "entry_requirements": "Government health ministry accreditation (2-3 month course)",
+    "training_resources": [
+      "WHO CHW training manual (free)",
+      "USAID community health worker training",
+      "National health ministry training programme"
+    ]
+  },
+  {
+    "id": "opp_029",
+    "title": "Primary School Teacher",
+    "sector": "Service",
+    "required_skills": ["teacher", "community organizing", "translation services"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Teacher training college diploma (2 years) + government certification",
+    "training_resources": [
+      "National teacher training college — country-specific",
+      "Teach For All Africa — fellowship programme",
+      "Coursera: Learning How to Learn (foundational pedagogy)"
+    ]
+  },
+  {
+    "id": "opp_030",
+    "title": "Events Coordinator",
+    "sector": "Service",
+    "required_skills": ["event planning", "customer service", "logistics coordination"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "Portfolio of 3+ organised events",
+    "training_resources": [
+      "Eventbrite Event Organiser Academy (free)",
+      "Alison: Event Management (free)",
+      "Apprenticeship under established events company"
+    ]
+  },
+  {
+    "id": "opp_031",
+    "title": "Logistics Dispatcher",
+    "sector": "Service",
+    "required_skills": ["logistics coordination", "driving", "inventory management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Driving licence + basic smartphone/computer skills",
+    "training_resources": [
+      "DHL Supply Chain apprenticeship — Africa",
+      "Coursera: Supply Chain Logistics",
+      "Local transport and logistics company training"
+    ]
+  },
+  {
+    "id": "opp_032",
+    "title": "NGO Field Officer",
+    "sector": "Service",
+    "required_skills": ["project coordination", "community organizing", "translation services"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "Bachelor's degree preferred + community field experience",
+    "training_resources": [
+      "DisasterReady — NGO skills platform (free)",
+      "USAID Development Programme training",
+      "Coursera: Project Management for Development"
+    ]
+  },
+  {
+    "id": "opp_033",
+    "title": "Translation Specialist",
+    "sector": "Service",
+    "required_skills": ["translation services", "basic computer use", "data entry"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "Fluency in 2+ languages; specialisation in legal or technical preferred",
+    "training_resources": [
+      "Coursera: Translation and Localization (Michigan)",
+      "ProZ.com — freelance translation community",
+      "Praxis Language Translator Training"
+    ]
+  },
+  {
+    "id": "opp_034",
+    "title": "Tailoring Business Owner",
+    "sector": "Service",
+    "required_skills": ["tailoring", "fashion design", "customer service"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "2+ years tailoring experience + small machine investment",
+    "training_resources": [
+      "FENOP — federation of tailors West Africa",
+      "YouTube: Professor Pincushion — garment construction",
+      "Local fashion school short course"
+    ]
+  },
+  {
+    "id": "opp_035",
+    "title": "Catering Business Owner",
+    "sector": "Service",
+    "required_skills": ["catering", "street food cooking", "cash handling"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Food hygiene certificate + small starting capital",
+    "training_resources": [
+      "ServSafe Food Handler",
+      "YouTube: Joshua Weissman — food business basics",
+      "Local food safety authority training"
+    ]
+  },
+  {
+    "id": "opp_036",
+    "title": "Agricultural Extension Worker",
+    "sector": "Agricultural",
+    "required_skills": ["crop disease management", "irrigation management", "organic farming"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Diploma in agriculture or 5 years farming experience + government accreditation",
+    "training_resources": [
+      "FAO e-learning — crop production and protection",
+      "IITA — International Institute of Tropical Agriculture training",
+      "National agricultural extension service — country-specific"
+    ]
+  },
+  {
+    "id": "opp_037",
+    "title": "Fish Farm Manager",
+    "sector": "Agricultural",
+    "required_skills": ["fish farming", "animal husbandry", "agribusiness management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Practical aquaculture training (3-6 months)",
+    "training_resources": [
+      "WorldFish aquaculture training materials (free)",
+      "FAO aquaculture e-learning",
+      "National fisheries department training"
+    ]
+  },
+  {
+    "id": "opp_038",
+    "title": "Poultry Farm Operator",
+    "sector": "Agricultural",
+    "required_skills": ["poultry farming", "animal husbandry", "food processing"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "Agricultural training (1-3 months) + startup capital for birds and infrastructure",
+    "training_resources": [
+      "FAO poultry management guide (free PDF)",
+      "YouTube: Poultry World Nigeria",
+      "Livestock Development Authority — country-specific"
+    ]
+  },
+  {
+    "id": "opp_039",
+    "title": "Food Processing Supervisor",
+    "sector": "Agricultural",
+    "required_skills": ["food processing", "food safety management", "agro-processing"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 450,
+    "entry_requirements": "Food safety certification + 2 years production experience",
+    "training_resources": [
+      "UNIDO food safety training — Africa",
+      "Codex Alimentarius e-learning (FAO/WHO, free)",
+      "Local agro-processing cooperative training"
+    ]
+  },
+  {
+    "id": "opp_040",
+    "title": "Greenhouse Farm Manager",
+    "sector": "Agricultural",
+    "required_skills": ["greenhouse management", "irrigation management", "agricultural technology"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 600,
+    "entry_requirements": "Agricultural diploma + practical greenhouse training",
+    "training_resources": [
+      "Wageningen University — horticulture online courses",
+      "Dutch Greenhouse Delta — Africa training programme",
+      "USAID horticulture project training"
+    ]
+  },
+  {
+    "id": "opp_041",
+    "title": "Agribusiness Sales Agent",
+    "sector": "Agricultural",
+    "required_skills": ["agricultural supply chain", "market trading", "customer service"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Knowledge of local agriculture markets + motorbike/smartphone",
+    "training_resources": [
+      "MercyCorps AFA — agribusiness training",
+      "IFC agribusiness value chain training",
+      "Local farmer cooperative sales training"
+    ]
+  },
+  {
+    "id": "opp_042",
+    "title": "Fashion Designer",
+    "sector": "Creative",
+    "required_skills": ["fashion design", "tailoring", "traditional weaving"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Portfolio of original designs + sewing competence",
+    "training_resources": [
+      "African Fashion International training",
+      "Parsons Online — fashion fundamentals",
+      "YouTube: Evelyn Wood Design — African fashion techniques"
+    ]
+  },
+  {
+    "id": "opp_043",
+    "title": "Photography Studio Owner",
+    "sector": "Creative",
+    "required_skills": ["photography", "video editing", "social media management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "Camera equipment investment + portfolio of 20+ shoots",
+    "training_resources": [
+      "YouTube: Peter McKinnon — photography fundamentals",
+      "Coursera: Photography Basics and Beyond",
+      "Lightroom and Photoshop — Adobe tutorials (free)"
+    ]
+  },
+  {
+    "id": "opp_044",
+    "title": "Artisanal Products Exporter",
+    "sector": "Creative",
+    "required_skills": ["traditional weaving", "jewelry making", "e-commerce management"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 550,
+    "entry_requirements": "Craft production capacity + Etsy/Faire account + export licence",
+    "training_resources": [
+      "Etsy Seller Handbook (free)",
+      "ITC — Ethical Fashion Initiative training",
+      "AfriCommerce — African craft export training"
+    ]
+  },
+  {
+    "id": "opp_045",
+    "title": "Music Producer",
+    "sector": "Creative",
+    "required_skills": ["music production", "music performance", "video editing"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 500,
+    "entry_requirements": "DAW proficiency + home studio setup",
+    "training_resources": [
+      "YouTube: In The Mix — music production tutorials",
+      "Coursera: Introduction to Music Production — Berklee",
+      "Splice — beat making lessons (free tier)"
+    ]
+  },
+  {
+    "id": "opp_046",
+    "title": "Brand and UX Designer",
+    "sector": "Digital",
+    "required_skills": ["UX design", "graphic design", "brand design"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 750,
+    "entry_requirements": "Portfolio of 5+ UX case studies + Figma proficiency",
+    "training_resources": [
+      "Google UX Design Certificate (Coursera)",
+      "Figma tutorials — official (free)",
+      "Interaction Design Foundation (affordable subscription)"
+    ]
+  },
+  {
+    "id": "opp_047",
+    "title": "Project Manager",
+    "sector": "Commercial",
+    "required_skills": ["project coordination", "business planning", "risk management"],
+    "formality_level": 5,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 1300,
+    "entry_requirements": "PMP or PRINCE2 certification + 3 years project experience",
+    "training_resources": [
+      "PMI — Project Management Professional certification",
+      "Google Project Management Certificate (Coursera)",
+      "PRINCE2 Foundation self-study"
+    ]
+  },
+  {
+    "id": "opp_048",
+    "title": "Mobile Money Agent Supervisor",
+    "sector": "Commercial",
+    "required_skills": ["mobile money operations", "cash handling", "customer service"],
+    "formality_level": 3,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 400,
+    "entry_requirements": "Mobile money operator certification + trust capital",
+    "training_resources": [
+      "MTN Mobile Money Agent training",
+      "Orange Money supervisor programme",
+      "GSMA Mobile Money certification"
+    ]
+  },
+  {
+    "id": "opp_049",
+    "title": "Drone Operator and Inspector",
+    "sector": "Technical",
+    "required_skills": ["drone repair", "photography", "agricultural technology"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 700,
+    "entry_requirements": "UAV pilot licence + 30 flight hours",
+    "training_resources": [
+      "DroneBlocks — aerial photography course",
+      "DJI Academy — online training (free)",
+      "National civil aviation authority — UAV licensing"
+    ]
+  },
+  {
+    "id": "opp_050",
+    "title": "Quality Control Inspector",
+    "sector": "Technical",
+    "required_skills": ["quality control", "electronics assembly", "data entry"],
+    "formality_level": 4,
+    "region": "West Africa",
+    "avg_monthly_income_usd": 550,
+    "entry_requirements": "ISO 9001 internal auditor training + manufacturing experience",
+    "training_resources": [
+      "ASQ — Quality Inspector certification",
+      "Coursera: Introduction to Quality Management",
+      "ISO e-learning — quality management systems"
+    ]
+  }
+]
