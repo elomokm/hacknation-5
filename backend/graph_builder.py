@@ -32,7 +32,7 @@ _CATEGORY_WEIGHTS = {
     ("Service", "Creative"): 0.08,
 }
 
-EDGE_THRESHOLD = 0.18
+EDGE_THRESHOLD = 0.32
 
 
 class SkillGraph:
@@ -175,7 +175,7 @@ class SkillGraph:
         f_diff = abs(s1["formality_level"] - s2["formality_level"])
         formality_score = max(0.0, 1.0 - f_diff / 4.0)
 
-        weight = 0.35 * jaccard + 0.35 * cat_score + 0.30 * formality_score
+        weight = 0.45 * jaccard + 0.35 * cat_score + 0.20 * formality_score
         return round(weight, 4)
 
     def _is_cache_valid(self) -> bool:

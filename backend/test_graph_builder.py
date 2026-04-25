@@ -15,9 +15,10 @@ G = sg.build_graph()
 elapsed = time.time() - t0
 
 assert elapsed < 3.0, f"Build took {elapsed:.2f}s — too slow"
-assert G.number_of_nodes() == 150, f"Expected 150 nodes, got {G.number_of_nodes()}"
-assert G.number_of_edges() > 0, "Graph has no edges"
-print(f"✓ Build: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges in {elapsed:.2f}s")
+assert G.number_of_nodes() == 167, f"Expected 167 nodes, got {G.number_of_nodes()}"
+assert 2000 <= G.number_of_edges() <= 3500, f"Edge count out of range: {G.number_of_edges()}"
+avg_neighbors = G.number_of_edges() * 2 / G.number_of_nodes()
+print(f"✓ Build: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges, {avg_neighbors:.1f} avg neighbors in {elapsed:.2f}s")
 
 # --- Build (warm — from cache) ---
 sg2 = SkillGraph()
@@ -49,7 +50,7 @@ print(f"✓ get_neighbors: {len(neighbors)} neighbors (top: {neighbors[0]['name'
 # --- get_graph_data ---
 data = sg.get_graph_data()
 assert "nodes" in data and "edges" in data
-assert len(data["nodes"]) == 150
+assert len(data["nodes"]) == 167
 assert len(data["edges"]) == G.number_of_edges()
 print(f"✓ get_graph_data: {len(data['nodes'])} nodes, {len(data['edges'])} edges")
 
