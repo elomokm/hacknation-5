@@ -7,8 +7,20 @@ _CSS = """
 /* ── Import font ─────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-html, body, [class*="css"], [class*="st-"] {
+/* Apply Inter to body only — Streamlit's icon glyphs (Material Icons /
+ * Material Symbols) live inside st-* classes and MUST keep their own font,
+ * otherwise the icon name renders as literal text ("keyboard_arrow_right"). */
+html, body, .stApp, .stMarkdown, .stCaption {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Defensive: never touch icon-font elements */
+.material-icons,
+.material-icons-outlined,
+[class*="material-symbols"],
+[class*="MuiSvgIcon"],
+[data-testid*="icon"] {
+    font-family: revert !important;
 }
 
 /* ── Hide Streamlit chrome ───────────────────────────────── */
