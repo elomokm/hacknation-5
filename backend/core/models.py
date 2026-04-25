@@ -215,3 +215,55 @@ class MatchResult(BaseModel):
     pathway_steps: list[str]
     automation_risk: float
     econometric_signals: dict
+
+
+# ---------------------------------------------------------------------------
+# Module 02 — AI Readiness & Displacement Risk types
+# ---------------------------------------------------------------------------
+
+class SkillRiskScore(BaseModel):
+    """Frey-Osborne automation risk score for one mapped skill."""
+
+    esco_id: str
+    esco_label: str
+    raw_frey_osborne: Optional[float]
+    lmic_adjustment_applied: float
+    adjusted_probability: Optional[float]
+    risk_band: str  # "low" | "moderate" | "high" | "critical"
+    matched_occupations: list[str]
+    confidence: str  # "isco_proxy" | "no_match"
+
+
+class RiskAssessment(BaseModel):
+    """Aggregate automation risk assessment for a StandardizedProfile."""
+
+    profile_id: str
+    country_code: str
+    per_skill_scores: list[SkillRiskScore]
+    overall_risk_band: str
+    weighted_average_probability: float
+    pct_skills_at_risk: float
+    methodology_note: str
+    limitations: list[str]
+
+
+class AdjacentSkill(BaseModel):
+    """A lower-risk ESCO skill adjacent to a high-risk current skill."""
+
+    esco_id: str
+    esco_label: str
+    esco_category: str
+    automation_risk: SkillRiskScore
+    proximity_score: float
+    transition_rationale: str
+
+
+class EducationTrajectory(BaseModel):
+    """West Africa education attainment projections from Wittgenstein Centre."""
+
+    region: str
+    scenario: str
+    timeline: list[ProjectionPoint]
+    summary_2025: dict
+    summary_2035: dict
+    key_shifts: list[str]
