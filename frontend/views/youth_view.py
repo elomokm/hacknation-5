@@ -154,7 +154,7 @@ def _tab_profile(profile, config) -> None:
         st.markdown("---")
 
     # Portability block
-    with st.expander("📦 Portability — ISCO codes"):
+    with st.expander("Portability"):
         isco_codes = profile.portability.get("isco_codes", [])
         st.markdown(
             f"**{profile.portability.get('esco_count', 0)} ESCO-mapped skills** · "
@@ -170,13 +170,13 @@ def _tab_profile(profile, config) -> None:
     c1, c2 = st.columns(2)
     with c1:
         st.download_button(
-            "⬇️ Download JSON-LD profile",
+            "Download JSON-LD profile",
             data=profile_json,
             file_name=f"unmapped_{profile.profile_id[:8]}.json",
             mime="application/json",
         )
     with c2:
-        if st.button("📷 Show QR code"):
+        if st.button("Show QR code"):
             st.session_state["show_qr"] = not st.session_state.get("show_qr", False)
 
     if st.session_state.get("show_qr"):
@@ -231,7 +231,7 @@ def _tab_risk(risk, profile, config) -> None:
                         st.caption(alt.transition_rationale)
 
     st.divider()
-    with st.expander("⚠️ Methodology & Limitations"):
+    with st.expander("Methodology and limitations"):
         st.info(risk.methodology_note)
         for lim in risk.limitations:
             st.caption(f"• {lim}")
@@ -254,16 +254,16 @@ def _tab_opportunities(matches, config) -> None:
         o = match.opportunity
         wage_mid = (o.wage_range_xof[0] + o.wage_range_xof[1]) // 2
 
-        _type_emoji = {
-            "formal_employment": "🏢",
-            "self_employment": "🛠️",
-            "gig": "📱",
-            "training_pathway": "🎓",
+        _type_label = {
+            "formal_employment": "Formal",
+            "self_employment": "Self",
+            "gig": "Gig",
+            "training_pathway": "Training",
         }
 
         st.markdown(
             f"""<div class="opp-card">
-            <div class="opp-title">{_type_emoji.get(o.type, "•")} {o.title_local}</div>
+            <div class="opp-title">[{_type_label.get(o.type, o.type)}] {o.title_local}</div>
             <div class="opp-meta">
                 {o.sector} · {o.geography} · {o.education_min}+
             </div>
@@ -287,7 +287,7 @@ def _tab_opportunities(matches, config) -> None:
             if o.description:
                 st.markdown(o.description)
             if o.training_url:
-                st.markdown(f"🔗 [Training resource]({o.training_url})")
+                st.markdown(f"[Training resource]({o.training_url})")
 
 
 def _tab_mirror(dashboard, wage, config) -> None:
@@ -372,8 +372,8 @@ def _tab_mirror(dashboard, wage, config) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(
-        '<p class="data-note">🟢 ICT median · 🟡 Your current estimated income '
-        "(informal trade) · 🔵 Other sectors</p>",
+        '<p class="data-note">Green = ICT median · Orange = your current estimated '
+        "income (informal trade) · Blue = other sectors</p>",
         unsafe_allow_html=True,
     )
     st.caption(wage.methodology_note)
@@ -386,7 +386,7 @@ def _tab_mirror(dashboard, wage, config) -> None:
         st.markdown(f"**{i}.** {step}")
 
     # Transparency
-    with st.expander("⚠️ What this data doesn't show"):
+    with st.expander("What this data doesn't show"):
         for note in dashboard.transparency_notes:
             st.caption(f"• {note}")
 
@@ -404,7 +404,7 @@ def render_youth_view() -> None:
     # API health check
     if not _check_api_alive():
         st.error(
-            f"⚠️ UNMAPPED API not reachable at `{API_BASE}`. "
+            f"UNMAPPED API not reachable at `{API_BASE}`. "
             f"Start the API with `make api` in another terminal."
         )
         return
@@ -440,7 +440,7 @@ def render_youth_view() -> None:
             )
         name = st.text_input("Your name (optional)", value="Akossiwa")
         submitted = st.form_submit_button(
-            "🔍 Generate my profile", use_container_width=True
+            "Generate my profile", use_container_width=True
         )
 
     if submitted:
@@ -463,7 +463,7 @@ def render_youth_view() -> None:
         st.divider()
 
         tab1, tab2, tab3, tab4 = st.tabs(
-            ["👤 Profile", "⚠️ Risk", "🎯 Opportunities", "💰 Mirror"]
+            ["Profile", "Risk", "Opportunities", "Mirror"]
         )
         with tab1:
             _tab_profile(profile, config)

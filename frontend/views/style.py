@@ -174,10 +174,10 @@ def inject_custom_css() -> None:
 def risk_badge(band: str) -> str:
     """Return HTML badge for a risk band."""
     labels = {
-        "low": "🟢 Low",
-        "moderate": "🟡 Moderate",
-        "high": "🔴 High",
-        "critical": "🚨 Critical",
-        "no_match": "⬜ No data",
+        "low": "Low",
+        "moderate": "Moderate",
+        "high": "High",
+        "critical": "Critical",
+        "no_match": "No data",
     }
     return f'<span class="risk-{band}">{labels.get(band, band)}</span>'

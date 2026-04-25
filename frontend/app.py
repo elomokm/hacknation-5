@@ -31,7 +31,7 @@ inject_custom_css()
 # ── Sidebar ────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "## 🗺️ UNMAPPED",
+        "## UNMAPPED",
         help="Closing the distance between informal skills and economic opportunity",
     )
     st.caption("World Bank × Hack-Nation 5")
@@ -55,14 +55,14 @@ with st.sidebar:
         "Interface",
         options=["youth", "policymaker"],
         format_func=lambda x: {
-            "youth": "👤 Youth (Akossiwa)",
-            "policymaker": "🏛️ Policymaker",
+            "youth": "Youth (Akossiwa)",
+            "policymaker": "Policymaker",
         }[x],
     )
 
     st.divider()
 
-    with st.expander("ℹ️ About UNMAPPED"):
+    with st.expander("About"):
         st.markdown(
             """
 **UNMAPPED** maps informal skills to economic opportunity

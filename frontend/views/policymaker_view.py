@@ -47,7 +47,7 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Signal 1 — Wage by sector ────────────────────────────────
-    st.markdown("### 💰 Wage Signal — Monthly median by sector")
+    st.markdown("### Wage Signal — Monthly median by sector")
     st.caption("ILOSTAT 2024 · XOF (CFA Franc)")
 
     wages = sorted(labor.wage_by_sector, key=lambda w: w.median_monthly_xof)
@@ -84,7 +84,7 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Signal 2 — Employment share ──────────────────────────────
-    st.markdown("### 👷 Employment Signal — Sector share")
+    st.markdown("### Employment Signal — Sector share")
     st.caption("ILOSTAT 2024 · % of total employment")
 
     growth = econ.get_growth_signals()
@@ -127,7 +127,7 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Recommended program areas ────────────────────────────────
-    st.markdown("### 🎯 Recommended Program Areas")
+    st.markdown("### Recommended Program Areas")
     st.caption("Data-driven — derived from wage gap and sector signals")
 
     usd = config.labor_data.usd_conversion_rate
@@ -166,13 +166,13 @@ def render_policymaker_view() -> None:
     ]
 
     for title, detail in programs:
-        with st.expander(f"📌 {title}"):
+        with st.expander(title):
             st.write(detail)
 
     st.divider()
 
     # ── Methodology and limits ───────────────────────────────────
-    with st.expander("⚠️ Methodology & Limitations"):
+    with st.expander("Methodology and limitations"):
         st.markdown(f"""
 **Data sources:**
 - **ILOSTAT** — {labor.country} labor force survey {labor.year}: wage by sector, employment share, unemployment
