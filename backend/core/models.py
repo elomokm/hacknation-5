@@ -49,8 +49,9 @@ class AutomationCalibration(BaseModel):
 
 
 class OpportunitiesConfig(BaseModel):
-    """Which opportunity types are enabled for this country."""
+    """Opportunity configuration per country."""
 
+    source_file: str
     types_enabled: list[str]
 
 
@@ -119,6 +120,8 @@ class EmploymentSector(BaseModel):
 class LaborMarketData(BaseModel):
     """Full ILOSTAT country snapshot."""
 
+    model_config = ConfigDict(extra="allow")  # tolerate extra JSON fields
+
     country: str
     year: int
     source: str
@@ -126,6 +129,7 @@ class LaborMarketData(BaseModel):
     employment_by_sector: list[EmploymentSector]
     youth_unemployment_rate: float
     informal_employment_share: float
+    youth_neet_rate: Optional[float] = None
 
 
 class ProjectionPoint(BaseModel):
@@ -195,26 +199,79 @@ class RiskAssessment(BaseModel):
 
 
 class Opportunity(BaseModel):
-    """A local economic opportunity entry."""
+    """A realistic local economic opportunity (loaded from country JSON)."""
 
     id: str
+    type: str
     title: str
+    title_local: str
     sector: str
-    isco_code: str
-    type: str  # "formal_employment" | "self_employment" | "gig" | "training_pathway"
-    median_monthly_usd: int
-    required_skills: list[str]
+    required_skills_isco: list[str]
+    required_skills_esco: list[str]
+    education_min: str
+    experience_years_min: int
+    wage_range_xof: list[int]
+    geography: str
+    remote_eligible: bool
+    description: str
+    training_url: Optional[str]
+    realistic_for_youth: bool
 
 
-class MatchResult(BaseModel):
-    """Ranked opportunity match with econometric signals."""
+class OpportunityMatch(BaseModel):
+    """A profile-to-opportunity match with econometric signals."""
 
     opportunity: Opportunity
-    match_score: float = Field(ge=0.0, le=1.0)
-    income_delta_usd: int
-    pathway_steps: list[str]
-    automation_risk: float
-    econometric_signals: dict
+    fit_score: float = Field(ge=0.0, le=1.0)
+    matched_isco: list[str]
+    gap_skills: list[str]
+    gap_education: Optional[str]
+    wage_delta: dict
+    accessibility_note: str
+
+
+class WageSignal(BaseModel):
+    """Econometric signal 1 — wage floor and income gap."""
+
+    current_estimated_xof: int
+    current_estimated_usd: int
+    formal_median_xof_by_sector: dict[str, int]
+    wage_gap_to_best_match_xof: int
+    wage_gap_multiplier: float
+    methodology_note: str
+
+
+class SectorGrowthSignal(BaseModel):
+    """Econometric signal 2 — sector employment share and value flags."""
+
+    sectors: list[dict]
+    growth_flagged_sectors: list[str]
+    methodology_note: str
+
+
+class YouthDashboard(BaseModel):
+    """Assembled youth-facing dashboard combining all 3 modules."""
+
+    profile_summary: str
+    top_3_opportunities: list[OpportunityMatch]
+    wage_mirror: dict
+    risk_summary: dict
+    next_steps: list[str]
+    transparency_notes: list[str]
+
+
+class PolicymakerDashboard(BaseModel):
+    """Policymaker-facing aggregate dashboard."""
+
+    country: str
+    aggregate_skill_distribution: dict
+    aggregate_isco_distribution: dict
+    youth_unemployment: float
+    youth_neet: float
+    informal_share: float
+    automation_risk_aggregate: dict
+    skill_gaps_by_sector: list[dict]
+    recommended_program_areas: list[str]
 
 
 # ---------------------------------------------------------------------------

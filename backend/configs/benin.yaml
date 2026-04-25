@@ -39,6 +39,7 @@ automation_calibration:
     consistent with World Bank LMIC automation adjustment methodology.
 
 opportunities:
+  source_file: "data/opportunities/benin_opportunities.json"
   types_enabled:
     - "formal_employment"
     - "self_employment"

@@ -39,6 +39,7 @@ automation_calibration:
     the dominance of informal and manual task composition.
 
 opportunities:
+  source_file: "data/opportunities/senegal_opportunities.json"
   types_enabled:
     - "formal_employment"
     - "self_employment"
