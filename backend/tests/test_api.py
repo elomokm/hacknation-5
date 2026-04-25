@@ -53,8 +53,9 @@ def test_list_countries():
     assert r.status_code == 200
     countries = r.json()
     codes = {c["code"] for c in countries}
-    # Three countries proves auto-discovery (Ghana added without code change)
-    assert {"BEN", "SEN", "GHA"}.issubset(codes)
+    # Four countries spanning two regions (West Africa + South Asia) prove
+    # auto-discovery + cross-regional infrastructure claim.
+    assert {"BEN", "SEN", "GHA", "BGD"}.issubset(codes)
     # Different countries → different LMIC factors → proves localizability
     by_code = {c["code"]: c for c in countries}
     assert by_code["BEN"]["lmic_adjustment_factor"] != by_code["SEN"]["lmic_adjustment_factor"]
@@ -99,6 +100,30 @@ def test_ghana_signals_endpoint():
     assert any("Mining" in s for s in growth_flagged), \
         f"Ghana should flag Mining as strategic, got: {growth_flagged}"
     logger.info("✓ /api/opportunities/GHA/signals → strategic: %s", growth_flagged)
+
+
+def test_bangladesh_cross_regional():
+    """Bangladesh proves cross-regional infrastructure (South Asia, bengali script)."""
+    r = client.get("/api/config/BGD")
+    assert r.status_code == 200, r.text
+    bgd = r.json()
+    assert bgd["country"] == "Bangladesh"
+    assert bgd["ui"]["primary_language"] == "bn"
+    assert bgd["ui"]["script"] == "bengali"  # multi-script proof
+    assert bgd["labor_data"]["currency"] == "BDT"
+    logger.info(
+        "✓ /api/config/BGD → %s | script=%s | %s",
+        bgd["country"], bgd["ui"]["script"], bgd["labor_data"]["currency"],
+    )
+
+    # Bangladesh-specific strategic sector
+    r = client.get("/api/opportunities/BGD/signals")
+    assert r.status_code == 200, r.text
+    body = r.json()
+    growth_flagged = body["growth"]["growth_flagged_sectors"]
+    assert any("Garment" in s for s in growth_flagged), \
+        f"Bangladesh should flag Garment manufacturing (RMG) as strategic, got: {growth_flagged}"
+    logger.info("✓ /api/opportunities/BGD/signals → strategic: %s", growth_flagged)
 
 
 def test_get_config_BEN_and_SEN():
@@ -266,6 +291,7 @@ if __name__ == "__main__":
     test_projections_endpoint()
     test_signals_endpoint()
     test_ghana_signals_endpoint()
+    test_bangladesh_cross_regional()
     test_policymaker_dashboard()
     test_full_pipeline_via_api()
 

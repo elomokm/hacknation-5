@@ -26,11 +26,18 @@ backend/configs/
 
 ## Active country configs
 
-| Country | Code | Currency | Languages | LMIC factor | Education ladder |
-|---|---|---|---|---|---|
-| Bénin | BEN | XOF | fr / fon / en | 0.70 | aucun → primaire → BEPC → Bac → BTS → Licence → Master+ |
-| Sénégal | SEN | XOF | fr / wo / en | 0.72 | aucun → primaire → BFEM → Bac → BTS → Licence → Master+ |
-| Ghana | GHA | GHS | en / tw / ee / fr | 0.68 | None → Primary → BECE → WASSCE → HND → Bachelor → Master+ |
+| Country | Code | Region | Script | Currency | Languages | LMIC factor | Education ladder |
+|---|---|---|---|---|---|---|---|
+| Bénin | BEN | West Africa | latin | XOF | fr / fon / en | 0.70 | aucun → primaire → BEPC → Bac → BTS → Licence → Master+ |
+| Sénégal | SEN | West Africa | latin | XOF | fr / wo / en | 0.72 | aucun → primaire → BFEM → Bac → BTS → Licence → Master+ |
+| Ghana | GHA | West Africa | latin | GHS | en / tw / ee / fr | 0.68 | None → Primary → BECE → WASSCE → HND → Bachelor → Master+ |
+| Bangladesh | BGD | South Asia | **bengali** | BDT | bn / en | 0.65 | None → Primary → PSC → JSC → SSC → HSC → Diploma → Bachelor → Master+ |
+
+> Bangladesh proves the cross-regional claim from the brief — same infrastructure
+> serves a Sub-Saharan African urban informal context (Cotonou, Dakar, Kumasi)
+> AND a South Asian rural agricultural context (Khulna). The `script: "bengali"`
+> field shows the multi-script design works without code changes — frontend
+> applies appropriate text rendering per country.
 
 ---
 

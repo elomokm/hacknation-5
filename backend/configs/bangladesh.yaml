@@ -1,0 +1,118 @@
+country: "Bangladesh"
+country_code: "BGD"
+
+ui:
+  primary_language: "bn"  # Bangla
+  supported_languages: ["bn", "en"]
+  script: "bengali"  # Note: different from "latin" — proves multi-script support
+  language_display_names:
+    bn: "Bangla"
+    en: "English"
+
+labor_data:
+  source_file: "data/ilostat/bangladesh_labor_2024.json"
+  currency: "BDT"  # Bangladeshi Taka
+  usd_conversion_rate: 110  # 1 USD ≈ 110 BDT (Bangladesh Bank 2024 reference)
+  # ISCO 2-digit code → sector label (Bangladesh nomenclature).
+  # Bangladesh-specific: Garment manufacturing (RMG) is broken out from "Other
+  # manufacturing" because it is the country's export engine (~16% of GDP, 4M+
+  # workers, mostly women). Mobile financial services (bKash/Nagad/Rocket) is
+  # also broken out from generic Financial services.
+  isco_to_sector_mapping:
+    "11": "Public administration"
+    "12": "Financial services"
+    "13": "Trade and commerce (formal retail)"
+    "14": "Accommodation and food services"
+    "21": "Information and communication (ICT)"
+    "22": "Human health and social work"
+    "23": "Education"
+    "24": "Financial services"
+    "25": "Information and communication (ICT)"
+    "31": "Other manufacturing"
+    "32": "Human health and social work"
+    "33": "Mobile financial services"
+    "41": "Trade and commerce (informal)"
+    "42": "Mobile financial services"
+    "43": "Trade and commerce (formal retail)"
+    "51": "Accommodation and food services"
+    "52": "Trade and commerce (informal)"
+    "54": "Other service activities"
+    "61": "Agriculture"
+    "62": "Agriculture"
+    "71": "Construction"
+    "72": "Other manufacturing"
+    "73": "Garment manufacturing"
+    "74": "Other manufacturing"
+    "75": "Garment manufacturing"  # ISCO 75 — textile/garment/leather workers (RMG)
+    "81": "Other manufacturing"
+    "82": "Garment manufacturing"  # textile machine operators
+    "83": "Transportation and storage"
+    "91": "Other service activities"
+    "92": "Agriculture"
+    "93": "Construction"
+    "94": "Accommodation and food services"
+    "95": "Trade and commerce (informal)"
+  # Bangladesh has a very wide informal-formal earnings gap — BBS LFS 2022
+  # informal earnings ≈ 50% of formal sector medians (one of the widest in S Asia).
+  informal_sector_discount_factor: 0.50
+  high_value_wage_threshold_usd: 200
+  growth_strategic_sectors:
+    - "Information and communication (ICT)"
+    - "Financial services"
+    - "Garment manufacturing"  # Bangladesh-specific: RMG is the export engine
+
+education_taxonomy:
+  levels:
+    - "None"
+    - "Primary"
+    - "PSC"      # Primary School Certificate (Class 5)
+    - "JSC"      # Junior School Certificate (Class 8)
+    - "SSC"      # Secondary School Certificate (Class 10)
+    - "HSC"      # Higher Secondary Certificate (Class 12)
+    - "Diploma"  # Polytechnic / Madrasah technical diploma
+    - "Bachelor"
+    - "Master+"
+  mapping_to_isced:
+    "None": 0
+    "Primary": 1
+    "PSC": 1
+    "JSC": 2
+    "SSC": 3
+    "HSC": 3
+    "Diploma": 5
+    "Bachelor": 6
+    "Master+": 7
+  isced_labels:
+    0: "No formal education"
+    1: "Primary education"
+    2: "Junior secondary (JSC)"
+    3: "Secondary (SSC/HSC)"
+    4: "Post-secondary non-tertiary"
+    5: "Diploma / Polytechnic"
+    6: "Bachelor's degree"
+    7: "Master's or equivalent"
+    8: "Doctoral"
+
+automation_calibration:
+  source: "Frey-Osborne"
+  lmic_adjustment_factor: 0.65
+  rationale: >
+    Bangladesh's economy combines a massive RMG (ready-made garment) sector
+    that has been partially automated globally but remains heavily manual locally,
+    a large smallholder agriculture sector, and a fast-growing fintech layer
+    (bKash, Nagad, Rocket). The 0.65 LMIC factor reflects task composition
+    that is more manual than US baselines but with rising digitisation
+    in urban formal sectors (Dhaka, Chittagong).
+
+opportunities:
+  source_file: "data/opportunities/bangladesh_opportunities.json"
+  types_enabled:
+    - "formal_employment"
+    - "self_employment"
+    - "gig"
+    - "training_pathway"
+
+projections:
+  source_file: "data/wittgenstein/projections_west_africa.json"
+  # Note: we reuse the West Africa projection file for now — gracefully degrades
+  # to a regional default. A bangladesh_2024.json would be added in production.

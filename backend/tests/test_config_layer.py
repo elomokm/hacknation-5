@@ -174,29 +174,66 @@ def test_reload_configs_idempotent() -> None:
 
 
 def test_country_specific_constants_differ() -> None:
-    """BEN/SEN/GHA must each have their own ISCO mapping + economic constants."""
+    """BEN/SEN/GHA/BGD must each have their own ISCO mapping + economic constants."""
     logger.info("=== Country-specific economic constants ===")
     ben = load_config("BEN")
     sen = load_config("SEN")
     gha = load_config("GHA")
+    bgd = load_config("BGD")
 
     # Informal discount factors must differ (proves they're config-driven)
     discounts = {
         "BEN": ben.labor_data.informal_sector_discount_factor,
         "SEN": sen.labor_data.informal_sector_discount_factor,
         "GHA": gha.labor_data.informal_sector_discount_factor,
+        "BGD": bgd.labor_data.informal_sector_discount_factor,
     }
-    assert len(set(discounts.values())) == 3, f"Discount factors should differ: {discounts}"
+    assert len(set(discounts.values())) == 4, f"Discount factors should all differ: {discounts}"
 
     # Strategic sectors should reflect different national priorities
     ben_strategic = set(ben.labor_data.growth_strategic_sectors)
     gha_strategic = set(gha.labor_data.growth_strategic_sectors)
+    bgd_strategic = set(bgd.labor_data.growth_strategic_sectors)
     assert ben_strategic != gha_strategic, "BEN and GHA strategic sectors should differ"
     assert "Mining and quarrying" in gha_strategic, "Ghana should flag mining as strategic"
+    assert "Garment manufacturing" in bgd_strategic, "Bangladesh should flag RMG as strategic"
 
     logger.info("  Discount factors: %s", discounts)
     logger.info("  BEN strategic: %s", sorted(ben_strategic))
     logger.info("  GHA strategic: %s", sorted(gha_strategic))
+    logger.info("  BGD strategic: %s", sorted(bgd_strategic))
+    logger.info("  → PASSED ✓")
+
+
+def test_load_bangladesh() -> None:
+    """Bangladesh proves the cross-regional infrastructure claim — South Asia, bengali script."""
+    logger.info("=== BGD — Bangladesh (South Asia, bengali script) ===")
+    bgd = load_config("BGD")
+
+    assert isinstance(bgd, CountryConfig)
+    assert bgd.country_code == "BGD"
+    assert bgd.country == "Bangladesh"
+    assert bgd.ui.primary_language == "bn"  # Bangla
+    assert bgd.ui.script == "bengali", f"Expected bengali script, got {bgd.ui.script}"
+    assert bgd.labor_data.currency == "BDT"
+    assert bgd.labor_data.usd_conversion_rate == 110
+
+    # Bangladesh-specific economic structure
+    assert bgd.labor_data.informal_sector_discount_factor == 0.50, \
+        "Bangladesh should reflect its very wide informal-formal gap"
+    assert "Garment manufacturing" in bgd.labor_data.growth_strategic_sectors, \
+        "Bangladesh RMG sector must be flagged strategic"
+
+    # Bangladesh education ladder is 9 levels (PSC, JSC, SSC, HSC, Diploma)
+    assert "SSC" in bgd.education_taxonomy.levels
+    assert "HSC" in bgd.education_taxonomy.levels
+    assert "BEPC" not in bgd.education_taxonomy.levels  # Bénin-specific
+    assert "WASSCE" not in bgd.education_taxonomy.levels  # Ghana-specific
+
+    # Display name for Bangla
+    assert bgd.ui.display_name_for("bn") == "Bangla"
+
+    _print_config(bgd)
     logger.info("  → PASSED ✓")
 
 
@@ -204,6 +241,7 @@ if __name__ == "__main__":
     test_load_benin()
     test_load_senegal()
     test_load_ghana()
+    test_load_bangladesh()
     test_switching_via_env()
     test_lmic_factors_differ()
     test_referenced_files_exist()
