@@ -68,6 +68,37 @@ p  { line-height: 1.6; }
 .wage-delta-down { font-size: 0.82rem; color: #FF6B6B; font-weight: 600; }
 .data-note { font-size: 0.72rem; color: #6B7280; font-style: italic; margin-top: 0.5rem; }
 
+/* ── Gap cards (side-by-side realistic vs aspirational) ─────────────────── */
+.gap-card {
+    background: linear-gradient(135deg, #1A1D23, #0E1117);
+    border: 1px solid #2A2D35;
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    height: 100%;
+}
+.gap-card.realistic { border-color: #00D4AA55; }
+.gap-card.aspirational { border-color: #0066FF55; }
+.gap-label {
+    font-size: 0.72rem;
+    color: #B8BCC8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
+}
+.gap-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.1;
+}
+.gap-card.realistic .gap-value { color: #00D4AA; }
+.gap-card.aspirational .gap-value { color: #6BA8FF; }
+.gap-meta {
+    font-size: 0.78rem;
+    color: #B8BCC8;
+    margin-top: 0.35rem;
+}
+
 /* ── Risk band badges ────────────────────────────────────── */
 .risk-low      { background:#00D4AA18; color:#00D4AA; border:1px solid #00D4AA44; border-radius:5px; padding:2px 8px; font-size:0.76rem; font-weight:600; }
 .risk-moderate { background:#FFA94D18; color:#FFA94D; border:1px solid #FFA94D44; border-radius:5px; padding:2px 8px; font-size:0.76rem; font-weight:600; }

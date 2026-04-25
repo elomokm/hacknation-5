@@ -290,14 +290,18 @@ def _tab_opportunities(matches, config) -> None:
                 st.markdown(f"[Training resource]({o.training_url})")
 
 
-def _tab_mirror(dashboard, wage, config) -> None:
-    """The hero moment — the economic mirror."""
+def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
+    """The hero moment — the economic mirror.
+
+    Surfaces both econometric signals (wage + employment share) and
+    explicit realistic vs aspirational gap framing.
+    """
     usd = config.labor_data.usd_conversion_rate
 
     st.markdown("## The Economic Mirror")
     st.caption("Real labor market data · ILOSTAT 2024 · Not aspirational — actual market medians")
 
-    # Hero cards
+    # ── Hero cards ───────────────────────────────────────────────
     current = wage.current_estimated_xof
     best_opp = dashboard.wage_mirror.get("best_opportunity_xof", 0)
     ict = dashboard.wage_mirror.get("ict_sector_median_xof")
@@ -326,26 +330,71 @@ def _tab_mirror(dashboard, wage, config) -> None:
                 delta=f"+{ict_pct}%",
             )
 
-    # Highlighted gap statement
-    multiplier = dashboard.wage_mirror.get("multiplier", 1.0)
-    if multiplier > 1.0:
-        st.markdown(
-            f"""<div class="wage-mirror-hero">
-            <div class="wage-label">The gap</div>
-            <div class="wage-value-primary">{wage.wage_gap_to_best_match_xof:,} XOF</div>
-            <div class="wage-delta-up">×{multiplier:.1f} — the distance between today and your best match</div>
-            <div class="data-note">Source: ILOSTAT 2024 · USD at {usd} XOF · Sector medians</div>
-            </div>""",
-            unsafe_allow_html=True,
+    # FIX 3 — Explain the trade-off behind "Best match for you"
+    if matches:
+        top = matches[0].opportunity
+        top_median = (top.wage_range_xof[0] + top.wage_range_xof[1]) // 2
+        top_fit = matches[0].fit_score
+        # Find a higher-paying alternative ranked lower
+        higher_paying = next(
+            (m for m in matches[1:]
+             if (m.opportunity.wage_range_xof[0] + m.opportunity.wage_range_xof[1]) // 2
+                > top_median * 1.3),
+            None,
         )
+        caption_lines = [
+            f"**Top-fit match:** {top.title_local} "
+            f"({top_fit:.0%} profile fit, median {top_median:,} XOF)."
+        ]
+        if higher_paying:
+            hp = higher_paying.opportunity
+            caption_lines.append(
+                f"Higher-paying option exists ({hp.title_local}: "
+                f"{hp.wage_range_xof[0]:,}–{hp.wage_range_xof[1]:,} XOF, "
+                f"fit {higher_paying.fit_score:.0%}) — trade-off between fit and wage."
+            )
+        st.caption(" ".join(caption_lines))
+
+    # ── FIX 2 — Two gap cards: realistic vs aspirational ─────────
+    if best_opp > current or (ict and ict > current):
+        col_gap1, col_gap2 = st.columns(2)
+        with col_gap1:
+            r_gap = best_opp - current
+            r_mult = best_opp / max(current, 1)
+            st.markdown(
+                f"""<div class="gap-card realistic">
+                <div class="gap-label">Realistic gap</div>
+                <div class="gap-value">+{r_gap:,} XOF</div>
+                <div class="gap-meta">×{r_mult:.1f} — best accessible opportunity</div>
+                </div>""",
+                unsafe_allow_html=True,
+            )
+        with col_gap2:
+            if ict:
+                a_gap = ict - current
+                a_mult = ict / max(current, 1)
+                st.markdown(
+                    f"""<div class="gap-card aspirational">
+                    <div class="gap-label">Aspirational gap</div>
+                    <div class="gap-value">+{a_gap:,} XOF</div>
+                    <div class="gap-meta">×{a_mult:.1f} — ICT sector median</div>
+                    </div>""",
+                    unsafe_allow_html=True,
+                )
+
+    st.markdown(
+        f'<p class="data-note">Source: ILOSTAT 2024 · USD at {usd} XOF · Sector medians</p>',
+        unsafe_allow_html=True,
+    )
 
     st.divider()
 
-    # Sector wage bar chart
+    # ── Signal 1 — Wages by sector ───────────────────────────────
     st.markdown("#### Wages by sector (XOF/month)")
+    st.caption("Signal 1: median wage per sector.")
 
     sectors = sorted(wage.formal_median_xof_by_sector.items(), key=lambda x: x[1])
-    fig = go.Figure(go.Bar(
+    fig_w = go.Figure(go.Bar(
         x=[v for _, v in sectors],
         y=[k[:30] for k, _ in sectors],
         orientation="h",
@@ -361,7 +410,7 @@ def _tab_mirror(dashboard, wage, config) -> None:
         textposition="outside",
         textfont=dict(size=10, color="#B8BCC8"),
     ))
-    fig.update_layout(
+    fig_w.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         xaxis=dict(showgrid=False, showticklabels=False),
@@ -369,7 +418,7 @@ def _tab_mirror(dashboard, wage, config) -> None:
         margin=dict(l=0, r=80, t=10, b=10),
         height=max(240, len(sectors) * 30),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig_w, use_container_width=True)
 
     st.markdown(
         '<p class="data-note">Green = ICT median · Orange = your current estimated '
@@ -380,7 +429,52 @@ def _tab_mirror(dashboard, wage, config) -> None:
 
     st.divider()
 
-    # Next steps
+    # ── FIX 1 — Signal 2 — Employment share by sector ────────────
+    st.subheader("Where the jobs are")
+    st.caption(
+        "Real employment distribution by sector — ILOSTAT 2024. "
+        "Signal 2: sector employment share."
+    )
+
+    emp_sectors = sorted(growth.sectors, key=lambda s: s["employment_share_pct"])
+    flagged = set(growth.growth_flagged_sectors)
+
+    fig_e = go.Figure(go.Bar(
+        x=[s["employment_share_pct"] for s in emp_sectors],
+        y=[s["sector"][:30] for s in emp_sectors],
+        orientation="h",
+        marker_color=[
+            "#00D4AA" if s["sector"] in flagged else "#2A5298"
+            for s in emp_sectors
+        ],
+        text=[f"{s['employment_share_pct']:.1f}%" for s in emp_sectors],
+        textposition="outside",
+        textfont=dict(size=10, color="#B8BCC8"),
+    ))
+    fig_e.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(showgrid=False, showticklabels=False),
+        yaxis=dict(tickfont=dict(color="#B8BCC8", size=10)),
+        margin=dict(l=0, r=60, t=10, b=10),
+        height=max(240, len(emp_sectors) * 30),
+    )
+    st.plotly_chart(fig_e, use_container_width=True)
+
+    # Build the structural-gap caption from real data
+    agri = next((s for s in growth.sectors if "Agriculture" in s["sector"]), None)
+    ict_emp = next((s for s in growth.sectors if "ICT" in s["sector"]), None)
+    if agri and ict_emp:
+        st.markdown(
+            f"**The structural gap**: agriculture employs "
+            f"{agri['employment_share_pct']:.0f}% of {config.country} but pays the least. "
+            f"ICT pays the most but employs less than {ict_emp['employment_share_pct']:.1f}%. "
+            f"This is the challenge UNMAPPED helps youth navigate."
+        )
+
+    st.divider()
+
+    # ── Next steps ───────────────────────────────────────────────
     st.markdown("#### Recommended next steps")
     for i, step in enumerate(dashboard.next_steps, 1):
         st.markdown(f"**{i}.** {step}")
@@ -456,6 +550,7 @@ def render_youth_view() -> None:
         risk = st.session_state["risk"]
         matches = st.session_state["matches"]
         wage_signal = st.session_state["wage_signal"]
+        growth_signal = st.session_state["growth_signal"]
         dashboard = st.session_state["dashboard"]
 
         st.divider()
@@ -472,7 +567,7 @@ def render_youth_view() -> None:
         with tab3:
             _tab_opportunities(matches, config)
         with tab4:
-            _tab_mirror(dashboard, wage_signal, config)
+            _tab_mirror(dashboard, wage_signal, growth_signal, matches, config)
 
         # Footer
         st.divider()
