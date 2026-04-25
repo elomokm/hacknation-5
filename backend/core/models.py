@@ -1,7 +1,8 @@
 """Shared Pydantic v2 models — single source of truth for all UNMAPPED types."""
 
+from datetime import datetime
 from typing import Literal, Optional
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
@@ -135,15 +136,52 @@ class ProjectionPoint(BaseModel):
     share_youth_pct: float
 
 
-class StandardizedProfile(BaseModel):
-    """JSON-LD compatible skill profile — the output of Module 01."""
+# ---------------------------------------------------------------------------
+# Module 01 — Skill Signal Engine types
+# ---------------------------------------------------------------------------
 
+class ExtractedSkill(BaseModel):
+    """One skill extracted from raw user input by the LLM."""
+
+    raw_label: str
+    normalized_label: str
+    category: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    evidence: str
+
+
+class MappedSkill(BaseModel):
+    """An ExtractedSkill matched to the ESCO/ISCO taxonomy."""
+
+    esco_id: str
+    esco_label: str
+    esco_category: str
+    isco_groups: list[str]
+    isco_titles: list[str]
+    match_confidence: float = Field(ge=0.0, le=1.0)
+    raw_extraction: ExtractedSkill
+
+
+class StandardizedProfile(BaseModel):
+    """JSON-LD compatible portable skill profile — output of Module 01."""
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    context: str = Field(
+        default="https://unmapped.io/v1/context",
+        serialization_alias="@context",
+    )
+    rdf_type: str = Field(default="Person", serialization_alias="@type")
     profile_id: str
+    generated_at: datetime
     country_code: str
-    raw_description: str
-    extracted_skills: list[Skill]
-    isco_matches: list[str]
-    created_at: str
+    name: str
+    education: dict
+    languages: list[str]
+    skills: list[MappedSkill]
+    skill_categories: dict[str, int]
+    portability: dict
+    human_readable_summary: str
 
 
 class RiskAssessment(BaseModel):
