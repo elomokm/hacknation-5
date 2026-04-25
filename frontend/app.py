@@ -1,38 +1,84 @@
-"""UNMAPPED — Streamlit entry point. Implemented in Phase 3."""
+"""UNMAPPED — Streamlit frontend entry point."""
 
-import logging
 import os
+import sys
+from pathlib import Path
 
-import requests
+from dotenv import load_dotenv
+
+# Load API key from backend/.env before any backend import
+load_dotenv(Path(__file__).parent.parent / "backend" / ".env")
+
+# Make backend importable
+sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
+
 import streamlit as st
 
+# Page config must be first Streamlit call
+st.set_page_config(
+    page_title="UNMAPPED — Closing the distance",
+    page_icon="🗺️",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
+
+from views.style import inject_custom_css
 from views.youth_view import render_youth_view
 from views.policymaker_view import render_policymaker_view
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+inject_custom_css()
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
-
-st.set_page_config(
-    page_title="UNMAPPED",
-    page_icon="🗺️",
-    layout="centered",
-    initial_sidebar_state="collapsed",
-)
-
-# -- Sidebar: view toggle + health check --
+# ── Sidebar ────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.title("UNMAPPED")
-    view = st.radio("View", ["Youth", "Policymaker"], index=0)
-    try:
-        r = requests.get(f"{BACKEND_URL}/health", timeout=3)
-        info = r.json()
-        st.success(f"Backend OK · {info.get('country', '?')}")
-    except Exception:
-        st.error("Backend offline — run `make backend`")
+    st.markdown(
+        "## 🗺️ UNMAPPED",
+        help="Closing the distance between informal skills and economic opportunity",
+    )
+    st.caption("World Bank × Hack-Nation 5")
 
-if view == "Youth":
-    render_youth_view(backend_url=BACKEND_URL)
+    st.divider()
+
+    # Country toggle — the localizability proof
+    country = st.selectbox(
+        "Active country",
+        options=["BEN", "SEN"],
+        format_func=lambda x: {"BEN": "🇧🇯 Bénin", "SEN": "🇸🇳 Sénégal"}[x],
+        key="country_select",
+    )
+    # Update env var so get_active_config() picks it up
+    os.environ["ACTIVE_COUNTRY"] = country
+
+    st.divider()
+
+    # View selector
+    view = st.radio(
+        "Interface",
+        options=["youth", "policymaker"],
+        format_func=lambda x: {
+            "youth": "👤 Youth (Akossiwa)",
+            "policymaker": "🏛️ Policymaker",
+        }[x],
+    )
+
+    st.divider()
+
+    with st.expander("ℹ️ About UNMAPPED"):
+        st.markdown(
+            """
+**UNMAPPED** maps informal skills to economic opportunity
+using real data — ESCO, ILOSTAT, Frey-Osborne.
+
+- **Module 01** — Skill extraction & ESCO mapping
+- **Module 02** — Automation risk (Frey-Osborne, LMIC-adjusted)
+- **Module 03** — Opportunity matching + econometric signals
+
+Challenge 5 · World Bank Youth Summit
+Hack-Nation 5th Global AI Hackathon
+            """
+        )
+
+# ── Main content ───────────────────────────────────────────────────────────
+if view == "youth":
+    render_youth_view()
 else:
-    render_policymaker_view(backend_url=BACKEND_URL)
+    render_policymaker_view()

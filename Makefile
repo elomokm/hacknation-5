@@ -11,7 +11,7 @@ backend:
 	cd backend && ../.venv/bin/uvicorn main:app --reload --port 8000
 
 frontend:
-	cd frontend && ../.venv/bin/streamlit run app.py --server.port 8501
+	.venv/bin/streamlit run frontend/app.py --server.port 8501
 
 test:
 	cd backend && ../.venv/bin/pytest tests/ -v
