@@ -26,6 +26,8 @@ from core.models import (
     WageSignal,
     YouthDashboard,
 )
+from views.i18n import t
+from views.skill_graph import render_skill_graph
 from views.style import risk_badge
 
 API_BASE = os.getenv("UNMAPPED_API_URL", "http://localhost:8000/api")
@@ -36,6 +38,77 @@ _DEMO_TEXT = (
     "peu de Python sur YouTube. J'aide ma cousine à gérer son magasin "
     "de tissus, je tiens son inventaire sur Excel."
 )
+
+# Demo personas — one-click prefill that switches country + form fields.
+# Order matches the brief's regional progression: West Africa × 3, then South Asia.
+_PERSONAS: list[dict] = [
+    {
+        "country": "BEN",
+        "flag": "🇧🇯",
+        "name": "Akossiwa",
+        "age": 22,
+        "city": "Cotonou",
+        "tagline": "Phone repair · Excel inventory · HTML basics",
+        "education": "BEPC",
+        "languages": ["fr", "fon"],
+        "text": (
+            "Je m'appelle Akossiwa. J'ai un BEPC. Je répare des téléphones "
+            "depuis 4 ans dans mon atelier à Cotonou. J'ai appris HTML et un "
+            "peu de Python sur YouTube. J'aide ma cousine à gérer son magasin "
+            "de tissus, je tiens son inventaire sur Excel."
+        ),
+    },
+    {
+        "country": "SEN",
+        "flag": "🇸🇳",
+        "name": "Mamadou",
+        "age": 24,
+        "city": "Thiès",
+        "tagline": "Cash crops · Tractor · Weekly market sales",
+        "education": "BFEM",
+        "languages": ["fr", "wo"],
+        "text": (
+            "Je m'appelle Mamadou. J'ai un BFEM. Je travaille avec mon père "
+            "sur une ferme près de Thiès depuis 6 ans. On cultive du mil et "
+            "des arachides. Je conduis le tracteur. Je vends au marché chaque semaine."
+        ),
+    },
+    {
+        "country": "GHA",
+        "flag": "🇬🇭",
+        "name": "Amara",
+        "age": 24,
+        "city": "Kumasi",
+        "tagline": "Carpentry apprentice · Furniture · Roadside sales",
+        "education": "WASSCE",
+        "languages": ["en", "tw"],
+        "text": (
+            "I'm Amara, 24, from Kumasi. I've been a carpentry apprentice for "
+            "3 years in my uncle's workshop. We build furniture from local wood "
+            "— chairs, tables, doors. I'm learning to use power tools. I sometimes "
+            "help with sales at our roadside shop."
+        ),
+    },
+    {
+        "country": "BGD",
+        "flag": "🇧🇩",
+        "name": "Rashida",
+        "age": 23,
+        "city": "Khulna",
+        "tagline": "Rice farming · Home tailoring · Village sales",
+        "education": "SSC",
+        "languages": ["bn", "en"],
+        "text": (
+            "I'm Rashida, 23, from Khulna. I help my family with rice farming "
+            "and run a small home tailoring business. I sew kameez and lehenga "
+            "for women in my village. I learned tailoring from my mother and "
+            "basic English from school."
+        ),
+    },
+]
+
+
+_FLAG_BY_CC = {p["country"]: p["flag"] for p in _PERSONAS}
 
 
 # ── API client helpers ─────────────────────────────────────────────────────
@@ -131,17 +204,31 @@ def _qr_base64(text: str) -> str:
 
 # ── Tab renderers ──────────────────────────────────────────────────────────
 def _tab_profile(profile, config) -> None:
-    st.markdown(f"### {profile.name}'s Skill Profile")
-    st.caption(
-        f"Education: **{profile.education.get('level')}** "
-        f"(ISCED {profile.education.get('isced')}) · "
-        f"Languages: {', '.join(profile.languages)}"
-    )
+    st.markdown(f"### {t('profile.title', name=profile.name)}")
+    st.caption(t(
+        "profile.education_lang",
+        level=profile.education.get("level"),
+        isced=profile.education.get("isced"),
+        langs=", ".join(profile.languages),
+    ))
 
     if not profile.skills:
-        st.warning("No skills were mapped to the ESCO taxonomy. Try a more detailed description.")
+        st.warning(t("profile.no_skills_warn"))
         return
 
+    # ── Skill graph (Obsidian-style, force-directed) ─────────────
+    adjacent = st.session_state.get("adjacent", {})
+    graph_html = render_skill_graph(profile, adjacent, max_neighbors=2)
+    if graph_html:
+        import streamlit.components.v1 as components
+        components.html(graph_html, height=500, scrolling=False)
+        st.caption(
+            "Profile skills (green) · Adjacent ESCO skills (color = category) · "
+            "Hover a node for details. Drag to explore."
+        )
+        st.divider()
+
+    # ── Linear list (detail view) ────────────────────────────────
     for skill in profile.skills:
         conf = skill.raw_extraction.confidence
         with st.container():
@@ -154,13 +241,14 @@ def _tab_profile(profile, config) -> None:
         st.markdown("---")
 
     # Portability block
-    with st.expander("Portability"):
+    with st.expander(t("profile.portability")):
         isco_codes = profile.portability.get("isco_codes", [])
-        st.markdown(
-            f"**{profile.portability.get('esco_count', 0)} ESCO-mapped skills** · "
-            f"{profile.portability.get('unmapped_skill_count', 0)} unmapped · "
-            f"Standard: {profile.portability.get('standard', 'ESCO v1.2')}"
-        )
+        st.markdown(t(
+            "profile.portability_summary",
+            count=profile.portability.get("esco_count", 0),
+            unmapped=profile.portability.get("unmapped_skill_count", 0),
+            std=profile.portability.get("standard", "ESCO v1.2"),
+        ))
         st.code(" · ".join(isco_codes) or "None", language=None)
 
     st.divider()
@@ -170,13 +258,13 @@ def _tab_profile(profile, config) -> None:
     c1, c2 = st.columns(2)
     with c1:
         st.download_button(
-            "Download JSON-LD profile",
+            t("profile.download"),
             data=profile_json,
             file_name=f"unmapped_{profile.profile_id[:8]}.json",
             mime="application/json",
         )
     with c2:
-        if st.button("Show QR code"):
+        if st.button(t("profile.show_qr")):
             st.session_state["show_qr"] = not st.session_state.get("show_qr", False)
 
     if st.session_state.get("show_qr"):
@@ -184,21 +272,21 @@ def _tab_profile(profile, config) -> None:
         st.image(
             f"data:image/png;base64,{qr_b64}",
             width=200,
-            caption="Scan to access this profile JSON-LD",
+            caption=t("profile.qr_caption"),
         )
 
 
 def _tab_risk(risk, profile, config) -> None:
     adjacent = st.session_state.get("adjacent", {})
 
-    st.markdown("### Automation Risk Assessment")
+    st.markdown(f"### {t('risk.title')}")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.metric("Overall risk", risk.overall_risk_band.upper())
+        st.metric(t("risk.overall"), risk.overall_risk_band.upper())
     with c2:
-        st.metric("Avg probability", f"{risk.weighted_average_probability:.1%}")
+        st.metric(t("risk.avg_prob"), f"{risk.weighted_average_probability:.1%}")
     with c3:
-        st.metric("Skills at risk", f"{risk.pct_skills_at_risk:.0%}")
+        st.metric(t("risk.pct_at_risk"), f"{risk.pct_skills_at_risk:.0%}")
 
     st.divider()
 
@@ -209,7 +297,7 @@ def _tab_risk(risk, profile, config) -> None:
         with st.expander(f"{skill.esco_label}  —  {adj}", expanded=(i == 0)):
             st.markdown(badge, unsafe_allow_html=True)
             if score.matched_occupations:
-                st.caption("Matched Frey-Osborne occupations: " + ", ".join(score.matched_occupations[:3]))
+                st.caption(t("risk.matched_occupations") + ", ".join(score.matched_occupations[:3]))
             if score.raw_frey_osborne:
                 st.caption(
                     f"Raw F-O: {score.raw_frey_osborne:.3f} → "
@@ -220,7 +308,7 @@ def _tab_risk(risk, profile, config) -> None:
             if score.risk_band in {"high", "critical"}:
                 alts = adjacent.get(skill.esco_id, [])
                 if alts:
-                    st.markdown("**Lower-risk alternatives:**")
+                    st.markdown(f"**{t('risk.alternatives_label')}**")
                     for alt in alts:
                         alt_adj = alt.automation_risk.adjusted_probability
                         st.markdown(
@@ -231,7 +319,7 @@ def _tab_risk(risk, profile, config) -> None:
                         st.caption(alt.transition_rationale)
 
     st.divider()
-    with st.expander("Methodology and limitations"):
+    with st.expander(t("risk.methodology")):
         st.info(risk.methodology_note)
         for lim in risk.limitations:
             st.caption(f"• {lim}")
@@ -240,14 +328,11 @@ def _tab_risk(risk, profile, config) -> None:
 def _tab_opportunities(matches, config) -> None:
     usd = config.labor_data.usd_conversion_rate
 
-    st.markdown("### Matched Opportunities")
-    st.caption(
-        f"Filtered to realistic_for_youth=True · "
-        f"Sorted by profile fit · {config.country}"
-    )
+    st.markdown(f"### {t('opp.title')}")
+    st.caption(t("opp.caption", country=config.country))
 
     if not matches:
-        st.warning("No matching opportunities found. Try a more detailed description.")
+        st.warning(t("opp.empty_warn"))
         return
 
     for match in matches:
@@ -276,18 +361,18 @@ def _tab_opportunities(matches, config) -> None:
             unsafe_allow_html=True,
         )
 
-        with st.expander(f"Details — fit score {match.fit_score:.0%}"):
+        with st.expander(t("opp.details", score=f"{match.fit_score:.0%}")):
             st.markdown(f"**{match.accessibility_note}**")
             if match.matched_isco:
-                st.caption(f"ISCO overlap: {', '.join(match.matched_isco)}")
+                st.caption(f"ISCO: {', '.join(match.matched_isco)}")
             if match.gap_education:
-                st.warning(f"Education gap: {match.gap_education}")
+                st.warning(t("opp.education_gap", gap=match.gap_education))
             if match.gap_skills:
-                st.caption(f"Skills to acquire: {len(match.gap_skills)} ESCO skills not yet in profile")
+                st.caption(t("opp.skills_to_acquire", n=len(match.gap_skills)))
             if o.description:
                 st.markdown(o.description)
             if o.training_url:
-                st.markdown(f"[Training resource]({o.training_url})")
+                st.markdown(f"[{t('opp.training_resource')}]({o.training_url})")
 
 
 def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
@@ -297,9 +382,10 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
     explicit realistic vs aspirational gap framing.
     """
     usd = config.labor_data.usd_conversion_rate
+    currency = config.labor_data.currency
 
-    st.markdown("## The Economic Mirror")
-    st.caption("Real labor market data · ILOSTAT 2024 · Not aspirational — actual market medians")
+    st.markdown(f"## {t('mirror.title')}")
+    st.caption(t("mirror.caption"))
 
     # ── Hero cards ───────────────────────────────────────────────
     current = wage.current_estimated_xof
@@ -309,24 +395,24 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
     c1, c2, c3 = st.columns(3)
     with c1:
         st.metric(
-            "Today (informal)",
-            f"{current:,} XOF",
+            t("mirror.today"),
+            f"{current:,} {currency}",
             delta=f"{current // usd} USD/month",
             delta_color="off",
         )
     with c2:
         delta_pct = int((best_opp / max(current, 1) - 1) * 100) if best_opp > current else 0
         st.metric(
-            "Best match for you",
-            f"{best_opp:,} XOF",
+            t("mirror.best_match"),
+            f"{best_opp:,} {currency}",
             delta=f"+{delta_pct}%" if delta_pct > 0 else None,
         )
     with c3:
         if ict:
             ict_pct = int((ict / max(current, 1) - 1) * 100)
             st.metric(
-                "ICT sector median",
-                f"{ict:,} XOF",
+                t("mirror.ict_median"),
+                f"{ict:,} {currency}",
                 delta=f"+{ict_pct}%",
             )
 
@@ -363,9 +449,9 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
             r_mult = best_opp / max(current, 1)
             st.markdown(
                 f"""<div class="gap-card realistic">
-                <div class="gap-label">Realistic gap</div>
-                <div class="gap-value">+{r_gap:,} XOF</div>
-                <div class="gap-meta">×{r_mult:.1f} — best accessible opportunity</div>
+                <div class="gap-label">{t("mirror.realistic_gap")}</div>
+                <div class="gap-value">+{r_gap:,} {currency}</div>
+                <div class="gap-meta">{t("mirror.realistic_meta", mult=f"{r_mult:.1f}")}</div>
                 </div>""",
                 unsafe_allow_html=True,
             )
@@ -375,23 +461,40 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
                 a_mult = ict / max(current, 1)
                 st.markdown(
                     f"""<div class="gap-card aspirational">
-                    <div class="gap-label">Aspirational gap</div>
-                    <div class="gap-value">+{a_gap:,} XOF</div>
-                    <div class="gap-meta">×{a_mult:.1f} — ICT sector median</div>
+                    <div class="gap-label">{t("mirror.aspirational_gap")}</div>
+                    <div class="gap-value">+{a_gap:,} {currency}</div>
+                    <div class="gap-meta">{t("mirror.aspirational_meta", mult=f"{a_mult:.1f}")}</div>
                     </div>""",
                     unsafe_allow_html=True,
                 )
 
     st.markdown(
-        f'<p class="data-note">Source: ILOSTAT 2024 · USD at {usd} XOF · Sector medians</p>',
+        f'<p class="data-note">Source: ILOSTAT 2024 · USD at {usd} {currency} · Sector medians</p>',
         unsafe_allow_html=True,
     )
+
+    # ── Recommended next steps — promoted to top of Mirror, callout style ──
+    if dashboard.next_steps:
+        steps_html = "".join(
+            f'<div class="next-step-item">'
+            f'<span class="next-step-num">{i}</span>'
+            f'<span class="next-step-text">{step}</span>'
+            f'</div>'
+            for i, step in enumerate(dashboard.next_steps, 1)
+        )
+        st.markdown(
+            f"""<div class="next-steps-callout">
+                <div class="next-steps-title">{t("mirror.next_steps_title")}</div>
+                {steps_html}
+            </div>""",
+            unsafe_allow_html=True,
+        )
 
     st.divider()
 
     # ── Signal 1 — Wages by sector ───────────────────────────────
-    st.markdown("#### Wages by sector (XOF/month)")
-    st.caption("Signal 1: median wage per sector.")
+    st.markdown(f"#### {t('mirror.wages_title', currency=currency)}")
+    st.caption(t("mirror.wages_caption"))
 
     sectors = sorted(wage.formal_median_xof_by_sector.items(), key=lambda x: x[1])
     fig_w = go.Figure(go.Bar(
@@ -430,11 +533,8 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
     st.divider()
 
     # ── FIX 1 — Signal 2 — Employment share by sector ────────────
-    st.subheader("Where the jobs are")
-    st.caption(
-        "Real employment distribution by sector — ILOSTAT 2024. "
-        "Signal 2: sector employment share."
-    )
+    st.subheader(t("mirror.jobs_title"))
+    st.caption(t("mirror.jobs_caption"))
 
     emp_sectors = sorted(growth.sectors, key=lambda s: s["employment_share_pct"])
     flagged = set(growth.growth_flagged_sectors)
@@ -474,15 +574,66 @@ def _tab_mirror(dashboard, wage, growth, matches, config) -> None:
 
     st.divider()
 
-    # ── Next steps ───────────────────────────────────────────────
-    st.markdown("#### Recommended next steps")
-    for i, step in enumerate(dashboard.next_steps, 1):
-        st.markdown(f"**{i}.** {step}")
-
     # Transparency
-    with st.expander("What this data doesn't show"):
+    with st.expander(t("mirror.transparency_expander")):
         for note in dashboard.transparency_notes:
             st.caption(f"• {note}")
+
+
+# ── Country banner + persona buttons ───────────────────────────────────────
+def _render_country_banner(config) -> None:
+    """Render a prominent country banner at the top of the page (visible in demo video)."""
+    flag = _FLAG_BY_CC.get(config.country_code, "🌍")
+    st.markdown(
+        f"""<div class="country-banner">
+            <span class="country-banner-flag">{flag}</span>
+            <div class="country-banner-meta">
+                <div class="country-banner-name">{config.country}</div>
+                <div class="country-banner-sub">
+                    {config.labor_data.currency} ·
+                    {config.ui.primary_language.upper()} ·
+                    LMIC factor {config.automation_calibration.lmic_adjustment_factor}
+                </div>
+            </div>
+        </div>""",
+        unsafe_allow_html=True,
+    )
+
+
+def _render_persona_buttons(config) -> None:
+    """4 one-click demo personas. Switches country + prefills the form."""
+    st.markdown(f"#### {t('youth.persona_section_title')}")
+    st.caption(t("youth.persona_section_caption"))
+    cols = st.columns(len(_PERSONAS))
+    for col, p in zip(cols, _PERSONAS):
+        with col:
+            label = f"{p['flag']} {p['name']}, {p['age']}"
+            help_text = (
+                f"{p['city']} ({p['country']}) — {p['tagline']}. "
+                f"Click to load this persona and switch to {p['country']}."
+            )
+            is_active = (config.country_code == p["country"])
+            btn_type = "primary" if is_active else "secondary"
+            if st.button(
+                label,
+                key=f"persona_{p['country']}",
+                use_container_width=True,
+                help=help_text,
+                type=btn_type,
+            ):
+                # Update sidebar country selector
+                st.session_state["country_select"] = p["country"]
+                # Pre-fill form fields (read on next rerun)
+                st.session_state["form_description"] = p["text"]
+                st.session_state["form_name"] = p["name"]
+                st.session_state["form_education"] = p["education"]
+                st.session_state["form_languages"] = p["languages"]
+                # Clear cached pipeline outputs so user sees fresh form
+                for key in ["profile", "risk", "adjacent", "matches",
+                            "wage_signal", "growth_signal", "dashboard"]:
+                    st.session_state.pop(key, None)
+                st.rerun()
+            st.caption(p["tagline"])
 
 
 # ── Main entry point ───────────────────────────────────────────────────────
@@ -497,49 +648,62 @@ def render_youth_view() -> None:
 
     # API health check
     if not _check_api_alive():
-        st.error(
-            f"UNMAPPED API not reachable at `{API_BASE}`. "
-            f"Start the API with `make api` in another terminal."
-        )
+        st.error(t("error.api_unreachable", url=API_BASE))
         return
 
+    # ── Active country banner (B) ─────────────────────────────────
+    _render_country_banner(config)
+
+    # ── Demo personas (A) — quick one-click prefill, separate from form ──
+    _render_persona_buttons(config)
+
     # ── Header ────────────────────────────────────────────────────
-    st.markdown("## Tell us about yourself")
-    st.caption(
-        "Describe your experience in any language — French, English, Fon, Wolof. "
-        "We'll extract your skills and show you your real economic options."
-    )
+    st.markdown(f"### {t('youth.form_section_title')}")
+    st.caption(t("youth.form_section_caption"))
+
+    # ── Form initial values (driven by session_state for persona prefill) ──
+    edu_levels = config.education_taxonomy.levels
+    default_edu = st.session_state.get("form_education")
+    if default_edu not in edu_levels:
+        # Country switched + persona's education level not in this country's ladder.
+        default_edu = edu_levels[min(2, len(edu_levels) - 1)]
+    default_text = st.session_state.get("form_description", _DEMO_TEXT)
+    default_name = st.session_state.get("form_name", "Akossiwa")
+    default_langs = [
+        l for l in st.session_state.get("form_languages", [config.ui.primary_language])
+        if l in config.ui.supported_languages
+    ] or [config.ui.primary_language]
 
     # ── Input form ────────────────────────────────────────────────
     with st.form("profile_form", clear_on_submit=False):
         description = st.text_area(
-            "Your experience",
-            value=_DEMO_TEXT,
+            t("youth.form.text_label"),
+            value=default_text,
             height=140,
-            placeholder="Je répare des téléphones depuis 3 ans…",
-            help="Write in your own words — any language, any format.",
+            placeholder=t("youth.form.text_placeholder"),
+            help=t("youth.form.text_help"),
         )
         c1, c2 = st.columns(2)
         with c1:
             edu = st.selectbox(
-                "Education level",
-                config.education_taxonomy.levels,
-                index=min(2, len(config.education_taxonomy.levels) - 1),
+                t("youth.form.education"),
+                edu_levels,
+                index=edu_levels.index(default_edu),
             )
         with c2:
             langs = st.multiselect(
-                "Languages spoken",
+                t("youth.form.languages"),
                 config.ui.supported_languages,
-                default=[config.ui.primary_language],
+                default=default_langs,
             )
-        name = st.text_input("Your name (optional)", value="Akossiwa")
+        name = st.text_input(t("youth.form.name"), value=default_name)
         submitted = st.form_submit_button(
-            "Generate my profile", use_container_width=True
+            t("youth.form.submit"), use_container_width=True
         )
 
     if submitted:
         if not description.strip():
-            st.error("Please describe at least one skill or experience.")
+            st.error(t("youth.form.empty_error"))
         else:
             with st.container():
                 _run_pipeline(description, edu, langs, name)
@@ -557,9 +721,12 @@ def render_youth_view() -> None:
         st.markdown(f"*{dashboard.profile_summary}*")
         st.divider()
 
-        tab1, tab2, tab3, tab4 = st.tabs(
-            ["Profile", "Risk", "Opportunities", "Mirror"]
-        )
+        tab1, tab2, tab3, tab4 = st.tabs([
+            t("tabs.profile"),
+            t("tabs.risk"),
+            t("tabs.opportunities"),
+            t("tabs.mirror"),
+        ])
         with tab1:
             _tab_profile(profile, config)
         with tab2:
@@ -573,8 +740,7 @@ def render_youth_view() -> None:
         st.divider()
         st.markdown(
             '<p class="data-note" style="text-align:center">'
-            "Profile portable across borders · ISCO-08 standardized · ESCO v1.2 mapped · "
-            f"Generated by UNMAPPED · {config.country}"
+            f"{t('footer.tagline', country=config.country)}"
             "</p>",
             unsafe_allow_html=True,
         )

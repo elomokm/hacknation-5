@@ -54,15 +54,18 @@ async def assess(req: RiskAssessRequest) -> RiskAssessResponse:
 
     adjacent: dict[str, list[AdjacentSkill]] = {}
     if req.include_adjacent:
+        # Return adjacent durable skills for EVERY profile skill (not just
+        # high-risk ones). The Risk tab filters by risk_band when displaying;
+        # the Profile tab uses all of them to render the skill graph.
         for skill, score in zip(profile.skills, assessment.per_skill_scores):
-            if score.risk_band in {"high", "critical"}:
-                alternatives = finder.find_durable_alternatives(
-                    current_skill=skill,
-                    risk_score=score,
-                    scorer=scorer,
-                    config=config,
-                    top_k=3,
-                )
+            alternatives = finder.find_durable_alternatives(
+                current_skill=skill,
+                risk_score=score,
+                scorer=scorer,
+                config=config,
+                top_k=3,
+            )
+            if alternatives:
                 adjacent[skill.esco_id] = alternatives
 
     return RiskAssessResponse(

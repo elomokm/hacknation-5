@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "backend"))
 
 from core.config_loader import get_active_config
 from module_03_opportunity.econometrics import EconometricSignals
+from views.i18n import t
 
 
 @st.cache_resource
@@ -25,30 +26,34 @@ def render_policymaker_view() -> None:
     econ = _get_econ(config.country_code)
     labor = econ._labor
 
+    # ── Active country banner (shared with youth view) ──────────
+    from views.youth_view import _render_country_banner
+    _render_country_banner(config)
+
     # ── Header ──────────────────────────────────────────────────
-    st.markdown(f"## {config.country} — Youth Skills Dashboard")
-    st.caption(f"Aggregate labor market signals · {labor.year} reference · ILOSTAT")
+    st.markdown(f"## {t('policy.title', country=config.country)}")
+    st.caption(t("policy.caption", year=labor.year))
 
     st.divider()
 
     # ── Key metrics row ──────────────────────────────────────────
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric("Youth unemployment", f"{labor.youth_unemployment_rate:.1f}%")
+        st.metric(t("policy.youth_unemp"), f"{labor.youth_unemployment_rate:.1f}%")
     with c2:
         neet = getattr(labor, "youth_neet_rate", None)
-        st.metric("Youth NEET", f"{neet:.1f}%" if neet else "n/a")
+        st.metric(t("policy.youth_neet"), f"{neet:.1f}%" if neet else "n/a")
     with c3:
-        st.metric("Informal employment", f"{labor.informal_employment_share:.1f}%")
+        st.metric(t("policy.informal"), f"{labor.informal_employment_share:.1f}%")
     with c4:
         pop = getattr(labor, "population_15_24", None)
-        st.metric("Population 15-24", f"{pop/1_000_000:.1f}M" if pop else "n/a")
+        st.metric(t("policy.population"), f"{pop/1_000_000:.1f}M" if pop else "n/a")
 
     st.divider()
 
     # ── Signal 1 — Wage by sector ────────────────────────────────
-    st.markdown("### Wage Signal — Monthly median by sector")
-    st.caption("ILOSTAT 2024 · XOF (CFA Franc)")
+    st.markdown(f"### {t('policy.wage_section')}")
+    st.caption(f"ILOSTAT {labor.year} · {config.labor_data.currency}")
 
     wages = sorted(labor.wage_by_sector, key=lambda w: w.median_monthly_xof)
     fig_wage = go.Figure(go.Bar(
@@ -84,8 +89,8 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Signal 2 — Employment share ──────────────────────────────
-    st.markdown("### Employment Signal — Sector share")
-    st.caption("ILOSTAT 2024 · % of total employment")
+    st.markdown(f"### {t('policy.emp_section')}")
+    st.caption(f"ILOSTAT {labor.year} · % of total employment")
 
     growth = econ.get_growth_signals()
     emp_sorted = sorted(growth.sectors, key=lambda s: s["employment_share_pct"], reverse=True)
@@ -127,8 +132,8 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Recommended program areas ────────────────────────────────
-    st.markdown("### Recommended Program Areas")
-    st.caption("Data-driven — derived from wage gap and sector signals")
+    st.markdown(f"### {t('policy.programs_section')}")
+    st.caption(t("policy.programs_caption"))
 
     usd = config.labor_data.usd_conversion_rate
     ict_xof = next(
@@ -172,7 +177,7 @@ def render_policymaker_view() -> None:
     st.divider()
 
     # ── Methodology and limits ───────────────────────────────────
-    with st.expander("Methodology and limitations"):
+    with st.expander(t("policy.methodology")):
         st.markdown(f"""
 **Data sources:**
 - **ILOSTAT** — {labor.country} labor force survey {labor.year}: wage by sector, employment share, unemployment

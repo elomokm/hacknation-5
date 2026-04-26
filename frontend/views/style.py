@@ -163,8 +163,29 @@ p  { line-height: 1.6; }
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
+/* Primary = the action button (green gradient) */
 .stButton > button[kind="primary"],
-.stButton > button {
+.stButton > button[kind="primaryFormSubmit"] {
+    background: linear-gradient(135deg, #00D4AA, #00A88A) !important;
+    color: #0E1117 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    padding: 0.55rem 1.4rem !important;
+    width: 100%;
+}
+/* Secondary = inactive persona, less prominent */
+.stButton > button[kind="secondary"] {
+    background: #1A1D23 !important;
+    color: #B8BCC8 !important;
+    border: 1px solid #2A2D35 !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 0.55rem 1.4rem !important;
+    width: 100%;
+}
+/* Default Streamlit button (no kind specified) */
+.stButton > button:not([kind]) {
     background: linear-gradient(135deg, #00D4AA, #00A88A) !important;
     color: #0E1117 !important;
     border: none !important;
@@ -174,6 +195,10 @@ p  { line-height: 1.6; }
     width: 100%;
 }
 .stButton > button:hover { opacity: 0.85 !important; }
+.stButton > button[kind="secondary"]:hover {
+    border-color: #00D4AA66 !important;
+    color: #00D4AA !important;
+}
 .stDownloadButton > button {
     background: #1A1D23 !important;
     color: #00D4AA !important;
@@ -196,6 +221,74 @@ p  { line-height: 1.6; }
 
 /* ── Divider ─────────────────────────────────────────────── */
 hr { border-color: #2A2D35; }
+
+/* ── Recommended next steps callout (Mirror tab hero CTA) ──── */
+.next-steps-callout {
+    background: linear-gradient(135deg, #00D4AA12, #00D4AA05);
+    border: 1px solid #00D4AA66;
+    border-left: 4px solid #00D4AA;
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    margin: 1rem 0 1.4rem 0;
+}
+.next-steps-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #00D4AA;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.7rem;
+    text-transform: uppercase;
+}
+.next-step-item {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+}
+.next-step-item:last-child { margin-bottom: 0; }
+.next-step-num {
+    flex-shrink: 0;
+    width: 1.6rem; height: 1.6rem;
+    border-radius: 50%;
+    background: #00D4AA;
+    color: #0E1117;
+    font-weight: 700;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.next-step-text {
+    color: #FFFFFF;
+    font-size: 0.88rem;
+}
+
+/* ── Country banner (top of page, visible in demo video) ───── */
+.country-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #1A1D23, #0E1117);
+    border: 1px solid #00D4AA44;
+    border-left: 4px solid #00D4AA;
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    margin: 0 0 1.2rem 0;
+}
+.country-banner-flag { font-size: 2.2rem; line-height: 1; }
+.country-banner-meta { display: flex; flex-direction: column; gap: 0.15rem; }
+.country-banner-name {
+    font-size: 1.25rem; font-weight: 700; color: #FFFFFF; line-height: 1;
+}
+.country-banner-sub {
+    font-size: 0.78rem; color: #B8BCC8; letter-spacing: 0.02em;
+}
+
+/* ── Demo persona button captions ─────────────────────────── */
+.stCaption {
+    font-size: 0.72rem !important;
+}
 
 /* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 480px) {
