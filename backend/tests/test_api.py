@@ -102,6 +102,95 @@ def test_ghana_signals_endpoint():
     logger.info("✓ /api/opportunities/GHA/signals → strategic: %s", growth_flagged)
 
 
+def test_opportunity_ingestion_lifecycle():
+    """Operator-facing ingestion: upsert → bulk → delete, with cache invalidation.
+
+    This is the end-to-end proof: an operator can push their own opportunity
+    data via HTTP without touching the codebase. UNMAPPED standardizes,
+    matches, and surfaces it on the next /match call.
+    """
+    # Get current count
+    r = client.get("/api/opportunities/BEN")
+    assert r.status_code == 200
+    initial_count = len(r.json())
+    logger.info("Initial BEN opportunities: %d", initial_count)
+
+    # 1. UPSERT a brand-new opportunity (operator: a Cotonou NGO)
+    new_opp = {
+        "id": "test_ingestion_001",
+        "type": "self_employment",
+        "title": "Solar Pump Maintenance Technician",
+        "title_local": "Technicien Maintenance Pompe Solaire",
+        "sector": "Construction",
+        "required_skills_isco": ["74", "71"],
+        "required_skills_esco": ["esco:skill:0007"],
+        "education_min": "BEPC",
+        "experience_years_min": 1,
+        "wage_range_xof": [70000, 130000],
+        "geography": "Pan-Bénin",
+        "remote_eligible": False,
+        "description": "Maintain solar irrigation pumps in northern Bénin.",
+        "training_url": None,
+        "realistic_for_youth": True,
+    }
+    r = client.post("/api/opportunities/BEN/upsert", json=new_opp)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["inserted"] == 1
+    assert body["updated"] == 0
+    assert body["total_in_country"] == initial_count + 1
+    logger.info("✓ /opportunities/BEN/upsert (new) → +1, total=%d", body["total_in_country"])
+
+    # 2. UPSERT same id with updated fields → should UPDATE not insert
+    new_opp["wage_range_xof"] = [80000, 140000]
+    r = client.post("/api/opportunities/BEN/upsert", json=new_opp)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["inserted"] == 0
+    assert body["updated"] == 1
+    assert body["total_in_country"] == initial_count + 1  # unchanged
+    logger.info("✓ /opportunities/BEN/upsert (existing) → updated, total still %d", body["total_in_country"])
+
+    # 3. BULK upsert: 1 new + 1 update of the existing
+    bulk_payload = {
+        "opportunities": [
+            new_opp,  # update again
+            {
+                **new_opp,
+                "id": "test_ingestion_002",
+                "title": "Borehole Drilling Assistant",
+                "title_local": "Assistant Forage Puits",
+            },
+        ]
+    }
+    r = client.post("/api/opportunities/BEN/bulk", json=bulk_payload)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["inserted"] == 1
+    assert body["updated"] == 1
+    assert body["total_in_country"] == initial_count + 2
+    logger.info("✓ /opportunities/BEN/bulk → +1 ins, 1 upd, total=%d", body["total_in_country"])
+
+    # 4. DELETE both
+    for opp_id in ("test_ingestion_001", "test_ingestion_002"):
+        r = client.delete(f"/api/opportunities/BEN/{opp_id}")
+        assert r.status_code == 200, r.text
+        assert r.json()["deleted"] == 1
+
+    # 5. Verify back to initial count
+    r = client.get("/api/opportunities/BEN")
+    final_count = len(r.json())
+    assert final_count == initial_count, \
+        f"Cleanup failed: started {initial_count}, ended {final_count}"
+    logger.info("✓ Lifecycle complete: %d → %d → %d (clean)",
+                initial_count, initial_count + 2, final_count)
+
+    # 6. DELETE non-existent → 404
+    r = client.delete("/api/opportunities/BEN/does_not_exist_999")
+    assert r.status_code == 404
+    logger.info("✓ DELETE non-existent → 404")
+
+
 def test_bangladesh_cross_regional():
     """Bangladesh proves cross-regional infrastructure (South Asia, bengali script)."""
     r = client.get("/api/config/BGD")
@@ -292,6 +381,7 @@ if __name__ == "__main__":
     test_signals_endpoint()
     test_ghana_signals_endpoint()
     test_bangladesh_cross_regional()
+    test_opportunity_ingestion_lifecycle()
     test_policymaker_dashboard()
     test_full_pipeline_via_api()
 

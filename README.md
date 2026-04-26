@@ -41,7 +41,8 @@ Or live in the Streamlit sidebar (🇧🇯 Bénin ↔ 🇸🇳 Sénégal). No co
 UNMAPPED is **infrastructure**, not a product. Every module is exposed via REST.
 Open by design: any government, NGO, training provider, or employer can plug in.
 
-**OpenAPI docs:** http://localhost:8000/docs (Swagger UI)
+**OpenAPI docs:** http://localhost:8000/docs
+**Operator integration guide:** see [INTEGRATION.md](INTEGRATION.md) — how to push your own opportunities (ANPE, BRAC, GIPC, ATS systems, etc.) and consume the dashboards. (Swagger UI)
 
 ```bash
 # Health
@@ -86,6 +87,10 @@ curl http://localhost:8000/api/opportunities/BEN/signals
 | `GET /api/opportunities/{code}/signals` | Wage + sector growth signals |
 | `GET /api/opportunities/{code}/dashboard/youth` | Composite youth dashboard |
 | `GET /api/opportunities/{code}/dashboard/policymaker` | Country aggregate dashboard |
+| `GET /api/opportunities/{code}` | List all opportunities for a country |
+| `POST /api/opportunities/{code}/upsert` | **Operator ingestion**: add/replace one opportunity |
+| `POST /api/opportunities/{code}/bulk` | **Operator ingestion**: atomic batch upsert |
+| `DELETE /api/opportunities/{code}/{opp_id}` | **Operator ingestion**: remove one opportunity |
 
 ---
 
