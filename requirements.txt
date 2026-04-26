@@ -1,0 +1,25 @@
+# Root requirements.txt — used by Streamlit Cloud (which doesn't pick up
+# frontend/requirements.txt automatically). This file is a SUPERSET of the
+# packages the frontend needs at runtime, including transitive imports
+# from the backend core/ and module_03_opportunity/ packages.
+#
+# For local dev, `make install` still installs backend/ + frontend/ requirements
+# explicitly into .venv/.
+
+# ── Frontend direct ─────────────────────────────────────────
+streamlit
+requests
+qrcode[pil]
+pandas
+plotly
+python-dotenv
+
+# ── Skill graph (Profile tab) ────────────────────────────────
+pyvis
+
+# ── Backend modules imported by frontend (transitive) ────────
+# core.models, core.config_loader, module_03_opportunity.*
+pydantic
+pyyaml
+networkx
+numpy
