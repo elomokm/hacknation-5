@@ -14,7 +14,7 @@ services:
     rootDir: backend
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
-    pythonVersion: "3.12"
+    # Python version is read from backend/runtime.txt (python-3.12.7)
     healthCheckPath: /api/health
     envVars:
       - key: ACTIVE_COUNTRY
@@ -25,3 +25,5 @@ services:
         value: "1"
       - key: PYTHONPATH
         value: "."
+      - key: PYTHON_VERSION
+        value: "3.12.7"
