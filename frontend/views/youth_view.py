@@ -693,6 +693,24 @@ def _render_country_banner(config) -> None:
     )
 
 
+def _apply_persona(p: dict) -> None:
+    """on_click callback: assign session_state before widgets are re-instantiated.
+
+    Direct assignment in the button's `if` block runs after the sidebar
+    selectbox (key=country_select) has already been instantiated on the rerun,
+    which raises StreamlitAPIException. Callbacks fire between runs and bypass
+    that lifecycle constraint.
+    """
+    st.session_state["country_select"] = p["country"]
+    st.session_state["form_description"] = p["text"]
+    st.session_state["form_name"] = p["name"]
+    st.session_state["form_education"] = p["education"]
+    st.session_state["form_languages"] = p["languages"]
+    for key in ("profile", "risk", "adjacent", "matches",
+                "wage_signal", "growth_signal", "dashboard"):
+        st.session_state.pop(key, None)
+
+
 def _render_persona_buttons(config) -> None:
     """4 one-click demo personas. Switches country + prefills the form."""
     st.markdown(f"#### {t('youth.persona_section_title')}")
@@ -707,25 +725,15 @@ def _render_persona_buttons(config) -> None:
             )
             is_active = (config.country_code == p["country"])
             btn_type = "primary" if is_active else "secondary"
-            if st.button(
+            st.button(
                 label,
                 key=f"persona_{p['country']}",
                 use_container_width=True,
                 help=help_text,
                 type=btn_type,
-            ):
-                # Update sidebar country selector
-                st.session_state["country_select"] = p["country"]
-                # Pre-fill form fields (read on next rerun)
-                st.session_state["form_description"] = p["text"]
-                st.session_state["form_name"] = p["name"]
-                st.session_state["form_education"] = p["education"]
-                st.session_state["form_languages"] = p["languages"]
-                # Clear cached pipeline outputs so user sees fresh form
-                for key in ["profile", "risk", "adjacent", "matches",
-                            "wage_signal", "growth_signal", "dashboard"]:
-                    st.session_state.pop(key, None)
-                st.rerun()
+                on_click=_apply_persona,
+                args=(p,),
+            )
             st.caption(p["tagline"])
 
 
