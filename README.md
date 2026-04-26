@@ -7,9 +7,21 @@ It takes an informal work description ("I repair phones and manage stock on What
 extracts structured skills, assesses automation risk, and returns ranked economic
 pathways backed by real labor market data.
 
+## Try it live
+
+| | |
+|---|---|
+| **Frontend (Streamlit Cloud)** | https://unmapped.streamlit.app |
+| **API (Render — Frankfurt)** | https://unmapped-api.onrender.com/api |
+| **OpenAPI / Swagger** | https://unmapped-api.onrender.com/docs |
+
+> First visit may take 30–50s — Render free tier wakes the dyno on cold start.
+> The API supports 4 countries out of the box: 🇧🇯 Bénin · 🇸🇳 Sénégal · 🇬🇭 Ghana · 🇧🇩 Bangladesh.
+> Try the persona buttons (Akossiwa, Mamadou, Amara, Rashida) for a one-click demo.
+
 ---
 
-## Quick Start
+## Quick Start (local)
 
 ```bash
 make install                                   # one-time setup
@@ -32,7 +44,7 @@ ACTIVE_COUNTRY=BEN make api    # Bénin (default)
 ACTIVE_COUNTRY=SEN make api    # Sénégal
 ```
 
-Or live in the Streamlit sidebar (🇧🇯 Bénin ↔ 🇸🇳 Sénégal). No code changes.
+Or live in the Streamlit sidebar (🇧🇯 Bénin ↔ 🇸🇳 Sénégal ↔ 🇬🇭 Ghana ↔ 🇧🇩 Bangladesh). No code changes.
 
 ---
 
@@ -126,11 +138,15 @@ Full provenance: see `DATA_SOURCES.md`.
 
 ## Country Configs
 
-| Country | Code | Status |
-|---|---|---|
-| Bénin | BEN | Active |
-| Sénégal | SEN | Active |
-| Ghana | GHA | Planned (see LOCALIZATION.md) |
+| Country | Code | Region | Currency | Script | Status |
+|---|---|---|---|---|---|
+| 🇧🇯 Bénin | BEN | West Africa | XOF | latin | Active |
+| 🇸🇳 Sénégal | SEN | West Africa | XOF | latin | Active |
+| 🇬🇭 Ghana | GHA | West Africa | GHS | latin | Active |
+| 🇧🇩 Bangladesh | BGD | South Asia | BDT | bengali | Active |
+
+Adding a country is **one YAML file** in `backend/configs/`. Auto-discovered, hot-reloadable
+via `POST /api/config/reload`. See [LOCALIZATION.md](LOCALIZATION.md).
 
 ---
 
