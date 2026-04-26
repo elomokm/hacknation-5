@@ -204,6 +204,15 @@ def _qr_base64(text: str) -> str:
 
 # ── Tab renderers ──────────────────────────────────────────────────────────
 def _tab_profile(profile, config) -> None:
+    """Human-readable profile view: cards per ESCO category + collapsible graph.
+
+    Designed so Akossiwa understands her own profile in one glance —
+    not buried in a graph that requires hovering every node.
+    """
+    from collections import defaultdict
+    from views.skill_graph import _CATEGORY_COLOR, _DEFAULT_COLOR
+
+    # ── Hero header ──────────────────────────────────────────────
     st.markdown(f"### {t('profile.title', name=profile.name)}")
     st.caption(t(
         "profile.education_lang",
@@ -216,64 +225,137 @@ def _tab_profile(profile, config) -> None:
         st.warning(t("profile.no_skills_warn"))
         return
 
-    # ── Skill graph (Obsidian-style, force-directed) ─────────────
-    adjacent = st.session_state.get("adjacent", {})
-    graph_html = render_skill_graph(profile, adjacent, max_neighbors=2)
-    if graph_html:
-        import streamlit.components.v1 as components
-        components.html(graph_html, height=500, scrolling=False)
-        st.caption(
-            "Profile skills (green) · Adjacent ESCO skills (color = category) · "
-            "Hover a node for details. Drag to explore."
-        )
-        st.divider()
+    # ── Standardization summary banner ───────────────────────────
+    isco_codes = profile.portability.get("isco_codes", [])
+    n_mapped = profile.portability.get("esco_count", 0)
+    n_unmapped = profile.portability.get("unmapped_skill_count", 0)
+    n_total = n_mapped + n_unmapped
 
-    # ── Linear list (detail view) ────────────────────────────────
-    for skill in profile.skills:
-        conf = skill.raw_extraction.confidence
-        with st.container():
-            c1, c2 = st.columns([3, 1])
-            with c1:
-                st.markdown(f"**{skill.esco_label}**")
-                st.caption(f"ISCO: {', '.join(skill.isco_groups)} · Category: {skill.esco_category}")
-            with c2:
-                st.progress(conf, text=f"{conf:.0%}")
-        st.markdown("---")
+    st.markdown(
+        f"""<div class="profile-summary-banner">
+            <div class="profile-summary-stat">
+                <span class="profile-summary-num">{n_mapped}</span>
+                <span class="profile-summary-label">{t("profile.summary_mapped")}</span>
+            </div>
+            <div class="profile-summary-divider">·</div>
+            <div class="profile-summary-stat">
+                <span class="profile-summary-num">{n_unmapped}</span>
+                <span class="profile-summary-label">{t("profile.summary_unmapped")}</span>
+            </div>
+            <div class="profile-summary-divider">·</div>
+            <div class="profile-summary-meta">
+                ESCO v1.2 · ISCO-08 codes: <code>{" ".join(isco_codes) or "—"}</code>
+            </div>
+        </div>""",
+        unsafe_allow_html=True,
+    )
 
-    # Portability block
-    with st.expander(t("profile.portability")):
-        isco_codes = profile.portability.get("isco_codes", [])
-        st.markdown(t(
-            "profile.portability_summary",
-            count=profile.portability.get("esco_count", 0),
-            unmapped=profile.portability.get("unmapped_skill_count", 0),
-            std=profile.portability.get("standard", "ESCO v1.2"),
-        ))
-        st.code(" · ".join(isco_codes) or "None", language=None)
-
-    st.divider()
-
-    # Download + QR
+    # ── Download JSON-LD (compact) ───────────────────────────────
     profile_json = profile.model_dump_json(indent=2, by_alias=True)
-    c1, c2 = st.columns(2)
+    c1, c2, _ = st.columns([1, 1, 2])
     with c1:
         st.download_button(
-            t("profile.download"),
+            "↓ JSON-LD",
             data=profile_json,
             file_name=f"unmapped_{profile.profile_id[:8]}.json",
             mime="application/json",
+            use_container_width=True,
+            help=t("profile.download"),
         )
     with c2:
-        if st.button(t("profile.show_qr")):
+        if st.button("◧ QR code", use_container_width=True, help=t("profile.show_qr")):
             st.session_state["show_qr"] = not st.session_state.get("show_qr", False)
 
     if st.session_state.get("show_qr"):
         qr_b64 = _qr_base64(profile_json)
         st.image(
             f"data:image/png;base64,{qr_b64}",
-            width=200,
+            width=160,
             caption=t("profile.qr_caption"),
         )
+
+    st.divider()
+
+    # ── Cards grouped by ESCO category ───────────────────────────
+    adjacent = st.session_state.get("adjacent", {})
+    skills_by_cat: dict[str, list] = defaultdict(list)
+    for skill in profile.skills:
+        skills_by_cat[skill.esco_category].append(skill)
+
+    # Order categories by number of skills (most populated first)
+    ordered_cats = sorted(
+        skills_by_cat.items(),
+        key=lambda kv: (-len(kv[1]), kv[0]),
+    )
+
+    for category, skills in ordered_cats:
+        color = _CATEGORY_COLOR.get(category, _DEFAULT_COLOR)
+        # Build the inner skills HTML
+        skills_html_parts: list[str] = []
+        for skill in skills:
+            conf = skill.raw_extraction.confidence
+            isco = ", ".join(skill.isco_groups)
+            skills_html_parts.append(f"""
+                <div class="cat-skill">
+                    <div class="cat-skill-label">{skill.esco_label}</div>
+                    <div class="cat-skill-meta">
+                        ISCO {isco} · {t("profile.confidence", pct=f"{int(conf*100)}%")}
+                    </div>
+                </div>
+            """)
+
+        # Build the adjacent-skills section (combine adjacents from all skills in this category)
+        all_adjacent = []
+        seen_adj_ids: set[str] = set()
+        for skill in skills:
+            for alt in adjacent.get(skill.esco_id, []):
+                if alt.esco_id not in seen_adj_ids:
+                    all_adjacent.append(alt)
+                    seen_adj_ids.add(alt.esco_id)
+        all_adjacent = all_adjacent[:3]  # cap at 3 per category card
+
+        if all_adjacent:
+            adj_html = "<ul class='cat-adj-list'>" + "".join(
+                f"<li><strong>{a.esco_label}</strong>"
+                f" <span class='cat-adj-meta'>· {a.esco_category} · "
+                f"risque {a.automation_risk.risk_band}</span></li>"
+                for a in all_adjacent
+            ) + "</ul>"
+            adj_block = f"""
+                <div class="cat-adj-section">
+                    <div class="cat-adj-title">→ {t("profile.adjacent_label")}</div>
+                    {adj_html}
+                </div>
+            """
+        else:
+            adj_block = ""
+
+        st.markdown(
+            f"""<div class="category-card" style="border-left-color: {color};">
+                <div class="cat-header">
+                    <span class="cat-dot" style="background:{color};"></span>
+                    <span class="cat-name">{category.upper()}</span>
+                    <span class="cat-count">{len(skills)} skill{"s" if len(skills) > 1 else ""}</span>
+                </div>
+                <div class="cat-skills">
+                    {"".join(skills_html_parts)}
+                </div>
+                {adj_block}
+            </div>""",
+            unsafe_allow_html=True,
+        )
+
+    st.divider()
+
+    # ── Interactive graph (collapsible — visual detail, not the hero) ──
+    with st.expander(t("profile.see_graph"), expanded=False):
+        graph_html = render_skill_graph(profile, adjacent, max_neighbors=2)
+        if graph_html:
+            import streamlit.components.v1 as components
+            components.html(graph_html, height=520, scrolling=False)
+            st.caption(t("profile.graph_legend"))
+        else:
+            st.info(t("profile.graph_unavailable"))
 
 
 def _tab_risk(risk, profile, config) -> None:

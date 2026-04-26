@@ -67,7 +67,7 @@ def render_skill_graph(profile, adjacent_skills: dict, max_neighbors: int = 2) -
         return None
 
     net = Network(
-        height="480px",
+        height="500px",
         width="100%",
         bgcolor="#0E1117",
         font_color="#FFFFFF",
@@ -75,43 +75,48 @@ def render_skill_graph(profile, adjacent_skills: dict, max_neighbors: int = 2) -
         directed=False,
         cdn_resources="in_line",
     )
-    # Force-directed physics
+    # Force-directed physics — looser spread for label readability
     net.barnes_hut(
-        gravity=-3000,
-        central_gravity=0.15,
-        spring_length=120,
-        spring_strength=0.03,
-        damping=0.4,
-        overlap=0.1,
+        gravity=-8000,           # stronger repulsion → more spacing
+        central_gravity=0.10,
+        spring_length=200,       # longer edges = more room for labels
+        spring_strength=0.02,
+        damping=0.5,
+        overlap=0,
     )
 
-    # ── Profile skill nodes (large, green) ───────────────────────
+    # ── Profile skill nodes (large, green, label always visible) ──
     profile_node_ids: set[str] = set()
     for skill in profile.skills:
         net.add_node(
             skill.esco_id,
-            label=_short_label(skill.esco_label),
+            label=_short_label(skill.esco_label, max_len=30),
             title=f"{skill.esco_label}\n[{skill.esco_category}]\nISCO: {', '.join(skill.isco_groups)}",
             color={"background": _PROFILE_NODE_COLOR, "border": "#00A88A"},
-            size=28,
-            font={"size": 16, "color": "#0E1117", "face": "Inter"},
+            size=42,
+            font={
+                "size": 18,
+                "color": "#FFFFFF",
+                "face": "Inter",
+                "strokeWidth": 4,
+                "strokeColor": "#0E1117",   # outline for readability on dark bg
+                "vadjust": -45,             # label above the node
+            },
             borderWidth=3,
             shape="dot",
         )
         profile_node_ids.add(skill.esco_id)
 
-    # ── Adjacent skill nodes (smaller, category color) ───────────
+    # ── Adjacent skill nodes (medium, category color, labels visible) ──
     seen_adjacents: set[str] = set()
     for skill in profile.skills:
         alts = adjacent_skills.get(skill.esco_id, [])[:max_neighbors]
-        # If no precomputed adjacents (skill wasn't high-risk), still add
-        # a couple "siblings" from the same category if available
         if not alts and skill.esco_id in adjacent_skills:
             continue
 
         for alt in alts:
             if alt.esco_id in profile_node_ids:
-                continue  # already a profile node
+                continue
             if alt.esco_id not in seen_adjacents:
                 color = _CATEGORY_COLOR.get(alt.esco_category, _DEFAULT_COLOR)
                 tooltip = (
@@ -121,11 +126,18 @@ def render_skill_graph(profile, adjacent_skills: dict, max_neighbors: int = 2) -
                 )
                 net.add_node(
                     alt.esco_id,
-                    label=_short_label(alt.esco_label),
+                    label=_short_label(alt.esco_label, max_len=26),
                     title=tooltip,
                     color={"background": color, "border": color},
-                    size=14,
-                    font={"size": 11, "color": "#FFFFFF", "face": "Inter"},
+                    size=22,
+                    font={
+                        "size": 13,
+                        "color": "#FFFFFF",
+                        "face": "Inter",
+                        "strokeWidth": 3,
+                        "strokeColor": "#0E1117",
+                        "vadjust": -28,
+                    },
                     borderWidth=1,
                     shape="dot",
                 )
@@ -135,8 +147,8 @@ def render_skill_graph(profile, adjacent_skills: dict, max_neighbors: int = 2) -
                 skill.esco_id,
                 alt.esco_id,
                 value=alt.proximity_score,
-                color={"color": "#2A2D35", "opacity": 0.7},
-                width=1 + alt.proximity_score * 2,
+                color={"color": "#3A3D45", "opacity": 0.8},
+                width=1 + alt.proximity_score * 3,
             )
 
     # ── Render to a temp HTML and return string ──────────────────

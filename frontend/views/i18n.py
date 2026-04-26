@@ -143,6 +143,40 @@ _STRINGS: dict[str, dict[str, str]] = {
         "en": "Scan to access this profile JSON-LD",
         "fr": "Scanner pour accéder à ce profil JSON-LD",
     },
+    "profile.summary_mapped": {
+        "en": "skills mapped to ESCO",
+        "fr": "compétences mappées ESCO",
+    },
+    "profile.summary_unmapped": {
+        "en": "extracted but unmapped",
+        "fr": "extraites mais non mappées",
+    },
+    "profile.confidence": {
+        "en": "Confidence {pct}",
+        "fr": "Confiance {pct}",
+    },
+    "profile.adjacent_label": {
+        "en": "Where to evolve (lower automation risk):",
+        "fr": "Vers où évoluer (faible risque d'automatisation) :",
+    },
+    "profile.see_graph": {
+        "en": "See interactive skill graph",
+        "fr": "Voir le graphe interactif des compétences",
+    },
+    "profile.graph_legend": {
+        "en": (
+            "Profile skills (green) · Adjacent ESCO skills (color = category) · "
+            "Hover a node for details. Drag to explore."
+        ),
+        "fr": (
+            "Compétences du profil (vert) · Compétences ESCO adjacentes (couleur = catégorie) · "
+            "Survolez un nœud pour les détails. Glissez pour explorer."
+        ),
+    },
+    "profile.graph_unavailable": {
+        "en": "Skill graph unavailable (PyVis not installed).",
+        "fr": "Graphe de compétences indisponible (PyVis non installé).",
+    },
 
     # ── Risk tab ─────────────────────────────────────────────────
     "risk.title": {"en": "Automation Risk Assessment", "fr": "Évaluation du risque d'automatisation"},

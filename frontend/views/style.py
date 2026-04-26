@@ -222,6 +222,143 @@ p  { line-height: 1.6; }
 /* ── Divider ─────────────────────────────────────────────── */
 hr { border-color: #2A2D35; }
 
+/* ── Profile tab — summary banner ─────────────────────────── */
+.profile-summary-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #1A1D23;
+    border: 1px solid #2A2D35;
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    margin: 0.5rem 0 1rem 0;
+    flex-wrap: wrap;
+}
+.profile-summary-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+.profile-summary-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #00D4AA;
+    line-height: 1;
+}
+.profile-summary-label {
+    font-size: 0.7rem;
+    color: #B8BCC8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+    text-align: center;
+}
+.profile-summary-divider {
+    color: #2A2D35;
+    font-size: 1.5rem;
+}
+.profile-summary-meta {
+    flex: 1;
+    font-size: 0.78rem;
+    color: #B8BCC8;
+}
+.profile-summary-meta code {
+    background: transparent !important;
+    color: #00D4AA;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.78rem;
+    padding: 0 !important;
+}
+
+/* ── Profile tab — category cards (the human-readable view) ─── */
+.category-card {
+    background: #1A1D23;
+    border: 1px solid #2A2D35;
+    border-left: 4px solid #2A2D35;  /* overridden inline by category color */
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.9rem;
+}
+.cat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+}
+.cat-dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.cat-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+}
+.cat-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: #B8BCC8;
+    background: #0E1117;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid #2A2D35;
+}
+.cat-skills { display: flex; flex-direction: column; gap: 0.5rem; }
+.cat-skill {
+    background: #0E1117;
+    border: 1px solid #2A2D35;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+}
+.cat-skill-label {
+    color: #FFFFFF;
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+.cat-skill-meta {
+    color: #B8BCC8;
+    font-size: 0.74rem;
+    margin-top: 0.2rem;
+}
+.cat-adj-section {
+    margin-top: 0.8rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed #2A2D35;
+}
+.cat-adj-title {
+    font-size: 0.75rem;
+    color: #00D4AA;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+.cat-adj-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    list-style: none;
+}
+.cat-adj-list li {
+    color: #FFFFFF;
+    font-size: 0.84rem;
+    margin-bottom: 0.25rem;
+    position: relative;
+}
+.cat-adj-list li::before {
+    content: "•";
+    color: #00D4AA;
+    position: absolute;
+    left: -1rem;
+}
+.cat-adj-meta {
+    color: #6B7280;
+    font-size: 0.72rem;
+}
+
 /* ── Recommended next steps callout (Mirror tab hero CTA) ──── */
 .next-steps-callout {
     background: linear-gradient(135deg, #00D4AA12, #00D4AA05);
