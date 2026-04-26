@@ -231,24 +231,19 @@ def _tab_profile(profile, config) -> None:
     n_unmapped = profile.portability.get("unmapped_skill_count", 0)
     n_total = n_mapped + n_unmapped
 
-    st.markdown(
-        f"""<div class="profile-summary-banner">
-            <div class="profile-summary-stat">
-                <span class="profile-summary-num">{n_mapped}</span>
-                <span class="profile-summary-label">{t("profile.summary_mapped")}</span>
-            </div>
-            <div class="profile-summary-divider">·</div>
-            <div class="profile-summary-stat">
-                <span class="profile-summary-num">{n_unmapped}</span>
-                <span class="profile-summary-label">{t("profile.summary_unmapped")}</span>
-            </div>
-            <div class="profile-summary-divider">·</div>
-            <div class="profile-summary-meta">
-                ESCO v1.2 · ISCO-08 codes: <code>{" ".join(isco_codes) or "—"}</code>
-            </div>
-        </div>""",
-        unsafe_allow_html=True,
+    isco_inline = " ".join(isco_codes) or "—"
+    summary_html = (
+        '<div class="profile-summary-banner">'
+        f'<div class="profile-summary-stat"><span class="profile-summary-num">{n_mapped}</span>'
+        f'<span class="profile-summary-label">{t("profile.summary_mapped")}</span></div>'
+        '<div class="profile-summary-divider">·</div>'
+        f'<div class="profile-summary-stat"><span class="profile-summary-num">{n_unmapped}</span>'
+        f'<span class="profile-summary-label">{t("profile.summary_unmapped")}</span></div>'
+        '<div class="profile-summary-divider">·</div>'
+        f'<div class="profile-summary-meta">ESCO v1.2 · ISCO-08 codes: <code>{isco_inline}</code></div>'
+        '</div>'
     )
+    st.markdown(summary_html, unsafe_allow_html=True)
 
     # ── Download JSON-LD (compact) ───────────────────────────────
     profile_json = profile.model_dump_json(indent=2, by_alias=True)
@@ -290,21 +285,21 @@ def _tab_profile(profile, config) -> None:
 
     for category, skills in ordered_cats:
         color = _CATEGORY_COLOR.get(category, _DEFAULT_COLOR)
-        # Build the inner skills HTML
+
+        # Inner skills HTML — each on a single line to avoid markdown code-block trap
         skills_html_parts: list[str] = []
         for skill in skills:
-            conf = skill.raw_extraction.confidence
+            conf_pct = f"{int(skill.raw_extraction.confidence * 100)}%"
             isco = ", ".join(skill.isco_groups)
-            skills_html_parts.append(f"""
-                <div class="cat-skill">
-                    <div class="cat-skill-label">{skill.esco_label}</div>
-                    <div class="cat-skill-meta">
-                        ISCO {isco} · {t("profile.confidence", pct=f"{int(conf*100)}%")}
-                    </div>
-                </div>
-            """)
+            conf_label = t("profile.confidence", pct=conf_pct)
+            skills_html_parts.append(
+                f'<div class="cat-skill">'
+                f'<div class="cat-skill-label">{skill.esco_label}</div>'
+                f'<div class="cat-skill-meta">ISCO {isco} · {conf_label}</div>'
+                f'</div>'
+            )
 
-        # Build the adjacent-skills section (combine adjacents from all skills in this category)
+        # Combine adjacents across all skills in this category
         all_adjacent = []
         seen_adj_ids: set[str] = set()
         for skill in skills:
@@ -312,38 +307,37 @@ def _tab_profile(profile, config) -> None:
                 if alt.esco_id not in seen_adj_ids:
                     all_adjacent.append(alt)
                     seen_adj_ids.add(alt.esco_id)
-        all_adjacent = all_adjacent[:3]  # cap at 3 per category card
+        all_adjacent = all_adjacent[:3]
 
         if all_adjacent:
-            adj_html = "<ul class='cat-adj-list'>" + "".join(
+            adj_items = "".join(
                 f"<li><strong>{a.esco_label}</strong>"
-                f" <span class='cat-adj-meta'>· {a.esco_category} · "
-                f"risque {a.automation_risk.risk_band}</span></li>"
+                f"<span class='cat-adj-meta'> · {a.esco_category} · "
+                f"risk {a.automation_risk.risk_band}</span></li>"
                 for a in all_adjacent
-            ) + "</ul>"
-            adj_block = f"""
-                <div class="cat-adj-section">
-                    <div class="cat-adj-title">→ {t("profile.adjacent_label")}</div>
-                    {adj_html}
-                </div>
-            """
+            )
+            adj_block = (
+                '<div class="cat-adj-section">'
+                f'<div class="cat-adj-title">→ {t("profile.adjacent_label")}</div>'
+                f'<ul class="cat-adj-list">{adj_items}</ul>'
+                '</div>'
+            )
         else:
             adj_block = ""
 
-        st.markdown(
-            f"""<div class="category-card" style="border-left-color: {color};">
-                <div class="cat-header">
-                    <span class="cat-dot" style="background:{color};"></span>
-                    <span class="cat-name">{category.upper()}</span>
-                    <span class="cat-count">{len(skills)} skill{"s" if len(skills) > 1 else ""}</span>
-                </div>
-                <div class="cat-skills">
-                    {"".join(skills_html_parts)}
-                </div>
-                {adj_block}
-            </div>""",
-            unsafe_allow_html=True,
+        skill_count_label = f'{len(skills)} skill{"s" if len(skills) > 1 else ""}'
+        card_html = (
+            f'<div class="category-card" style="border-left-color: {color};">'
+            '<div class="cat-header">'
+            f'<span class="cat-dot" style="background:{color};"></span>'
+            f'<span class="cat-name">{category.upper()}</span>'
+            f'<span class="cat-count">{skill_count_label}</span>'
+            '</div>'
+            f'<div class="cat-skills">{"".join(skills_html_parts)}</div>'
+            f'{adj_block}'
+            '</div>'
         )
+        st.markdown(card_html, unsafe_allow_html=True)
 
     st.divider()
 
