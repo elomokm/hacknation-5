@@ -1,6 +1,21 @@
+# Frontend deps. Streamlit Cloud picks up this file (next to app.py) in
+# preference to the repo-root requirements.txt — keep them in sync.
+# Superset because the frontend transitively imports backend modules
+# (core/, module_03_opportunity/) which need pydantic/yaml/networkx/numpy.
+
+# ── Frontend direct ─────────────────────────────────────────
 streamlit
 requests
 qrcode[pil]
 pandas
 plotly
 python-dotenv
+
+# ── Skill graph (Profile tab) ────────────────────────────────
+pyvis
+
+# ── Backend modules imported by frontend (transitive) ────────
+pydantic
+pyyaml
+networkx
+numpy
