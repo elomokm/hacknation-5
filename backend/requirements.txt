@@ -1,5 +1,6 @@
 fastapi
 uvicorn[standard]
+python-multipart   # required by FastAPI for Form/File (operator CSV upload)
 anthropic
 python-dotenv
 pyyaml

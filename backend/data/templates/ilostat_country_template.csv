@@ -1,0 +1,33 @@
+# UNMAPPED — Country onboarding template
+#
+# Fill one row per economic sector. The 5 columns below are the contract.
+# Lines starting with `#` are comments and are skipped by the parser.
+#
+# Columns:
+#   sector_label          : Display name (any language). Will appear in dashboards.
+#   isco_group            : ISCO-08 2-digit code (e.g. "61" = Agriculture, "75" = Crafts).
+#                           See https://www.ilo.org/public/english/bureau/stat/isco/isco08/
+#   monthly_wage_local    : Median monthly wage in YOUR country's currency (no commas).
+#                           Source: ILOSTAT "Mean monthly earnings of employees by sex and economic activity".
+#   employment_share_pct  : Sector's share of total employment (%). Sum across rows ~= 100.
+#                           Source: ILOSTAT "Employment by sex and economic activity".
+#   growth_flagged        : true|false — does your country's plan/strategy mark this
+#                           sector as a growth priority? (Top-3 by employment share
+#                           among true rows become the "strategic sectors".)
+#
+# The example rows below are for Côte d'Ivoire (XOF, USD rate ~600). Replace
+# them with your country's data and upload via the /api/onboarding/country
+# endpoint or the "Add a country" tab in the Streamlit operator console.
+sector_label,isco_group,monthly_wage_local,employment_share_pct,growth_flagged
+Agriculture,61,45000,38.0,false
+Trade and commerce (informal),52,55000,17.5,false
+Construction,71,75000,8.0,false
+Other manufacturing,81,80000,7.0,false
+Transportation and storage,83,85000,6.5,false
+Public administration,11,150000,4.5,false
+Education,23,120000,3.5,false
+Human health and social work,22,130000,2.5,false
+Accommodation and food services,51,60000,4.5,true
+Information and communication (ICT),25,220000,1.8,true
+Financial services,24,250000,1.7,true
+Cocoa & cash-crop processing,75,90000,5.0,true

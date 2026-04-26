@@ -18,6 +18,10 @@ pathways backed by real labor market data.
 > First visit may take 30–50s — Render free tier wakes the dyno on cold start.
 > The API supports 4 countries out of the box: 🇧🇯 Bénin · 🇸🇳 Sénégal · 🇬🇭 Ghana · 🇧🇩 Bangladesh.
 > Try the persona buttons (Akossiwa, Mamadou, Amara, Rashida) for a one-click demo.
+>
+> **Operator console** — pick "Operator (NGO / Gov)" in the sidebar to upload
+> a 5-column ILOSTAT CSV and add **your own country in 60 seconds**, no
+> developer required. See [INTEGRATION.md](INTEGRATION.md#no-code-country-onboarding-60-seconds-no-developer).
 
 ---
 

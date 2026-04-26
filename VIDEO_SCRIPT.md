@@ -12,6 +12,10 @@
 2. Open the **Profile** tab once so the skill graph caches its layout.
 3. Open https://unmapped-api.onrender.com/docs in a second tab (for the tech beat).
 4. Set browser zoom to 90% so the full UI fits in 1080p.
+5. **Pre-stage the Côte d'Ivoire CSV** for the live add-country beat:
+   download `ilostat_country_template.csv` from the operator console (Step 1
+   button), keep it as-is (it ships pre-filled with Côte d'Ivoire example
+   rows). Have the file ready in your Downloads folder.
 
 ---
 
@@ -25,7 +29,7 @@
 | **18-30s** | **Profile tab** open. Show the cards-per-ESCO-category layout. Hover one card. | "Ses compétences sont mappées sur ESCO, le standard européen. JSON-LD exportable, partageable en QR. Portable même sans internet." |
 | **30-40s** | **Mirror tab**. Show automation risk gauge + adjacent durable skills + recommended next steps. | "Risque d'automatisation calibré pour le Bénin — pas le score US brut. Et trois compétences adjacentes pour rester pertinente." |
 | **40-50s** | **Match tab**. Show top-3 opportunities with wage delta + growth-flagged sectors. | "Trois opportunités locales, avec wage delta en XOF et secteurs en croissance — données ILOSTAT 2024." |
-| **50-58s** | **Switch country to 🇧🇩 Bangladesh** in sidebar. Page reloads. Show the new banner with BDT + bengali. | "Et zéro code à changer pour passer du Bénin au Bangladesh. South Asia, devise BDT, script bengali. UNMAPPED est une infrastructure, pas un produit." |
+| **50-58s** | **Switch sidebar to "Operator (NGO / Gov)"**. Show the upload form with the pre-filled Côte d'Ivoire CSV. Click **Onboard country**. Wait for ✅. Switch sidebar dropdown to 🌍 Côte d'Ivoire. | "Et un nouveau pays sans dev. Une opératrice ONG upload son CSV ILOSTAT, remplit 5 champs, et la Côte d'Ivoire est live dans l'API. Soixante secondes. C'est ça l'infrastructure." |
 | **58-60s** | Cursor on URL bar showing `unmapped.streamlit.app`. | "UNMAPPED. Open. Localizable. Yours." |
 
 ---

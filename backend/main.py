@@ -20,6 +20,7 @@ from api.middleware.error_handling import register_exception_handlers
 from api.routes import (
     config_router,
     health_router,
+    onboarding_router,
     opportunity_router,
     profile_router,
     risk_router,
@@ -62,6 +63,7 @@ app.include_router(config_router, prefix="/api/config", tags=["config"])
 app.include_router(profile_router, prefix="/api/profile", tags=["module-01-skills"])
 app.include_router(risk_router, prefix="/api/risk", tags=["module-02-risk"])
 app.include_router(opportunity_router, prefix="/api/opportunities", tags=["module-03-opportunities"])
+app.include_router(onboarding_router, prefix="/api/onboarding", tags=["onboarding"])
 
 
 @app.get("/", include_in_schema=False)

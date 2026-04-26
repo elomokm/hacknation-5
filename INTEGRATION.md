@@ -15,6 +15,49 @@ language, currency, and education taxonomy.
 
 ---
 
+## No-code country onboarding (60 seconds, no developer)
+
+The fast path for an NGO field officer or government program manager who
+needs their country live in UNMAPPED but has no engineering team:
+
+1. **Open the operator console** — pick "Operator (NGO / Gov)" in the
+   Streamlit sidebar at https://unmapped.streamlit.app.
+2. **Download the CSV template** — 5 columns, ILOSTAT-aligned (`sector_label,
+   isco_group, monthly_wage_local, employment_share_pct, growth_flagged`).
+   Comments at the top of the file explain each column.
+3. **Fill it from public ILOSTAT data** for your country — typically 10–15
+   sector rows. Save as UTF-8.
+4. **Upload the CSV + 5 fields** in the operator console form: country name,
+   ISO-3 code, currency, currency-per-USD rate, primary language. Optional
+   advanced section lets you tune youth unemployment / informal share / NEET
+   / LMIC adjustment factor — sensible defaults are pre-filled.
+5. **Click Onboard country.** The system generates the YAML config + labor
+   JSON, validates it against the schema, and hot-reloads the registry.
+   Your country appears in the sidebar dropdown within ~10 seconds.
+
+**Equivalent curl** (for ETL pipelines):
+
+```bash
+curl -X POST https://unmapped-api.onrender.com/api/onboarding/country \
+  -F "csv=@civ_ilostat.csv" \
+  -F "country_name=Côte d'Ivoire" \
+  -F "country_code=CIV" \
+  -F "currency=XOF" \
+  -F "usd_rate=600" \
+  -F "primary_language=fr"
+# → {"country_code":"CIV","sectors_imported":12,"ready":true,...}
+```
+
+**Get the template** at `GET /api/onboarding/template.csv` (or via the
+operator console's "Download template" button).
+
+> **Production note:** the onboarding endpoint writes to the API container's
+> filesystem, which is ephemeral on Render free tier — the live-added country
+> survives until the next deploy/restart. Production hardening = persist to
+> Postgres or an S3 bucket. ~50 LOC, not an architectural blocker.
+
+---
+
 ## What UNMAPPED provides vs what you bring
 
 | You bring | UNMAPPED provides |

@@ -41,6 +41,17 @@ runtime, hot-reloadable via `POST /api/config/reload`.
 Live proof: 4 countries deployed across 2 regions and 2 scripts — 🇧🇯 Bénin, 🇸🇳 Sénégal,
 🇬🇭 Ghana (West Africa, XOF/GHS, latin), and 🇧🇩 Bangladesh (South Asia, BDT, bengali).
 
+## No-code operator onboarding
+
+The "infrastructure" claim is only real if non-engineers can use it. UNMAPPED
+ships an **operator console** (third tab in the Streamlit sidebar) where an
+NGO field officer or government program manager uploads a 5-column ILOSTAT-aligned
+CSV plus 5 metadata fields — country name, ISO-3 code, currency, USD rate, primary
+language — and the system generates the YAML config + labor JSON, validates the
+output against the Pydantic schema, and hot-reloads the registry. The new country
+appears in the sidebar dropdown within ~10 seconds. End-to-end **under 60 seconds,
+no developer required**. Demonstrated live with Côte d'Ivoire.
+
 ## Stack
 
 FastAPI · Anthropic Claude Sonnet 4.5 · NetworkX · Pydantic v2 · ESCO v1.2 · ISCO-08 ·
