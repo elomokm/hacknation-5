@@ -1,0 +1,27 @@
+# Render deployment manifest — Infrastructure as Code.
+# Render auto-discovers this on connect; you only need to set ANTHROPIC_API_KEY
+# manually in the dashboard (sync: false flag below).
+#
+# Free tier: spins down after 15 min idle (cold start ~30s).
+# Mitigated by cron-job.org pinging /api/health every 10 min.
+
+services:
+  - type: web
+    name: unmapped-api
+    runtime: python
+    plan: free
+    region: frankfurt              # closest free EU region for African users
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    pythonVersion: "3.12"
+    healthCheckPath: /api/health
+    envVars:
+      - key: ACTIVE_COUNTRY
+        value: BEN
+      - key: ANTHROPIC_API_KEY
+        sync: false                # set manually in dashboard — never committed
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONPATH
+        value: "."

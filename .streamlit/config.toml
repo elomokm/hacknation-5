@@ -1,0 +1,16 @@
+# Streamlit Cloud / local config
+[theme]
+base = "dark"
+primaryColor = "#00D4AA"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#1A1D23"
+textColor = "#FFFFFF"
+font = "sans serif"
+
+[server]
+headless = true
+runOnSave = false
+fileWatcherType = "none"
+
+[browser]
+gatherUsageStats = false

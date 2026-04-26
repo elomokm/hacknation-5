@@ -30,7 +30,20 @@ from views.i18n import t
 from views.skill_graph import render_skill_graph
 from views.style import risk_badge
 
-API_BASE = os.getenv("UNMAPPED_API_URL", "http://localhost:8000/api")
+# API URL resolution: env var first (local dev), then Streamlit secrets (Cloud), then localhost.
+def _resolve_api_url() -> str:
+    if os.getenv("UNMAPPED_API_URL"):
+        return os.environ["UNMAPPED_API_URL"]
+    try:
+        # st.secrets only exists when running under Streamlit
+        if "UNMAPPED_API_URL" in st.secrets:
+            return st.secrets["UNMAPPED_API_URL"]
+    except Exception:
+        pass
+    return "http://localhost:8000/api"
+
+
+API_BASE = _resolve_api_url()
 
 _DEMO_TEXT = (
     "Je m'appelle Akossiwa. J'ai un BEPC. Je répare des téléphones "
