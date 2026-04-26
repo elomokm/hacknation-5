@@ -141,9 +141,13 @@ def _api_get(path: str, timeout: int = 30):
 
 
 def _check_api_alive() -> bool:
-    """Return True if the API responds to /health within 2 seconds."""
+    """Return True if the API responds to /health.
+
+    Generous timeout so a Render free-tier cold start (typically 30-50s) wakes
+    the dyno on the first request instead of failing fast.
+    """
     try:
-        r = requests.get(f"{API_BASE}/health", timeout=2)
+        r = requests.get(f"{API_BASE}/health", timeout=60)
         return r.status_code == 200
     except Exception:
         return False
