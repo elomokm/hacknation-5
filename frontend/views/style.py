@@ -24,7 +24,9 @@ html, body, .stApp, .stMarkdown, .stCaption {
 }
 
 /* ── Hide Streamlit chrome ───────────────────────────────── */
-#MainMenu, footer, header, .stDeployButton { visibility: hidden; height: 0; }
+/* NB: do NOT hide `header` — it contains the sidebar collapse/expand
+   button. Hide the menu, footer, and deploy button only. */
+#MainMenu, footer, .stDeployButton { visibility: hidden; height: 0; }
 
 /* ── Main container — mobile-first ──────────────────────── */
 .main .block-container {
