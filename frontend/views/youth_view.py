@@ -694,14 +694,14 @@ def _render_country_banner(config) -> None:
 
 
 def _apply_persona(p: dict) -> None:
-    """on_click callback: assign session_state before widgets are re-instantiated.
+    """on_click callback: stage the persona via non-widget keys.
 
-    Direct assignment in the button's `if` block runs after the sidebar
-    selectbox (key=country_select) has already been instantiated on the rerun,
-    which raises StreamlitAPIException. Callbacks fire between runs and bypass
-    that lifecycle constraint.
+    Streamlit 1.56 forbids writing to a widget-bound session_state key
+    (country_select) even from a callback. We stage the desired country in
+    `_pending_country`, which app.py copies into `country_select` BEFORE the
+    selectbox is instantiated on the next rerun.
     """
-    st.session_state["country_select"] = p["country"]
+    st.session_state["_pending_country"] = p["country"]
     st.session_state["form_description"] = p["text"]
     st.session_state["form_name"] = p["name"]
     st.session_state["form_education"] = p["education"]

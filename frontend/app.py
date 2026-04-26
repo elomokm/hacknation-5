@@ -50,6 +50,12 @@ with st.sidebar:
 
     st.divider()
 
+    # Apply pending country switch (from persona buttons) BEFORE the widget is
+    # instantiated. Streamlit 1.56 forbids writing to a widget-bound key after
+    # the widget renders, even from a callback.
+    if "_pending_country" in st.session_state:
+        st.session_state["country_select"] = st.session_state.pop("_pending_country")
+
     # Country toggle — auto-discovered from configs/, sorted alphabetically
     country = st.selectbox(
         t("sidebar.country"),
